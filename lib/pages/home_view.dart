@@ -22,6 +22,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 20),
             Container(
               width: 300,
-              height: 400,
+              height: 450,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(10),
@@ -89,20 +91,31 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   SizedBox(height: 20),
+                  TextField(
+                    controller: _confirmPasswordController,
+                    decoration: InputDecoration(
+                      labelText: 'Enter your password',
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      UserController().postUser(
-                        _nameController.text,
-                        _emailController.text,
-                        _passwordController.text,
-                      );
+                      //passwords gotta be equal
+                      if (_passwordController.text ==
+                          _confirmPasswordController.text) {
+                        UserController().postUser(
+                          _nameController.text,
+                          _emailController.text,
+                          _passwordController.text,
+                        );
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyApp2(),
-                        ),
-                      );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyApp2(),
+                          ),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(81, 185, 214, 1.0),
@@ -126,7 +139,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 );
               },
-              
               child: Text('Clique aqui'),
             ),
           ],
