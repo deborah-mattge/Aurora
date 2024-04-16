@@ -4,9 +4,11 @@ import 'package:aurora/controllers/UserController.dart';
 import 'package:aurora/pages/habit_view.dart';
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'User Post Example',
       home: MyHomePage(),
     );
@@ -14,6 +16,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -27,9 +31,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Post Example'),
+        title: const Text('User Post Example'),
       ),
-      backgroundColor: Color.fromRGBO(245, 245, 245, 1.0),
+      backgroundColor: const Color.fromRGBO(245, 245, 245, 1.0),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -39,15 +43,15 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 100,
               child: Image.asset('assets/images/AURORA.png'),
             ),
-            SizedBox(height: 40),
-            Text(
+            const SizedBox(height: 40),
+            const Text(
               'Cadastro',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 300,
               height: 400,
@@ -60,35 +64,35 @@ class _MyHomePageState extends State<MyHomePage> {
                         .withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextField(
                     controller: _nameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Enter your name',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: _emailController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Enter your email',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: _passwordController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Enter your password',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       UserController().postUser(
@@ -100,20 +104,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyApp2(),
+                          builder: (context) => const MyApp2(),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromRGBO(81, 185, 214, 1.0),
+                      backgroundColor: const Color.fromRGBO(81, 185, 214, 1.0),
                     ),
-                    child: Text('Post User'),
+                    child: const Text('Post User'),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Já possui uma conta?',
               style: TextStyle(fontSize: 12),
             ),
@@ -122,12 +126,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Login(),
+                    builder: (context) => const Login(),
                   ),
                 );
               },
               
-              child: Text('Clique aqui'),
+              child: const Text('Clique aqui'),
             ),
           ],
         ),

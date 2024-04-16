@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
+  const Login({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Login',
       home: MyHomePage(),
     );
@@ -11,6 +13,8 @@ class Login extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -21,9 +25,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login page'),
+        title: const Text('Login page'),
       ),
-      backgroundColor: Color.fromRGBO(245, 245, 245, 1.0)   
+      backgroundColor: const Color.fromRGBO(245, 245, 245, 1.0)   
     );
   }
 
