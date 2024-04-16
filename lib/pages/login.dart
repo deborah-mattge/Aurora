@@ -23,6 +23,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool hide = true;
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +78,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SizedBox(height: 20),
                   TextField(
+                    obscureText: hide,
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: 'Enter your password',
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              hide = !hide;
+                            });
+                          },
+                          icon: Icon(hide
+                              // ignore: dead_code
+                              ? Icons.visibility_off
+                              : Icons.visibility)),
                     ),
                   ),
                   SizedBox(height: 20),
@@ -92,7 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
 
                       if (response.statusCode == 200) {
-                      
                         Navigator.push(
                           context,
                           MaterialPageRoute(

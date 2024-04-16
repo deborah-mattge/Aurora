@@ -2,6 +2,7 @@ import 'package:aurora/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:aurora/controllers/UserController.dart';
 import 'package:aurora/pages/habit_view.dart';
+import 'package:flutter/widgets.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -24,6 +25,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  bool hide1 = true;
+  bool hide2 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +73,18 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Enter your name',
+                  Container(
+                    width: 270,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(252, 252, 252, 1.0),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: 'Enter your name',
+                      ),
                     ),
                   ),
                   SizedBox(height: 20),
@@ -85,16 +96,38 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SizedBox(height: 20),
                   TextField(
+                    obscureText: hide1,
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: 'Enter your password',
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              hide1 = !hide1;
+                            });
+                          },
+                          icon: Icon(hide1
+                              // ignore: dead_code
+                              ? Icons.visibility_off
+                              : Icons.visibility)),
                     ),
                   ),
                   SizedBox(height: 20),
                   TextField(
+                    obscureText: hide2,
                     controller: _confirmPasswordController,
                     decoration: InputDecoration(
                       labelText: 'Enter your password',
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              hide2 = !hide2;
+                            });
+                          },
+                          icon: Icon(hide2
+                              // ignore: dead_code
+                              ? Icons.visibility_off
+                              : Icons.visibility)),
                     ),
                   ),
                   SizedBox(height: 20),
