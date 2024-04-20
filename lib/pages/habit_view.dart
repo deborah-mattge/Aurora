@@ -1,4 +1,4 @@
-import 'package:aurora/pages/create_habbit.dart';
+import 'package:aurora/pages/create_habit.dart';
 import 'package:flutter/material.dart';
 
 class MyApp2 extends StatelessWidget {
@@ -26,9 +26,11 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Color.fromRGBO(245, 245, 245, 1.0),
       body: ElevatedButton(
           onPressed: () {
+            print(
+                "Botão pressionado"); // Verifique se o botão está sendo pressionado
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  Create()),
+              MaterialPageRoute(builder: (context) => Create()),
             );
           },
           child: Text("Criar")),

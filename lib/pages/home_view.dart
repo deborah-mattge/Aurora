@@ -91,11 +91,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      UserController().postUser(
-                        _nameController.text,
-                        _emailController.text,
-                        _passwordController.text,
-                      );
+                      // UserController().postUser(
+                      //   _nameController.text,
+                      //   _emailController.text,
+                      //   _passwordController.text,
+                      // );
 
                       Navigator.push(
                         context,
