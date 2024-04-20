@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   http: ^1.2.1
   date_picker_timeline:
-  fl_chart: ^0.67.0
+  graphic: ^2.2.1
 
 dev_dependencies:
   flutter_test:

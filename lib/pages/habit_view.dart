@@ -2,6 +2,9 @@ import 'package:aurora/models/Habit.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
+import 'package:graphic/graphic.dart';
+import 'dart:ui';
+
 class MyApp2 extends StatelessWidget {
   const MyApp2({super.key});
 
@@ -29,9 +32,38 @@ class _MyHomePageState extends State<MyHomePage> {
     const Habit(id: 3, name: 'Meditation', color: 'A26BD8'),
     const Habit(id: 4, name: 'Healthy Eating', color: '7ACE78'),
   ];
+  List<MarkElement> centralPieLabel(
+    Size size,
+    Offset anchor,
+    Map<int, Tuple> selectedTuples,
+  ) {
+    final tuple = selectedTuples.values.last;
+
+    final titleElement = LabelElement(
+        text: 'olaaa',
+        anchor: const Offset(175, 150),
+        style: LabelStyle(
+            textStyle: const TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
+            align: Alignment.topCenter));
+
+    return [titleElement];
+  }
 
   @override
   Widget build(BuildContext context) {
+    var data = habits.map((habit) {
+      return {
+        'name': habit.name,
+        'color': habit.color,
+        'value': 10
+      }; // Inicialize o valor como 0
+    }).toList();
+    List<Color> habitColors =
+        habits.map((habit) => Color(int.parse('0xFF${habit.color}'))).toList();
+
     return Scaffold(
       appBar: AppBar(
         leading: Container(
@@ -128,11 +160,73 @@ class _MyHomePageState extends State<MyHomePage> {
                         habits: habits,
                       ),
                     ),
+                    Stack(
+                      children: [
+                        const Positioned.fill(
+                          child: Center(
+                            child: Text(
+                              '1/3',
+                              style: TextStyle(
+                                  fontSize: 40,
+                                  color: Colors.pink,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          width: 152,
+                          height: 130,
+                          child: Chart(
+                            data: data,
+                            variables: {
+                              'name': Variable(
+                                accessor: (Map map) => map['name'] as String,
+                              ),
+                              'value': Variable(
+                                accessor: (Map map) => map['value'] as num,
+                              ),
+                              'color': Variable(
+                                // Adicione uma variável para a cor
+                                accessor: (Map map) => map['color']
+                                    as String, // O accessor retorna a cor como uma String
+                              ),
+                            },
+                            transforms: [
+                              Proportion(
+                                variable: 'value',
+                                as: 'percent',
+                              )
+                            ],
+                            marks: [
+                              IntervalMark(
+                                position: Varset('percent') / Varset('name'),
+                                color: ColorEncode(
+                                  variable: 'color',
+                                  values: data
+                                      .map((e) =>
+                                          Color(int.parse('0xFF${e['color']}')))
+                                      .toList(),
+                                  // Convertendo a cor hexadecimal para Color
+                                ),
+                                modifiers: [StackModifier()],
+                              )
+                            ],
+                            coord: PolarCoord(
+                              transposed: true,
+                              dimCount: 1,
+                              startRadius: 0.8,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -142,20 +236,36 @@ class _MyHomePageState extends State<MyHomePage> {
   void dispose() {}
 }
 
-class Graphic extends StatelessWidget {  @override
+class Graphic extends StatelessWidget {
+  const Graphic({super.key});
+
+  @override
   Widget build(BuildContext context) {
-    
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        AspectRatio(aspectRatio: 1, child: SfCircularChart(),)
+    return Chart(
+      data: const [
+        {'genre': 'Sports', 'sold': 275},
+        {'genre': 'Strategy', 'sold': 115},
+        {'genre': 'Action', 'sold': 120},
+        {'genre': 'Shooter', 'sold': 350},
+        {'genre': 'Other', 'sold': 150},
       ],
-    ) 
+      variables: {
+        'genre': Variable(
+          accessor: (Map map) => map['genre'] as String,
+        ),
+        'sold': Variable(
+          accessor: (Map map) => map['sold'] as num,
+        ),
+      },
+      marks: [IntervalMark()],
+      axes: [
+        Defaults.horizontalAxis,
+        Defaults.verticalAxis,
+      ],
+    );
   }
 }
-(){
 
-}
 class HabitList extends StatelessWidget {
   final List<Habit> habits;
 
