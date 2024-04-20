@@ -20,9 +20,11 @@ class UpdateUserModal {
         return AlertDialog(
           title: const Text(
             'Perfil',
-            style: TextStyle(color: Colors.pink),
+            style: TextStyle(
+                color: Color.fromRGBO(255, 71, 117, 1),
+                fontFamily: 'Montserrat'),
           ),
-          insetPadding: EdgeInsets.symmetric(vertical: 320),
+          insetPadding: const EdgeInsets.symmetric(vertical: 340),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -31,10 +33,13 @@ class UpdateUserModal {
               Container(
                 child: Row(
                   children: [
-                    const Icon(Icons.person, color: Colors.blue),
+                    const Icon(Icons.person,
+                        color: Color.fromRGBO(81, 185, 214, 1)),
                     Text(
                       user?.name ?? 'Email não encontrado',
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 74, 73, 73),
+                          fontFamily: 'Montserrat'),
                     )
                   ],
                 ),
@@ -43,10 +48,13 @@ class UpdateUserModal {
               Container(
                 child: Row(
                   children: [
-                    const Icon(Icons.email, color: Colors.blue),
+                    const Icon(Icons.email,
+                        color: Color.fromRGBO(81, 185, 214, 1)),
                     Text(
                       user?.email ?? 'Nome não encontrado',
-                      style: TextStyle(color: Colors.black, fontSize: 14),
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 74, 73, 73),
+                          fontFamily: 'Montserrat'),
                     )
                   ],
                 ),
@@ -58,7 +66,8 @@ class UpdateUserModal {
                 style: TextButton.styleFrom(
                   textStyle: Theme.of(context).textTheme.labelLarge,
                 ),
-                child: const Icon(Icons.edit_square, color: Colors.pink),
+                child: const Icon(Icons.edit_square,
+                    color: Color.fromRGBO(255, 71, 117, 1)),
                 onPressed: () => seconddialogBuilder(context)
                 // Navigator.of(context).pop();
                 ),
@@ -75,6 +84,14 @@ class UpdateUserModal {
     if (jsonUserString != null) {
       user = await UserController().getUserByEmail(jsonUserString);
     }
+    final TextEditingController nameController =
+        TextEditingController(text: user?.name ?? 'Nome não encontrado');
+    final TextEditingController emailController =
+        TextEditingController(text: user?.email ?? 'Email não encontrado');
+    final TextEditingController passwordController =
+        TextEditingController(text: user?.password ?? 'Senha não encontrada');
+    final TextEditingController confirmPasswordController =
+        TextEditingController(text: user?.password ?? 'Senha não encontrada');
 
     return showDialog<void>(
       context: context,
@@ -82,72 +99,108 @@ class UpdateUserModal {
         return AlertDialog(
           title: const Text(
             'Perfil',
-            style: TextStyle(color: Colors.pink),
+            style: TextStyle(color: Color.fromRGBO(255, 71, 117, 1), 
+            fontFamily: 'Montserrat'),
           ),
-          insetPadding: EdgeInsets.symmetric(vertical: 300),
+          insetPadding: const EdgeInsets.symmetric(vertical: 260),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
           content: Column(
             children: [
-              Container(
-                child: Row(
-                  children: [
-                    const Icon(Icons.person, color: Colors.blue),
-                    Text(
-                      user?.name ?? 'Email não encontrado',
-                      style: TextStyle(color: Colors.black),
-                    )
-                  ],
-                ),
+              Row(
+                children: [
+                  const Icon(Icons.person,
+                      color: Color.fromRGBO(81, 185, 214, 1)),
+                  Expanded(
+                    child: TextField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        controller: nameController),
+                  ),
+                ],
               ),
-              SizedBox(height: 20),
-              Container(
-                child: Row(
-                  children: [
-                    const Icon(Icons.email, color: Colors.blue),
-                    Text(
-                      user?.email ?? 'Nome não encontrado',
-                      style: TextStyle(color: Colors.black),
-                    )
-                  ],
-                ),
+              Row(
+                children: [
+                  const Icon(Icons.email,
+                      color: Color.fromRGBO(81, 185, 214, 1)),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                      controller: emailController,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 20),
-              Container(
-                child: Row(
-                  children: [
-                    const Icon(Icons.lock, color: Colors.blue),
-                    Text(
-                      user?.password ?? 'Nome não encontrado',
-                      style: TextStyle(color: Colors.black),
-                    )
-                  ],
-                ),
+              Row(
+                children: [
+                  const Icon(Icons.lock,
+                      color: Color.fromRGBO(81, 185, 214, 1)),
+                  Expanded(
+                    child: TextField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        controller: passwordController),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Icon(Icons.lock,
+                      color: Color.fromRGBO(81, 185, 214, 1)),
+                  Expanded(
+                    child: TextField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        controller: confirmPasswordController),
+                  ),
+                ],
               ),
             ],
           ),
           actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-                backgroundColor: Color.fromRGBO(221, 79, 240, 1),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      backgroundColor: const Color.fromRGBO(255, 71, 117, 1),
+                    ),
+                    child: const Text("Cancelar",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      backgroundColor: const Color.fromRGBO(81, 185, 214, 1),
+                    ),
+                    child: const Text("Salvar",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      if (confirmPasswordController.text ==
+                          passwordController.text) {
+                        UserController().updateUser(nameController.text,
+                            emailController.text, passwordController.text);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ],
               ),
-              child: const Text("Cancelar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-                backgroundColor: Color.fromRGBO(81, 185, 214, 1.0),
-              ),
-              child: const Text("Salvar"),
-              onPressed: () {
-                UserController().updateUser(user!);
-                Navigator.of(context).pop();
-              },
             ),
           ],
         );

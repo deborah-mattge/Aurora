@@ -9,6 +9,11 @@ import 'package:http/http.dart';
 class UserController extends ChangeNotifier {
   String name = '';
   Future<void> postUser(String userName, String email, String password) async {
+    SharedPreferences _sharedPreferences =
+        await SharedPreferences.getInstance();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     Map<String, dynamic> user = {
       'name': userName,
       'email': email,
@@ -26,6 +31,7 @@ class UserController extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       debugPrint('User posted successfully!');
+      await prefs.setString('email', email);
     } else {
       debugPrint('Failed to post user: ${response.statusCode}');
     }
@@ -62,7 +68,6 @@ class UserController extends ChangeNotifier {
         await http.post(Uri.parse(url), headers: headers, body: jsonUser);
 
     if (response.statusCode == 200) {
-      await _sharedPreferences.setString('loggedUser', jsonUser);
       await prefs.setString('email', email);
     } else {
       debugPrint('Failed: ${response.statusCode}');
@@ -85,18 +90,45 @@ class UserController extends ChangeNotifier {
     }
   }
 
-  Future<User> updateUser(User user) async {
+  Future<void> updateUser(String name, String email, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? jsonUserString = prefs.getString('email');
+    User? user2;
+
+    if (jsonUserString != null) {
+      user2 = await UserController().getUserByEmail(jsonUserString);
+    }
+
+    Map<String, dynamic> user = {
+      'id': user2?.id,
+      'name': name,
+      'email': email,
+      'password': password
+    };
+    
     String jsonUser = jsonEncode(user);
+
     var url = 'http://localhost:8080/user';
     var headers = {'Content-Type': 'application/json'};
     var response =
         await http.patch(Uri.parse(url), headers: headers, body: jsonUser);
     if (response.statusCode == 200) {
-      debugPrint('User posted successfully!');
+      debugPrint('User updated successfully!');
     } else {
       debugPrint('Failed to post user: ${response.statusCode}');
     }
     notifyListeners();
-    return user;
+  }
+
+  Future<bool> isAuthenticated() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? jsonUserString = prefs.getString('email');
+    User? user;
+    if (jsonUserString != null) {
+      user = await UserController().getUserByEmail(jsonUserString);
+      return true;
+    } else {
+      return false;
+    }
   }
 }
