@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aurora/controllers/UserController.dart';
+import 'package:aurora/modals/habits_modal.dart';
 import 'package:aurora/modals/update_user_modal.dart';
 import 'package:aurora/models/UserModel.dart';
 import 'package:flutter/material.dart';
@@ -27,15 +28,21 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(title: const Text('showDialog Sample')),
       body: Center(
-        child: OutlinedButton(
-          onPressed: () => UpdateUserModal().firstdialogBuilder(context),
-          child: const Text('Open Dialog'),
-        ),
-      ),
+        child: Row(
+        children: [
+          OutlinedButton(
+            onPressed: () => UpdateUserModal().firstdialogBuilder(context),
+            child: const Text('Open User'),
+          ),
+          OutlinedButton(
+            onPressed: () => HabitsModal().firstdialogBuilder(context),
+            child: const Text('Open Habits'),
+          ),
+        ],
+      )),
     );
   }
 
   @override
   void dispose() {}
 }
-

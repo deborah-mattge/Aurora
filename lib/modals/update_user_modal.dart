@@ -24,7 +24,7 @@ class UpdateUserModal {
                 color: Color.fromRGBO(255, 71, 117, 1),
                 fontFamily: 'Montserrat'),
           ),
-          insetPadding: const EdgeInsets.symmetric(vertical: 340),
+          insetPadding: const EdgeInsets.symmetric(vertical: 320),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
