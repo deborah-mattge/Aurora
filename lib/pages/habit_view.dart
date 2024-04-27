@@ -1,4 +1,6 @@
+import 'package:aurora/models/ENUM/habit_category.dart';
 import 'package:aurora/models/Habit.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -27,10 +29,26 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   DateTime _selectedValue = DateTime.now();
   List<Habit> habits = [
-    const Habit(id: 1, name: 'Exercise', color: 'FF4775'),
-    const Habit(id: 2, name: 'Reading', color: '51B9D6'),
-    const Habit(id: 3, name: 'Meditation', color: 'A26BD8'),
-    const Habit(id: 4, name: 'Healthy Eating', color: '7ACE78'),
+    Habit(
+        id: 1,
+        name: 'Exercise',
+        habitCategory: HabitCategory.AFTERNOON,
+        color: 'FF4775'),
+    Habit(
+        id: 2,
+        name: 'Reading',
+        habitCategory: HabitCategory.MORNING,
+        color: '51B9D6'),
+    Habit(
+        id: 3,
+        name: 'Meditation',
+        habitCategory: HabitCategory.EVENING,
+        color: 'A26BD8'),
+    Habit(
+        id: 4,
+        name: 'Healthy Eating',
+        habitCategory: HabitCategory.EVERYDAY,
+        color: '7ACE78'),
   ];
   List<MarkElement> centralPieLabel(
     Size size,
@@ -54,6 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> itemColors = [
+      "51B9D6",
+      "FF4775",
+      "7ACE78",
+      "A26BD8",
+    ];
     var data = habits.map((habit) {
       return {
         'name': habit.name,
@@ -227,6 +251,56 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+          Container(
+            child: CarouselSlider(
+              items: HabitCategory.values.map((e) {
+                int index = HabitCategory.values.indexOf(e);
+                Color color = Color(int.parse(
+                    "0xFF${itemColors[index % itemColors.length]}")); // Selecionando a cor correspondente ao item
+                return Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      padding:
+                          const EdgeInsets.only(left: 10, right: 10, bottom: 2),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        color: color,
+                      ),
+                      child: Center(
+                        child: Text(
+                          e
+                              .toString()
+                              .split('.')
+                              .last
+                              .toLowerCase(), // Removendo o prefixo HabitCategory
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors
+                                .white, // Você pode ajustar a cor do texto conforme necessário
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200,
+                    ),
+                    Container(
+                      height: 200,
+                      width: MediaQuery.of(context).size.width,
+                      color: color,
+                    )
+                  ],
+                );
+              }).toList(),
+              options: CarouselOptions(
+                height: 300,
+              ),
+            ),
+          )
         ],
       ),
     );

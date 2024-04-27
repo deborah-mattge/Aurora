@@ -38,6 +38,7 @@ dependencies:
   http: ^1.2.1
   date_picker_timeline:
   graphic: ^2.2.1
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
