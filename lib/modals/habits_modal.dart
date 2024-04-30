@@ -22,153 +22,234 @@ class HabitsModal {
     debugPrint(habit.name);
 
     final TextEditingController name = TextEditingController(text: habit.name);
+    const List<String> list = <String>[
+      'noturno  ',
+      'matutino  ',
+      'vespertino',
+      'diário   '
+    ];
 
     return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          insetPadding: EdgeInsets.symmetric(vertical: 200),
-          backgroundColor: Colors.white,
-          content: Column(
-            children: [
-              Row(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            insetPadding: const EdgeInsets.symmetric(vertical: 200),
+            backgroundColor: Colors.white,
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Nome'),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: name,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 150,
+                          child: Text("nome: "),
                         ),
-                        filled: true,
-                        fillColor: Colors.white, // Fundo branco
-                        contentPadding: EdgeInsets.all(4.2),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text('tipo da unidade'),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: name,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white, // Fundo branco
-                        contentPadding: EdgeInsets.all(4.2),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text('período'),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: name,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white, // Fundo branco
-                        contentPadding: EdgeInsets.all(4.2),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text('cor'),
-                  SizedBox(width: 10),
-                  Expanded(
-                            child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0),
-            border: Border.all(
-                color: Colors.red, style: BorderStyle.solid, width: 0.80),
-          ),
-          // child: DropdownButton(
-          //   items: _dropdownValues
-          //       .map((value) => DropdownMenuItem(
-          //             child: Text(value),
-          //             value: value,
-          //           ))
-          //       .toList(),
-            // onChanged: (String value) {},
-            // isExpanded: false,
-            // value: _dropdownValues.first,
-          ),
-        ),
-
-                  // ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text('Data de término'),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width *
-                          0.6, // Adjust the width as needed
-                      child: TextField(
-                        controller: name,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            controller: name,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: Color.fromRGBO(245, 247, 247, 1.0),
+                              contentPadding: EdgeInsets.all(4.2),
+                            ),
                           ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 8),
                         ),
-                      ),
+                      ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 150, // Defina o tamanho fixo aqui
+                          child: Text("nome da unidade: "),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            controller: name,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: Color.fromRGBO(245, 247, 247, 1.0),
+                              contentPadding: EdgeInsets.all(4.2),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 150, // Defina o tamanho fixo aqui
+                          child: Text("tipo da unidade: "),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            controller: name,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: Color.fromRGBO(245, 247, 247, 1.0),
+                              contentPadding: EdgeInsets.all(4.2),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 150,
+                          child: Text("Período: "),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: PeriodLabel.noturno.color,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: DropdownMenu<PeriodLabel>(
+                              initialSelection: PeriodLabel.noturno,
+                              // controller: colorController
+                              requestFocusOnTap: true,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 5.0),
+                              ),
+                              onSelected: (PeriodLabel? color) {
+                                // setState(() {
+                                //   selectedColor = color;
+                                // });
+                              },
+                              dropdownMenuEntries: PeriodLabel.values
+                                  .map<DropdownMenuEntry<PeriodLabel>>(
+                                      (PeriodLabel color) {
+                                return DropdownMenuEntry<PeriodLabel>(
+                                  value: color,
+                                  label: color.label,
+                                  style: MenuItemButton.styleFrom(
+                                    foregroundColor: color.color,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 270,
+                          child: Text("cor: "),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20.0),
+                                ),
+                                borderSide: BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Color.fromRGBO(190, 185, 254, 1.0),
+                              contentPadding: EdgeInsets.all(4.4),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 150, // Defina o tamanho fixo aqui
+                          child: Text("data de término: "),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            controller: name,
+                            decoration: const InputDecoration(
+                              suffixIcon: Icon(Icons.calendar_month),
+                              suffixIconColor: Color.fromRGBO(255, 71, 117, 1.0),  
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: Color.fromRGBO(245, 247, 247, 1.0),
+                              contentPadding: EdgeInsets.all(4.2),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            backgroundColor:
+                                const Color.fromRGBO(255, 71, 117, 1)),
+                        child: const Text('Cancelar',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            backgroundColor:
+                                const Color.fromRGBO(81, 185, 214, 1)),
+                        child: const Text('Salvar',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ],
+                  ),
                 ],
               ),
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        backgroundColor: const Color.fromRGBO(255, 71, 117, 1)),
-                    child: const Text('Cancelar',
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        backgroundColor: const Color.fromRGBO(81, 185, 214, 1)),
-                    child: const Text('Salvar',
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
+            ),
+          );
+        });
   }
+}
+
+enum PeriodLabel {
+  noturno('noturno', Color.fromRGBO(81, 185, 214, 1.0)),
+  matutino('matutino', Color.fromRGBO(255, 71, 117, 1.0)),
+  vespertino('vespertino', Color.fromRGBO(122, 206, 120, 1.0)),
+  diario('diario', Color.fromRGBO(162, 107, 216, 1.0));
+
+  const PeriodLabel(this.label, this.color);
+  final String label;
+  final Color color;
 }
