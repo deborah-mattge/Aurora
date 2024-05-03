@@ -93,9 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
-
-                  
                   const Row(
                     children: [
                       Text(
@@ -193,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                   Padding(
+                  Padding(
                     padding: EdgeInsets.only(top: 30.0),
                     child: Row(
                       children: [
@@ -227,18 +224,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 20,
                                   height: 20,
                                   child: const CircleAvatar(
-                                    backgroundColor: Color.fromARGB(255, 79, 196, 248),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 79, 196, 248),
                                   ),
                                 ),
                               ),
-                                Positioned(
+                              Positioned(
                                 right: 86,
                                 top: 3,
                                 child: Container(
                                   width: 20,
                                   height: 20,
                                   child: const CircleAvatar(
-                                    backgroundColor: Color.fromRGBO(255, 71, 117, 1),
+                                    backgroundColor:
+                                        Color.fromRGBO(255, 71, 117, 1),
                                   ),
                                 ),
                               ),
@@ -249,7 +248,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 20,
                                   height: 20,
                                   child: const CircleAvatar(
-                                    backgroundColor: Color.fromRGBO(122, 206, 120, 1),
+                                    backgroundColor:
+                                        Color.fromRGBO(122, 206, 120, 1),
                                   ),
                                 ),
                               ),
@@ -260,7 +260,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 20,
                                   height: 20,
                                   child: const CircleAvatar(
-                                    backgroundColor: Color.fromRGBO(162, 107, 216, 1),
+                                    backgroundColor:
+                                        Color.fromRGBO(162, 107, 216, 1),
                                   ),
                                 ),
                               ),
@@ -271,12 +272,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 20,
                                   height: 20,
                                   child: const CircleAvatar(
-                                    backgroundColor: Color.fromRGBO(217, 217, 217, 1),
-                                    
+                                    backgroundColor:
+                                        Color.fromRGBO(217, 217, 217, 1),
                                   ),
-                                
                                 ),
-                                
                               ),
                             ],
                           ),
@@ -284,7 +283,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ],
                     ),
                   ),
-                   
                 ],
               ),
             ),
