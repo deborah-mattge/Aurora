@@ -193,14 +193,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.only(top: 30.0),
                     child: Row(
                       children: [
                         Expanded(
                           child: Stack(
                             children: [
-                              Text(
+                              const Text(
                                 "Escolha uma tag",
                                 style: TextStyle(
                                   fontSize: 16,
@@ -208,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   color: Color.fromRGBO(74, 74, 73, 1),
                                 ),
                               ),
-                              Positioned(
+                              const Positioned(
                                 bottom: -1,
                                 left: 125.2,
                                 child: Text(
@@ -219,13 +219,72 @@ class _MyHomePageState extends State<MyHomePage> {
                                     color: Color.fromRGBO(255, 71, 117, 1),
                                   ),
                                 ),
-                              )
+                              ),
+                              Positioned(
+                                right: 114,
+                                top: 3,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  child: const CircleAvatar(
+                                    backgroundColor: Color.fromARGB(255, 79, 196, 248),
+                                  ),
+                                ),
+                              ),
+                                Positioned(
+                                right: 86,
+                                top: 3,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  child: const CircleAvatar(
+                                    backgroundColor: Color.fromRGBO(255, 71, 117, 1),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 58,
+                                top: 3,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  child: const CircleAvatar(
+                                    backgroundColor: Color.fromRGBO(122, 206, 120, 1),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 30,
+                                top: 3,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  child: const CircleAvatar(
+                                    backgroundColor: Color.fromRGBO(162, 107, 216, 1),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 0,
+                                top: 3,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  child: const CircleAvatar(
+                                    backgroundColor: Color.fromRGBO(217, 217, 217, 1),
+                                    
+                                  ),
+                                
+                                ),
+                                
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
+                   
                 ],
               ),
             ),
