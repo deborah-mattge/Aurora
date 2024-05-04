@@ -29,9 +29,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Post Example'),
+        title: const Text('User Post Example'),
       ),
-      backgroundColor: Color.fromRGBO(245, 245, 245, 1.0),
+      backgroundColor: const Color.fromRGBO(245, 245, 245, 1.0),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   const Text('Senha *',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 Response response = await UserController().authenticateUser(
@@ -179,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             const Text(
               'Ainda não possui conta?',
               style: TextStyle(fontSize: 12),

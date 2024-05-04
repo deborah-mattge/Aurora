@@ -44,7 +44,7 @@ class UpdateUserModal {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 child: Row(
                   children: [
@@ -70,7 +70,7 @@ class UpdateUserModal {
                     color: Color.fromRGBO(255, 71, 117, 1)),
                 onPressed: () => seconddialogBuilder(context)
                 // Navigator.of(context).pop();
-                ),
+              ),
           ],
         );
       },
@@ -94,6 +94,7 @@ class UpdateUserModal {
         TextEditingController(text: user?.password ?? 'Senha não encontrada');
 
     return showDialog<void>(
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(

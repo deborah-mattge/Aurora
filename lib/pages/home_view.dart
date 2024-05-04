@@ -32,9 +32,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Post Example'),
+        title: const Text('User Post Example'),
       ),
-      backgroundColor: Color.fromRGBO(245, 245, 245, 1.0),
+      backgroundColor: const Color.fromRGBO(245, 245, 245, 1.0),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 100,
               child: Image.asset('assets/images/AURORA.png'),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             const Text(
               'Cadastro',
               style: TextStyle(
@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Color.fromARGB(255, 74, 73, 73),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 350,
               height: 450,
@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 320,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(252, 252, 252, 252),
+                      color: const Color.fromARGB(252, 252, 252, 252),
                       borderRadius: BorderRadius.circular(8.0),
                       boxShadow: const [
                         BoxShadow(

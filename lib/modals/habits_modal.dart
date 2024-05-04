@@ -18,23 +18,39 @@ class HabitsModal {
       user = await UserController().getUserByEmail(jsonUserString);
     }
 
-    Habit habit = await HabitController().getOneHabit(1, user!.id);
+    Habit habit = await HabitController().getOneHabit(2, user!.id);
     debugPrint(habit.name);
 
     final TextEditingController name = TextEditingController(text: habit.name);
+    final TextEditingController date = TextEditingController(text: habit.name);
     const List<String> list = <String>[
       'noturno  ',
       'matutino  ',
       'vespertino',
       'diário   '
     ];
+    const List<String> list2 = <String>['a', 'b', 'c', 'd'];
+
+    Future<void> selectDate(BuildContext context) async {
+      final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2020),
+        lastDate: DateTime(2101),
+      );
+
+      if (pickedDate != null && pickedDate != DateTime.now()) {
+        date.text = pickedDate.toString();
+      }
+    }
 
     return showDialog<void>(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             insetPadding: const EdgeInsets.symmetric(vertical: 200),
-            backgroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
             content: SizedBox(
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
@@ -50,13 +66,19 @@ class HabitsModal {
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: TextField(
-                            controller: name,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              filled: true,
-                              fillColor: Color.fromRGBO(245, 247, 247, 1.0),
-                              contentPadding: EdgeInsets.all(4.2),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(245, 247, 247, 1.0),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: TextField(
+                              controller: name,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                filled: true,
+                                fillColor: Color.fromRGBO(245, 247, 247, 1.0),
+                                contentPadding: EdgeInsets.all(4.2),
+                              ),
                             ),
                           ),
                         ),
@@ -73,13 +95,19 @@ class HabitsModal {
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: TextField(
-                            controller: name,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              filled: true,
-                              fillColor: Color.fromRGBO(245, 247, 247, 1.0),
-                              contentPadding: EdgeInsets.all(4.2),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(245, 247, 247, 1.0),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: TextField(
+                              controller: name,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                filled: true,
+                                fillColor: Color.fromRGBO(245, 247, 247, 1.0),
+                                contentPadding: EdgeInsets.all(4.2),
+                              ),
                             ),
                           ),
                         ),
@@ -124,60 +152,33 @@ class HabitsModal {
                               color: PeriodLabel.noturno.color,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: DropdownMenu<PeriodLabel>(
-                              initialSelection: PeriodLabel.noturno,
-                              // controller: colorController
-                              requestFocusOnTap: true,
-                              inputDecorationTheme: const InputDecorationTheme(
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 5.0),
-                              ),
-                              onSelected: (PeriodLabel? color) {
-                                // setState(() {
-                                //   selectedColor = color;
-                                // });
-                              },
-                              dropdownMenuEntries: PeriodLabel.values
-                                  .map<DropdownMenuEntry<PeriodLabel>>(
-                                      (PeriodLabel color) {
-                                return DropdownMenuEntry<PeriodLabel>(
-                                  value: color,
-                                  label: color.label,
-                                  style: MenuItemButton.styleFrom(
-                                    foregroundColor: color.color,
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 270,
-                          child: Text("cor: "),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20.0),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownMenu<PeriodLabel>(
+                                initialSelection: PeriodLabel.noturno,
+                                // controller: colorController
+                                requestFocusOnTap: true,
+                                inputDecorationTheme:
+                                    const InputDecorationTheme(
+                                  contentPadding:
+                                      EdgeInsets.symmetric(vertical: 5.0),
                                 ),
-                                borderSide: BorderSide(
-                                  width: 0,
-                                  style: BorderStyle.none,
-                                ),
+                                onSelected: (PeriodLabel? color) {
+                                  // setState(() {
+                                  //   selectedColor = color;
+                                  // });
+                                },
+                                dropdownMenuEntries: PeriodLabel.values
+                                    .map<DropdownMenuEntry<PeriodLabel>>(
+                                        (PeriodLabel color) {
+                                  return DropdownMenuEntry<PeriodLabel>(
+                                    value: color,
+                                    label: color.label,
+                                    style: MenuItemButton.styleFrom(
+                                      foregroundColor: color.color,
+                                    ),
+                                  );
+                                }).toList(),
                               ),
-                              filled: true,
-                              fillColor: Color.fromRGBO(190, 185, 254, 1.0),
-                              contentPadding: EdgeInsets.all(4.4),
                             ),
                           ),
                         ),
@@ -189,20 +190,59 @@ class HabitsModal {
                     child: Row(
                       children: [
                         const SizedBox(
-                          width: 150, // Defina o tamanho fixo aqui
-                          child: Text("data de término: "),
+                          width: 120,
+                          child: Text("cor: "),
+                        ),
+                        const SizedBox(width: 150),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: PeriodLabel.noturno.color,
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                icon: const SizedBox.shrink(),
+                                items: list2
+                                    .map((value) => DropdownMenuItem(
+                                          child: Text(value),
+                                          value: value,
+                                        ))
+                                    .toList(),
+                                // ignore: avoid_types_as_parameter_names
+                                onChanged: (String) {},
+                                isExpanded: false,
+                                value: list2.first,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 150,
+                          child: Text("Data de término: "),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: TextField(
-                            controller: name,
-                            decoration: const InputDecoration(
-                              suffixIcon: Icon(Icons.calendar_month),
-                              suffixIconColor: Color.fromRGBO(255, 71, 117, 1.0),  
+                            controller: date,
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               filled: true,
-                              fillColor: Color.fromRGBO(245, 247, 247, 1.0),
-                              contentPadding: EdgeInsets.all(4.2),
+                              fillColor:
+                                  const Color.fromRGBO(245, 247, 247, 1.0),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 12.0),
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.calendar_today),
+                                onPressed: () => selectDate(context),
+                              ),
                             ),
                           ),
                         ),
