@@ -1,3 +1,4 @@
+import 'package:aurora/controllers/HabitController.dart';
 import 'package:aurora/models/ENUM/habit_category.dart';
 import 'package:aurora/models/Habit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -5,10 +6,10 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:graphic/graphic.dart';
-import 'dart:ui';
 
 class MyApp2 extends StatelessWidget {
-  const MyApp2({super.key});
+  MyApp2({super.key});
+  final HabitController _habitController = new HabitController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +28,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late List<Habit> habits = [];
+  @override
+  void initState() {
+    super.initState();
+    _fetchHabits();
+  }
+
+  Future<void> _fetchHabits() async {
+    habits = await HabitController().getHabit();
+    setState(() {});
+  }
+
   DateTime _selectedValue = DateTime.now();
-  List<Habit> habits = [
-    Habit(
-        id: 1,
-        name: 'Exercise',
-        habitCategory: HabitCategory.AFTERNOON,
-        color: 'FF4775'),
-    Habit(
-        id: 2,
-        name: 'Reading',
-        habitCategory: HabitCategory.MORNING,
-        color: '51B9D6'),
-    Habit(
-        id: 3,
-        name: 'Meditation',
-        habitCategory: HabitCategory.EVENING,
-        color: 'A26BD8'),
-    Habit(
-        id: 4,
-        name: 'Healthy Eating',
-        habitCategory: HabitCategory.EVERYDAY,
-        color: '7ACE78'),
-  ];
   List<MarkElement> centralPieLabel(
     Size size,
     Offset anchor,
@@ -87,6 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
     List<Color> habitColors =
         habits.map((habit) => Color(int.parse('0xFF${habit.color}'))).toList();
+    Color singleColor =
+        habitColors.isNotEmpty ? habitColors.first : Colors.grey;
+    List<Color> colorValues =
+        habitColors.length > 1 ? habitColors : [singleColor, singleColor];
 
     return Scaffold(
       appBar: AppBar(
@@ -177,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 200,
                       height: 100,
                       child: HabitList(
@@ -227,13 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               IntervalMark(
                                 position: Varset('percent') / Varset('name'),
                                 color: ColorEncode(
-                                  variable: 'color',
-                                  values: data
-                                      .map((e) =>
-                                          Color(int.parse('0xFF${e['color']}')))
-                                      .toList(),
-                                  // Convertendo a cor hexadecimal para Color
-                                ),
+                                    variable: 'color', values: colorValues),
                                 modifiers: [StackModifier()],
                               )
                             ],
@@ -261,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
                       padding:
                           const EdgeInsets.only(left: 10, right: 10, bottom: 2),
                       decoration: BoxDecoration(
@@ -285,7 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 200,
                     ),
                     Container(
@@ -343,7 +332,7 @@ class Graphic extends StatelessWidget {
 class HabitList extends StatelessWidget {
   final List<Habit> habits;
 
-  HabitList({required this.habits});
+  const HabitList({super.key, required this.habits});
 
   @override
   Widget build(BuildContext context) {
@@ -365,8 +354,8 @@ class HabitList extends StatelessWidget {
                       Color(int.parse('0xFF${habit.color}')), // Cor do hábito
                 ),
               ),
-              SizedBox(width: 8),
-              Text(habit.name),
+              const SizedBox(width: 8),
+              Text(habit.name ?? 'No name'),
             ],
           ),
           // Você pode adicionar mais personalizações aqui

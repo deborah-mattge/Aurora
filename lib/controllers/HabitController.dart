@@ -12,7 +12,7 @@ class HabitController extends ChangeNotifier {
 
     String jsonHabit = jsonEncode(habit);
 
-    var url = 'http://localhost:8080/habit';
+    var url = 'http://10.0.2.2:8080/habit';
 
     var headers = {'Content-Type': 'application/json'};
 
@@ -27,11 +27,12 @@ class HabitController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Habit>> _getHabit() async {
-    var url = 'http://localhost:8080/habit/user/1';
-    var headers = {'Content-Type': 'application/json'};
-    var response = await http.get(Uri.parse(url), headers: headers);
-    final responseJson = jsonDecode(response.body);
+  Future<List<Habit>> getHabit() async {
+    var url = 'http://10.0.2.2:8090/habit/user/1';
+    var response = await http.get(Uri.parse(url));
+    final decodedResponse = utf8.decode(response.bodyBytes);
+
+    final responseJson = jsonDecode(decodedResponse);
 
     if (response.statusCode == 200) {
       debugPrint('GET DE HÁBITO FUNCIONANDO!');

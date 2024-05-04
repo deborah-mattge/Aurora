@@ -1,6 +1,5 @@
 import 'package:aurora/pages/login.dart';
 import 'package:flutter/material.dart';
-import 'package:aurora/controllers/UserController.dart';
 import 'package:aurora/pages/habit_view.dart';
 
 class MyApp extends StatelessWidget {
@@ -100,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MyApp2(),
+                          builder: (context) =>  MyApp2(),
                         ),
                       );
                     },
