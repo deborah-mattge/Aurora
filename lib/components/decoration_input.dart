@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-InputDecoration getHabitInputDecorations(
-    {required String sendText,
-    required double vertical,
-    required double horizontal,
-    required double width}) {
+InputDecoration getHabitInputDecorations({
+  required String sendText,
+  required double vertical,
+  required double horizontal,
+  required double width
+}) {
   return InputDecoration(
     hintText: sendText,
     hintStyle: const TextStyle(fontSize: 15, color: Colors.black38),
@@ -22,6 +23,8 @@ InputDecoration getHabitInputDecorations(
         width: 1,
       ),
     ),
+    filled: true, 
+    fillColor: const Color.fromARGB(255, 252, 250, 250),
     
     // focusedBorder: OutlineInputBorder(
     //   borderRadius: BorderRadius.circular(8),
@@ -33,7 +36,7 @@ InputDecoration getHabitInputDecorations(
     // errorBorder: OutlineInputBorder(
     //   borderRadius: BorderRadius.circular(8),
     //   borderSide: const BorderSide(
-    //     color: Colors.black12,
+    //     color: Colors.red,
     //     width: 1,
     //   ),
     // ),
