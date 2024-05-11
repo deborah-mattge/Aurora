@@ -1,11 +1,5 @@
-import 'dart:convert';
-
-import 'package:aurora/controllers/UserController.dart';
-import 'package:aurora/modals/habits_modal.dart';
-import 'package:aurora/modals/update_user_modal.dart';
-import 'package:aurora/models/UserModel.dart';
+import 'package:aurora/pages/create_habit.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApp2 extends StatelessWidget {
   @override
@@ -26,20 +20,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('showDialog Sample')),
-      body: Center(
-        child: Row(
-        children: [
-          OutlinedButton(
-            onPressed: () => UpdateUserModal().firstdialogBuilder(context),
-            child: const Text('Open User'),
-          ),
-          OutlinedButton(
-            onPressed: () => HabitsModal().firstdialogBuilder(context),
-            child: const Text('Open Habits'),
-          ),
-        ],
-      )),
+      appBar: AppBar(
+        title: Text('Habit page'),
+      ),
+      backgroundColor: Color.fromRGBO(245, 245, 245, 1.0),
+      body: ElevatedButton(
+          onPressed: () {
+            print(
+                "Botão pressionado"); 
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Create()),
+            );
+          },
+          child: Text("Criar")),
     );
   }
 
