@@ -12,6 +12,5 @@ ButtonStyle getHabitButtonDecorations() {
       )
     ),
      backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 255, 255, 255))
-    // Aqui você pode adicionar outras propriedades de estilo, como cor de fundo, sombra, etc.
   );
 }

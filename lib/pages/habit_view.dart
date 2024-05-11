@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ElevatedButton(
           onPressed: () {
             print(
-                "Botão pressionado"); // Verifique se o botão está sendo pressionado
+                "Botão pressionado"); 
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Create()),

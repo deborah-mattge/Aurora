@@ -88,15 +88,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ],
                     ),
-                    TextField(
-                      // INPUT 'NOME'
-                      decoration: getHabitInputDecorations(
-                        sendText: 'Ex: Beber água',
-                        vertical: 10,
-                        horizontal: 15,
-                        width: 0,
+                    Container(
+                      height: 35, // Ajuste para testar diferentes alturas.
+                      child: TextField(
+                        decoration: getHabitInputDecorations(
+                          sendText: 'Ex: Beber água',
+                          vertical: 8, // Reduzido para o mínimo possível.
+                          horizontal: 15,
+                          width: 0,
+                        ),
                       ),
                     ),
+
                     const SizedBox(height: 20),
                     const Row(
                       children: [
@@ -186,12 +189,15 @@ class _MyHomePageState extends State<MyHomePage> {
                               const SizedBox(width: 0),
                               Expanded(
                                 // INPUT 'EX: LITROS'
-                                child: TextField(
-                                  decoration: getHabitInputDecorations(
-                                    sendText: 'Ex: Litros',
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    width: 5,
+                                child: Container(
+                                  height: 35,
+                                  child: TextField(
+                                    decoration: getHabitInputDecorations(
+                                      sendText: 'Ex: Litros',
+                                      vertical: 10,
+                                      horizontal: 10,
+                                      width: 5,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -205,119 +211,83 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Stack(
-                              children: [
-                                const Text(
-                                  "Escolha uma tag",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color.fromRGBO(74, 74, 73, 1),
-                                  ),
-                                ),
-                                const Positioned(
-                                  bottom: -1,
-                                  left: 125.2,
-                                  child: Text(
-                                    '*',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 71, 117, 1),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 114,
-                                  top: 3,
-                                  child: InkWell(
-                                    onTap: () {
-                                      print("Azul pressionado!");
-                                    },
-                                    child: Container(
-                                      width: 20,
-                                      height: 20,
-                                      child: const CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 79, 196, 248),
+                            child: Container(
+                                height: 40,
+                                child: Stack(
+                                  children: [
+                                    const Positioned(
+                                      left: 0,
+                                      bottom: 0,
+                                      child: Text(
+                                        "Escolha uma tag",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color.fromRGBO(74, 74, 73, 1),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 86,
-                                  top: 3,
-                                  child: InkWell(
-                                    onTap: () {
-                                      print("Vermelho pressionado!");
-                                    },
-                                    child: Container(
-                                      width: 20,
-                                      height: 20,
-                                      child: const CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromRGBO(255, 71, 117, 1),
+                                    Positioned(
+                                      right: 75,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          print("Clicou");
+                                        },
+                                        style: ButtonStyle(
+                                          foregroundColor:
+                                              MaterialStateProperty.all(
+                                                  const Color.fromRGBO(
+                                                      245, 245, 245, 1.0)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  const Color.fromRGBO(
+                                                      245, 245, 245, 1.0)),
+                                          elevation:
+                                              MaterialStateProperty.all(0),
+                                          shadowColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.transparent),
+                                          overlayColor: MaterialStateProperty
+                                              .resolveWith<Color?>(
+                                            (Set<MaterialState> states) {
+                                              if (states.contains(
+                                                  MaterialState.pressed)) {
+                                                return Colors.transparent;
+                                              }
+                                              return null;
+                                            },
+                                          ),
+                                          padding: MaterialStateProperty.all(
+                                              EdgeInsets.zero),
+                                        ),
+                                        child: const Icon(
+                                          Icons.keyboard_arrow_left,
+                                          color:
+                                              Color.fromARGB(255, 79, 196, 248),
+                                          size: 30,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 58,
-                                  top: 3,
-                                  child: InkWell(
-                                    onTap: () {
-                                      print("Verde pressionado!");
-                                    },
-                                    child: Container(
-                                      width: 20,
-                                      height: 20,
-                                      child: const CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromRGBO(122, 206, 120, 1),
+                                    Positioned(
+                                      right: 60,
+                                      top: 10,
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color:
+                                              Color.fromRGBO(162, 107, 216, 1),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 30,
-                                  top: 3,
-                                  child: InkWell(
-                                    onTap: () {
-                                      print("Roxo pressionado!");
-                                    },
-                                    child: Container(
-                                      width: 20,
-                                      height: 20,
-                                      child: const CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromRGBO(162, 107, 216, 1),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  top: 3,
-                                  child: InkWell(
-                                    onTap: () {
-                                      print("Cinza pressionado!");
-                                    },
-                                    child: Container(
-                                      width: 20,
-                                      height: 20,
-                                      child: const CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromRGBO(217, 217, 217, 1),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                  ],
+                                )),
                           ),
                         ],
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
                       child: Row(
@@ -368,13 +338,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             onPressed: () async {
                               DateTime? newFinishDate = await showDatePicker(
                                   context: context,
-                                  initialDate: finish ,
+                                  initialDate: finishDate,
                                   firstDate: DateTime(1900),
                                   lastDate: DateTime(2100));
                               if (newFinishDate == null) return;
-                              setState(() => finishDate = newFinishDate);                                                                                                          
+                              setState(() => finishDate = newFinishDate);
                             },
-                            
                           ),
                         ],
                       ),
@@ -393,7 +362,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           SizedBox(width: 1, height: 2),
-
                           Text(
                             '*',
                             style: TextStyle(
