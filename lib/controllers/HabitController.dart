@@ -62,3 +62,4 @@ class HabitController extends ChangeNotifier {
     return Habit.fromJson(responseJson);
   }
 }
+

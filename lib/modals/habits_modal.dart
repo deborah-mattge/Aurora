@@ -19,15 +19,24 @@ class HabitsModal {
     }
 
     Habit habit = await HabitController().getOneHabit(2, user!.id);
-    debugPrint(habit.name);
 
     final TextEditingController name = TextEditingController(text: habit.name);
-    final TextEditingController date = TextEditingController(text: habit.name);
+    final TextEditingController reference =
+        TextEditingController(text: habit.reference);
+    String date = "${habit.finalDate.day}/${habit.finalDate.month}/${habit.finalDate.year}";
+    final TextEditingController dateController =
+        TextEditingController(text: date);
     const List<String> list = <String>[
       'noturno  ',
       'matutino  ',
       'vespertino',
       'diário   '
+    ];
+
+    const List<String> listTypes = <String>[
+      'Booleano  ',
+      'Quantidade',
+      'Tempo'
     ];
     const List<String> list2 = <String>['a', 'b', 'c', 'd'];
 
@@ -40,9 +49,11 @@ class HabitsModal {
       );
 
       if (pickedDate != null && pickedDate != DateTime.now()) {
-        date.text = pickedDate.toString();
+        reference.text = pickedDate.toString();
       }
     }
+
+    Color dropdownBackgroundColor = Color.fromARGB(255, 255, 255, 255);
 
     return showDialog<void>(
         // ignore: use_build_context_synchronously
@@ -66,18 +77,16 @@ class HabitsModal {
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(245, 247, 247, 1.0),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: TextField(
-                              controller: name,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                filled: true,
-                                fillColor: Color.fromRGBO(245, 247, 247, 1.0),
-                                contentPadding: EdgeInsets.all(4.2),
+                          child: TextField(
+                            controller: name,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: dropdownBackgroundColor,
+                              contentPadding: const EdgeInsets.all(12),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
@@ -90,23 +99,21 @@ class HabitsModal {
                     child: Row(
                       children: [
                         const SizedBox(
-                          width: 150, // Defina o tamanho fixo aqui
+                          width: 150,
                           child: Text("nome da unidade: "),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(245, 247, 247, 1.0),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: TextField(
-                              controller: name,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                filled: true,
-                                fillColor: Color.fromRGBO(245, 247, 247, 1.0),
-                                contentPadding: EdgeInsets.all(4.2),
+                          child: TextField(
+                            controller: reference,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: dropdownBackgroundColor,
+                              contentPadding: const EdgeInsets.all(12),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                           ),
@@ -119,20 +126,12 @@ class HabitsModal {
                     child: Row(
                       children: [
                         const SizedBox(
-                          width: 150, // Defina o tamanho fixo aqui
+                          width: 150,
                           child: Text("tipo da unidade: "),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: TextField(
-                            controller: name,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              filled: true,
-                              fillColor: Color.fromRGBO(245, 247, 247, 1.0),
-                              contentPadding: EdgeInsets.all(4.2),
-                            ),
-                          ),
+                          child: TypeDropdown(habit: habit),
                         ),
                       ],
                     ),
@@ -147,40 +146,7 @@ class HabitsModal {
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: PeriodLabel.noturno.color,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownMenu<PeriodLabel>(
-                                initialSelection: PeriodLabel.noturno,
-                                // controller: colorController
-                                requestFocusOnTap: true,
-                                inputDecorationTheme:
-                                    const InputDecorationTheme(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 5.0),
-                                ),
-                                onSelected: (PeriodLabel? color) {
-                                  // setState(() {
-                                  //   selectedColor = color;
-                                  // });
-                                },
-                                dropdownMenuEntries: PeriodLabel.values
-                                    .map<DropdownMenuEntry<PeriodLabel>>(
-                                        (PeriodLabel color) {
-                                  return DropdownMenuEntry<PeriodLabel>(
-                                    value: color,
-                                    label: color.label,
-                                    style: MenuItemButton.styleFrom(
-                                      foregroundColor: color.color,
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
+                          child: PeriodDropdown(habit: habit),
                         ),
                       ],
                     ),
@@ -197,7 +163,7 @@ class HabitsModal {
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
-                              color: PeriodLabel.noturno.color,
+                              color: habit.color,
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             child: DropdownButtonHideUnderline(
@@ -231,12 +197,15 @@ class HabitsModal {
                         const SizedBox(width: 10),
                         Expanded(
                           child: TextField(
-                            controller: date,
+                            controller: dateController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               filled: true,
-                              fillColor:
-                                  const Color.fromRGBO(245, 247, 247, 1.0),
+                              fillColor: dropdownBackgroundColor,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 12.0),
                               suffixIcon: IconButton(
@@ -283,13 +252,106 @@ class HabitsModal {
   }
 }
 
-enum PeriodLabel {
-  noturno('noturno', Color.fromRGBO(81, 185, 214, 1.0)),
-  matutino('matutino', Color.fromRGBO(255, 71, 117, 1.0)),
-  vespertino('vespertino', Color.fromRGBO(122, 206, 120, 1.0)),
-  diario('diario', Color.fromRGBO(162, 107, 216, 1.0));
+class PeriodDropdown extends StatefulWidget {
+  final Habit habit;
 
-  const PeriodLabel(this.label, this.color);
-  final String label;
-  final Color color;
+  const PeriodDropdown({required this.habit});
+
+  @override
+  _PeriodDropdownState createState() => _PeriodDropdownState();
+}
+
+class _PeriodDropdownState extends State<PeriodDropdown> {
+  Color dropdownBackgroundColor = Colors.blue;
+  late PeriodLabel period;
+
+  @override
+  void initState() {
+    super.initState();
+    period = widget.habit.habitCategory;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: dropdownBackgroundColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton(
+          value: period,
+          items: PeriodLabel.values
+              .map((label) => DropdownMenuItem(
+                    child: Text(label.name),
+                    value: label,
+                  ))
+              .toList(),
+          onChanged: (PeriodLabel? selectedPeriod) {
+            setState(() {
+              if (selectedPeriod == PeriodLabel.noturno) {
+                dropdownBackgroundColor = const Color.fromRGBO(81, 185, 214, 1.0);
+                period = PeriodLabel.noturno;
+              } else if (selectedPeriod == PeriodLabel.matutino) {
+                dropdownBackgroundColor = const Color.fromRGBO(255, 71, 117, 1.0);
+                period = PeriodLabel.matutino;
+              } else if (selectedPeriod == PeriodLabel.vespertino) {
+                dropdownBackgroundColor = const Color.fromRGBO(162, 107, 216, 1.0);
+                period = PeriodLabel.vespertino;
+              } else if (selectedPeriod == PeriodLabel.diario) {
+                dropdownBackgroundColor = const Color.fromRGBO(122, 206, 120, 1.0);
+                period = PeriodLabel.diario;
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class TypeDropdown extends StatefulWidget {
+  final Habit habit;
+
+  const TypeDropdown({required this.habit});
+
+  @override
+  _TypeDropdownState createState() => _TypeDropdownState();
+}
+
+class _TypeDropdownState extends State<TypeDropdown> {
+  Color dropdownBackgroundColor = Colors.white;
+  late TypeLabel period;
+
+  @override
+  void initState() {
+    super.initState();
+    period = widget.habit.goalKind;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: dropdownBackgroundColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton(
+          value: period,
+          items: TypeLabel.values
+              .map((label) => DropdownMenuItem(
+                    child: Text(label.name),
+                    value: label,
+                  ))
+              .toList(),
+          onChanged: (TypeLabel? selectedType) {
+            setState(() {
+              period = selectedType ?? TypeLabel.booleano;
+            });
+          },
+        ),
+      ),
+    );
+  }
 }
