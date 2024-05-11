@@ -27,8 +27,8 @@ class HabitController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Habit>> _getHabit() async {
-    var url = 'http://localhost:8080/habit/user/1';
+  Future<List<Habit>> getHabits(num id) async {
+    var url = 'http://localhost:8080/habit/user/$id';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
     final responseJson = jsonDecode(response.body);
@@ -46,4 +46,20 @@ class HabitController extends ChangeNotifier {
     }
     return habitsList;
   }
+
+    Future<Habit> getOneHabit(num habitId, num userId) async {
+    var url = 'http://localhost:8080/habit/$habitId/user/$userId';
+    var headers = {'Content-Type': 'application/json'};
+    var response = await http.get(Uri.parse(url), headers: headers);
+    final responseJson = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      debugPrint('GET DE HÁBITO FUNCIONANDO!');
+    } else {
+      debugPrint('FALHA AO DAR GET EM HÁBITO] ${response.statusCode}');
+    }
+    
+    return Habit.fromJson(responseJson);
+  }
 }
+
