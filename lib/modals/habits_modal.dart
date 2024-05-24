@@ -157,7 +157,7 @@ class HabitsModal extends ChangeNotifier {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: ColorPicker(),
+                        child: ColorPicker(habit: habit),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -191,34 +191,53 @@ class HabitsModal extends ChangeNotifier {
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                backgroundColor:
-                                    const Color.fromRGBO(255, 71, 117, 1)),
-                            child: const Text('Cancelar',
-                                style: TextStyle(color: Colors.white)),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(color: Colors.grey.shade300),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              // HabitController().updateHabit(name.text, reference.text, 
-                              // habit.habitCategory, habit.color, habit.finalDate, habit.goalKind);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(6),
+                                    ),
+                                  ),
+                                  backgroundColor:
+                                      const Color.fromRGBO(255, 71, 117, 1),
                                 ),
-                                backgroundColor:
-                                    const Color.fromRGBO(81, 185, 214, 1)),
-                            child: const Text('Salvar',
-                                style: TextStyle(color: Colors.white)),
-                          ),
-                        ],
+                                child: const Text('Cancelar',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  HabitController().updateHabit(
+                                      habitId, name.text, reference.text);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(6),
+                                    ),
+                                  ),
+                                  backgroundColor:
+                                      const Color.fromRGBO(81, 185, 214, 1),
+                                ),
+                                child: const Text('Salvar',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -238,7 +257,6 @@ class HabitsModal extends ChangeNotifier {
         });
   }
 }
-
 
 class PeriodDropdown extends StatefulWidget {
   final Habit habit;
@@ -349,11 +367,16 @@ class _TypeDropdownState extends State<TypeDropdown> {
 }
 
 class ColorPicker extends StatefulWidget {
+  final Habit habit;
+
+  const ColorPicker({required this.habit});
+
   @override
   _ColorPickerState createState() => _ColorPickerState();
 }
 
 class _ColorPickerState extends State<ColorPicker> {
+  late Color selectedColor;
   int _selectedIndex = -1;
 
   final List<Color> _colors = [
@@ -362,6 +385,13 @@ class _ColorPickerState extends State<ColorPicker> {
     const Color.fromRGBO(81, 185, 214, 1.0),
     const Color.fromRGBO(255, 71, 117, 1.0),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedColor = widget.habit.color;
+    _selectedIndex = _colors.indexOf(selectedColor);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -380,6 +410,7 @@ class _ColorPickerState extends State<ColorPicker> {
                 onTap: () {
                   setState(() {
                     _selectedIndex = index;
+                    selectedColor = _colors[index];
                   });
                 },
                 child: Stack(
@@ -409,3 +440,4 @@ class _ColorPickerState extends State<ColorPicker> {
     );
   }
 }
+

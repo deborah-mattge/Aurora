@@ -61,4 +61,29 @@ class HabitController extends ChangeNotifier {
     
     return Habit.fromJson(responseJson);
   }
+
+  Future<void> updateHabit(int habitId, String habitName, String reference) async {
+    Map<String, dynamic> habit = {
+      "id": habitId,
+      "name": habitName,
+      "reference": reference
+    };
+
+    String jsonHabit = jsonEncode(habit);
+
+    var url = 'http://localhost:8080/habit/update';
+
+    var headers = {'Content-Type': 'application/json'};
+
+    var response =
+        await http.patch(Uri.parse(url), headers: headers, body: jsonHabit);
+
+    if (response.statusCode == 200) {
+      debugPrint('Hábito editado com sucesso!');
+    } else {
+      debugPrint('Falha ao editar hábito');
+    }
+    notifyListeners();
+  }
+
 }
