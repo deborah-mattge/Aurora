@@ -12,7 +12,7 @@ class HabitController extends ChangeNotifier {
 
     String jsonHabit = jsonEncode(habit);
 
-    var url = 'http://localhost:8080/habit';
+    var url = 'http://10.0.2.2:8080/habit';
 
     var headers = {'Content-Type': 'application/json'};
 
@@ -28,7 +28,7 @@ class HabitController extends ChangeNotifier {
   }
 
   Future<List<Habit>> getHabits(num id) async {
-    var url = 'http://localhost:8080/habit/user/$id';
+    var url = 'http://10.0.2.2:8080/habit/user/$id';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
     final responseJson = jsonDecode(response.body);
@@ -48,7 +48,7 @@ class HabitController extends ChangeNotifier {
   }
 
     Future<Habit> getOneHabit(num habitId, num userId) async {
-    var url = 'http://localhost:8080/habit/$habitId/user/$userId';
+    var url = 'http://10.0.2.2:8080/habit/$habitId/user/$userId';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
     final responseJson = jsonDecode(response.body);
