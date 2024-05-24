@@ -54,7 +54,7 @@ class HabitController extends ChangeNotifier {
     final responseJson = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      debugPrint('GET DE HÁBITO FUNCIONANDO!');
+      debugPrint('GET DE HÁBITO 2 FUNCIONANDO!');
     } else {
       debugPrint('FALHA AO DAR GET EM HÁBITO] ${response.statusCode}');
     }
@@ -62,4 +62,3 @@ class HabitController extends ChangeNotifier {
     return Habit.fromJson(responseJson);
   }
 }
-
