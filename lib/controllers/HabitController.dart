@@ -45,6 +45,7 @@ class HabitController extends ChangeNotifier {
     for (var habitFor in responseJson) {
       habitsList.add(Habit.fromJson(habitFor));
     }
+    debugPrint('$habitsList');
     return habitsList;
   }
 }
