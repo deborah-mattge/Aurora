@@ -4,7 +4,8 @@ import 'package:aurora/models/Habit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
+import 'package:flutter/widgets.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:graphic/graphic.dart';
 
 class MyApp2 extends StatelessWidget {
@@ -275,12 +276,64 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     const SizedBox(
-                      width: 200,
+                      width: 0,
                     ),
                     Container(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width,
-                      color: color,
+                      margin: const EdgeInsets.only(top: 20, right: 5, left: 5),
+                      child: Slidable(
+                        startActionPane:
+                            ActionPane(motion: BehindMotion(), children: [
+                          SlidableAction(
+                            onPressed: ((context) {}),
+                            backgroundColor: Colors.pink,
+                            icon: Icons.add,
+                            padding: const EdgeInsets.all(0),
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.elliptical(10.0, 10.0),
+                                bottomLeft: Radius.elliptical(10.0, 10.0)),
+                          ),
+                          SlidableAction(
+                            onPressed: ((context) {}),
+                            backgroundColor:
+                                const Color.fromRGBO(81, 185, 214, 1),
+                            foregroundColor: Colors.white,
+                            icon: Icons.check,
+                          )
+                        ]),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 70,
+                          margin: const EdgeInsets.only(right: 2, left: 2),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(
+                                    15, 0), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                  width: 10,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.elliptical(10.0, 10.0),
+                                        bottomLeft:
+                                            Radius.elliptical(10.0, 10.0)),
+                                  )),
+                                  Text("nome do habito")
+                            ],
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 );
