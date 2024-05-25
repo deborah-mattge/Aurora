@@ -241,108 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Container(
-            child: CarouselSlider(
-              items: HabitCategory.values.map((e) {
-                int index = HabitCategory.values.indexOf(e);
-                Color color = Color(int.parse(
-                    "0xFF${itemColors[index % itemColors.length]}")); // Selecionando a cor correspondente ao item
-                return Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 10, bottom: 2),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        color: color,
-                      ),
-                      child: Center(
-                        child: Text(
-                          e
-                              .toString()
-                              .split('.')
-                              .last
-                              .toLowerCase(), // Removendo o prefixo HabitCategory
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors
-                                .white, // Você pode ajustar a cor do texto conforme necessário
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 0,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, right: 5, left: 5),
-                      child: Slidable(
-                        startActionPane:
-                            ActionPane(motion: BehindMotion(), children: [
-                          SlidableAction(
-                            onPressed: ((context) {}),
-                            backgroundColor: Colors.pink,
-                            icon: Icons.add,
-                            padding: const EdgeInsets.all(0),
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.elliptical(10.0, 10.0),
-                                bottomLeft: Radius.elliptical(10.0, 10.0)),
-                          ),
-                          SlidableAction(
-                            onPressed: ((context) {}),
-                            backgroundColor:
-                                const Color.fromRGBO(81, 185, 214, 1),
-                            foregroundColor: Colors.white,
-                            icon: Icons.check,
-                          )
-                        ]),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 70,
-                          margin: const EdgeInsets.only(right: 2, left: 2),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: const Offset(
-                                    15, 0), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                  width: 10,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.elliptical(10.0, 10.0),
-                                        bottomLeft:
-                                            Radius.elliptical(10.0, 10.0)),
-                                  )),
-                                  Text("nome do habito")
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              }).toList(),
-              options: CarouselOptions(
-                height: 300,
-              ),
-            ),
-          )
+          Container(child: HabitCarousel())
         ],
       ),
     );
@@ -378,6 +277,130 @@ class Graphic extends StatelessWidget {
         Defaults.horizontalAxis,
         Defaults.verticalAxis,
       ],
+    );
+  }
+}
+
+class HabitCarousel extends StatelessWidget {
+  late List<Habit> habits = [];
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> itemColors = [
+      "51B9D6",
+      "FF4775",
+      "7ACE78",
+      "A26BD8",
+    ];
+    Future<void> _fetchHabits() async {
+      habits = await HabitController().getHabit();
+    }
+
+    return CarouselSlider(
+      items: HabitCategory.values.map((e) {
+        int index = HabitCategory.values.indexOf(e);
+        Color color =
+            Color(int.parse("0xFF${itemColors[index % itemColors.length]}"));
+
+        // Filtrar hábitos com base na categoria do slide atual
+        List<Habit> filteredHabits =
+            habits.where((habit) => habit.habitCategory == e).toList();
+        for (Habit h in habits) {
+          debugPrint(h as String?);
+        }
+
+        return Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 2),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                color: color,
+              ),
+              child: Center(
+                child: Text(
+                  e.toString().split('.').last.toLowerCase(),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            // Mostrar lista de hábitos filtrados
+            ...filteredHabits.map((habit) {
+              return Container(
+                margin: const EdgeInsets.only(top: 10, right: 5, left: 5),
+                child: Slidable(
+                  startActionPane: ActionPane(
+                    motion: BehindMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: ((context) {}),
+                        backgroundColor: Colors.pink,
+                        icon: Icons.add,
+                        padding: const EdgeInsets.all(0),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.elliptical(10.0, 10.0),
+                            bottomLeft: Radius.elliptical(10.0, 10.0)),
+                      ),
+                      SlidableAction(
+                        onPressed: ((context) {}),
+                        backgroundColor: const Color.fromRGBO(81, 185, 214, 1),
+                        foregroundColor: Colors.white,
+                        icon: Icons.check,
+                      ),
+                    ],
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 70,
+                    margin: const EdgeInsets.only(right: 2, left: 2),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: const Offset(15, 0),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 10,
+                          decoration: BoxDecoration(
+                            color: Color(int.parse("0xFF${habit.color}")),
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.elliptical(10.0, 10.0),
+                                bottomLeft: Radius.elliptical(10.0, 10.0)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(habit.name ?? 'Unnamed Habit'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ],
+        );
+      }).toList(),
+      options: CarouselOptions(
+        height: 300,
+      ),
     );
   }
 }
