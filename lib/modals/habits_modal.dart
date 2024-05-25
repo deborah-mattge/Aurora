@@ -10,6 +10,10 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HabitsModal extends ChangeNotifier {
+  PeriodLabel selectedPeriod = PeriodLabel.diario; // default value
+  TypeLabel selectedType = TypeLabel.booleano; // default value
+  Color selectedColor = const Color.fromRGBO(122, 206, 120, 1.0); // default value
+
   Future<void> firstdialogBuilder(BuildContext context, int habitId) async {
     final prefs = await SharedPreferences.getInstance();
     String? jsonUserString = prefs.getString('email');
@@ -27,19 +31,10 @@ class HabitsModal extends ChangeNotifier {
         "${habit.finalDate.day}/${habit.finalDate.month}/${habit.finalDate.year}";
     final TextEditingController dateController =
         TextEditingController(text: date);
-    const List<String> list = <String>[
-      'noturno  ',
-      'matutino  ',
-      'vespertino',
-      'diário   '
-    ];
 
-    const List<String> listTypes = <String>[
-      'Booleano  ',
-      'Quantidade',
-      'Tempo'
-    ];
-    const List<String> list2 = <String>['a', 'b', 'c', 'd'];
+    selectedPeriod = habit.habitCategory;
+    selectedType = habit.goalKind;
+    selectedColor = habit.color;
 
     Future<void> selectDate(BuildContext context) async {
       final DateTime? pickedDate = await showDatePicker(
@@ -58,7 +53,6 @@ class HabitsModal extends ChangeNotifier {
     Color dropdownBackgroundColor = const Color.fromRGBO(245, 247, 247, 1.0);
 
     return showDialog<void>(
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -135,7 +129,12 @@ class HabitsModal extends ChangeNotifier {
                             ),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: TypeDropdown(habit: habit),
+                              child: TypeDropdown(
+                                habit: habit,
+                                onTypeSelected: (TypeLabel type) {
+                                  selectedType = type;
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -150,14 +149,24 @@ class HabitsModal extends ChangeNotifier {
                             ),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: PeriodDropdown(habit: habit),
+                              child: PeriodDropdown(
+                                habit: habit,
+                                onPeriodSelected: (PeriodLabel period) {
+                                  selectedPeriod = period;
+                                },
+                              ),
                             ),
                           ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: ColorPicker(habit: habit),
+                        child: ColorPicker(
+                          habit: habit,
+                          onColorSelected: (Color color) {
+                            selectedColor = color;
+                          },
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -221,7 +230,14 @@ class HabitsModal extends ChangeNotifier {
                               child: ElevatedButton(
                                 onPressed: () {
                                   HabitController().updateHabit(
-                                      habitId, name.text, reference.text);
+                                    habitId,
+                                    name.text,
+                                    reference.text,
+                                    selectedPeriod,
+                                    selectedType,
+                                    selectedColor,
+                                  );
+                                  Navigator.of(context).pop();
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: const RoundedRectangleBorder(
@@ -258,10 +274,12 @@ class HabitsModal extends ChangeNotifier {
   }
 }
 
+
 class PeriodDropdown extends StatefulWidget {
   final Habit habit;
+  final ValueChanged<PeriodLabel> onPeriodSelected;
 
-  const PeriodDropdown({required this.habit});
+  const PeriodDropdown({required this.habit, required this.onPeriodSelected});
 
   @override
   _PeriodDropdownState createState() => _PeriodDropdownState();
@@ -295,35 +313,38 @@ class _PeriodDropdownState extends State<PeriodDropdown> {
               .toList(),
           onChanged: (PeriodLabel? selectedPeriod) {
             setState(() {
-              if (selectedPeriod == PeriodLabel.noturno) {
-                dropdownBackgroundColor =
-                    const Color.fromRGBO(81, 185, 214, 1.0);
-                period = PeriodLabel.noturno;
-              } else if (selectedPeriod == PeriodLabel.matutino) {
-                dropdownBackgroundColor =
-                    const Color.fromRGBO(255, 71, 117, 1.0);
-                period = PeriodLabel.matutino;
-              } else if (selectedPeriod == PeriodLabel.vespertino) {
-                dropdownBackgroundColor =
-                    const Color.fromRGBO(162, 107, 216, 1.0);
-                period = PeriodLabel.vespertino;
-              } else if (selectedPeriod == PeriodLabel.diario) {
-                dropdownBackgroundColor =
-                    const Color.fromRGBO(122, 206, 120, 1.0);
-                period = PeriodLabel.diario;
-              }
+              period = selectedPeriod ?? PeriodLabel.noturno;
+              widget.onPeriodSelected(period);
+              // Update the background color
+              dropdownBackgroundColor = _getBackgroundColor(period);
             });
           },
         ),
       ),
     );
   }
+
+  Color _getBackgroundColor(PeriodLabel period) {
+    switch (period) {
+      case PeriodLabel.noturno:
+        return const Color.fromRGBO(81, 185, 214, 1.0);
+      case PeriodLabel.matutino:
+        return const Color.fromRGBO(255, 71, 117, 1.0);
+      case PeriodLabel.vespertino:
+        return const Color.fromRGBO(162, 107, 216, 1.0);
+      case PeriodLabel.diario:
+        return const Color.fromRGBO(122, 206, 120, 1.0);
+      default:
+        return const Color.fromRGBO(245, 247, 247, 1.0);
+    }
+  }
 }
 
 class TypeDropdown extends StatefulWidget {
   final Habit habit;
+  final ValueChanged<TypeLabel> onTypeSelected;
 
-  const TypeDropdown({required this.habit});
+  const TypeDropdown({required this.habit, required this.onTypeSelected});
 
   @override
   _TypeDropdownState createState() => _TypeDropdownState();
@@ -358,6 +379,7 @@ class _TypeDropdownState extends State<TypeDropdown> {
           onChanged: (TypeLabel? selectedType) {
             setState(() {
               period = selectedType ?? TypeLabel.booleano;
+              widget.onTypeSelected(period);
             });
           },
         ),
@@ -368,8 +390,9 @@ class _TypeDropdownState extends State<TypeDropdown> {
 
 class ColorPicker extends StatefulWidget {
   final Habit habit;
+  final ValueChanged<Color> onColorSelected;
 
-  const ColorPicker({required this.habit});
+  const ColorPicker({required this.habit, required this.onColorSelected});
 
   @override
   _ColorPickerState createState() => _ColorPickerState();
@@ -411,6 +434,7 @@ class _ColorPickerState extends State<ColorPicker> {
                   setState(() {
                     _selectedIndex = index;
                     selectedColor = _colors[index];
+                    widget.onColorSelected(selectedColor);
                   });
                 },
                 child: Stack(
@@ -440,4 +464,3 @@ class _ColorPickerState extends State<ColorPicker> {
     );
   }
 }
-

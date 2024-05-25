@@ -60,13 +60,13 @@ class Habit {
 
   static Color _parseColor(String color) {
     switch (color) {
-      case 'Azul':
+      case '#ff51b9d6':
         return const Color.fromRGBO(81, 185, 214, 1.0);
-      case 'Rosa':
+      case '#ffff4775':
         return const Color.fromRGBO(255, 71, 117, 1.0);
-      case 'Roxo':
+      case '#ffa26bd8':
         return const Color.fromRGBO(162, 107, 216, 1.0);
-      case 'Verde':
+      case '#ff7ace78':
         return const Color.fromRGBO(122, 206, 120, 1.0);
       default:
         throw FormatException('Invalid color: $color');
@@ -75,13 +75,13 @@ class Habit {
 
   static PeriodLabel _parsePeriodLabel(String label) {
     switch (label) {
-      case 'EVENING':
+      case 'noturno':
         return PeriodLabel.noturno;
-      case 'MORNING':
+      case 'matutino':
         return PeriodLabel.matutino;
-      case 'AFTERNOON':
+      case 'vespertino':
         return PeriodLabel.vespertino;
-      case 'EVERYDAY':
+      case 'diario':
         return PeriodLabel.diario;
       default:
         throw FormatException('Invalid period label: $label');
@@ -90,11 +90,11 @@ class Habit {
 
   static TypeLabel _parseTypeLabel(String label) {
     switch (label) {
-      case 'BOOLEAN':
+      case 'booleano':
         return TypeLabel.booleano;
-      case 'QUANTITY':
+      case 'quantidade':
         return TypeLabel.quantidade;
-      case 'TIME':
+      case 'tempo':
         return TypeLabel.tempo;
       default:
         throw FormatException('Invalid type label: $label');

@@ -62,11 +62,15 @@ class HabitController extends ChangeNotifier {
     return Habit.fromJson(responseJson);
   }
 
-  Future<void> updateHabit(int habitId, String habitName, String reference) async {
+  Future<void> updateHabit(int habitId, String habitName, String reference,
+      PeriodLabel period, TypeLabel typeLabel, Color color) async {
     Map<String, dynamic> habit = {
       "id": habitId,
       "name": habitName,
-      "reference": reference
+      "reference": reference,
+      "habitCategory": period.toString().split('.').last,
+      "goalKind": typeLabel.toString().split('.').last,
+      "color": '#${color.value.toRadixString(16).padLeft(8, '0')}'
     };
 
     String jsonHabit = jsonEncode(habit);
@@ -75,8 +79,7 @@ class HabitController extends ChangeNotifier {
 
     var headers = {'Content-Type': 'application/json'};
 
-    var response =
-        await http.patch(Uri.parse(url), headers: headers, body: jsonHabit);
+    var response = await http.patch(Uri.parse(url), headers: headers, body: jsonHabit);
 
     if (response.statusCode == 200) {
       debugPrint('Hábito editado com sucesso!');
