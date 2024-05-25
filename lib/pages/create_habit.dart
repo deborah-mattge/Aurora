@@ -25,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final controller = TextEditingController();
 
   final dropValue = ValueNotifier('');
-  final dropOptions = ['Sim/Não', 'Quantidade', 'Tempo'];
+  final dropOptions = ['Sim/Não', 'Quantidade'];
 
   @override
   void initState() {
@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // INPUT NOME
                     const Row(
                       children: [
                         Text(
@@ -88,12 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ],
                     ),
+                    // ESCOLHA O TEXTINHO
                     Container(
-                      height: 35, // Ajuste para testar diferentes alturas.
+                      height: 35,
                       child: TextField(
                         decoration: getHabitInputDecorations(
                           sendText: 'Ex: Beber água',
-                          vertical: 8, // Reduzido para o mínimo possível.
+                          vertical: 8,
                           horizontal: 15,
                           width: 0,
                         ),
@@ -161,6 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       color: Color.fromARGB(255, 79, 196, 248),
                                       size: 25,
                                     ),
+                                    // SELECT TIPO
                                     hint: const Text('Tipo'),
                                     value: (value.isEmpty) ? null : value,
                                     onChanged: (choice) =>
@@ -218,6 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     const Positioned(
                                       left: 0,
                                       bottom: 0,
+                                      // ESCOLHA UMA TAG
                                       child: Text(
                                         "Escolha uma tag",
                                         style: TextStyle(
@@ -261,6 +265,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               EdgeInsets.zero),
                                         ),
                                         child: const Icon(
+                                          // SETA AZUL 1º
                                           Icons.keyboard_arrow_left,
                                           color:
                                               Color.fromARGB(255, 79, 196, 248),
@@ -276,6 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         height: 25,
                                         decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
+                                          // BOLA COLORIDA
                                           color:
                                               Color.fromRGBO(162, 107, 216, 1),
                                         ),
@@ -290,69 +296,111 @@ class _MyHomePageState extends State<MyHomePage> {
 
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
                         children: [
-                          ElevatedButton(
-                            style: getHabitButtonDecorations(),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Início",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color.fromRGBO(74, 74, 73, 1))),
-                                SizedBox(width: 20),
-                                Icon(Icons.calendar_today_rounded,
-                                    color: Color.fromRGBO(255, 71, 117, 1),
-                                    size: 18),
-                              ],
-                            ),
-                            onPressed: () async {
-                              DateTime? newInitialDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: initialDate,
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(2100));
-                              if (newInitialDate == null) return;
-                              setState(() => initialDate = newInitialDate);
-                            },
+                          const Row(
+                            children: [
+                              Text(
+                                '*',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(255, 71, 117, 1),
+                                ),
+                              ),
+                              SizedBox(width: 163),
+                              Text(
+                                '*',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(255, 71, 117, 1),
+                                ),
+                              ),
+                            ],
                           ),
-                          ElevatedButton(
-                            style: getHabitButtonDecorations(),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Fim",
-                                    style: TextStyle(
+
+                          // Botões de calendário
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                style: getHabitButtonDecorations(),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Início",
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
-                                        color: Color.fromRGBO(74, 74, 73, 1))),
-                                SizedBox(width: 20),
-                                Icon(Icons.calendar_today_rounded,
-                                    color: Color.fromRGBO(255, 71, 117, 1),
-                                    size: 18),
-                              ],
-                            ),
-                            onPressed: () async {
-                              DateTime? newFinishDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: finishDate,
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(2100));
-                              if (newFinishDate == null) return;
-                              setState(() => finishDate = newFinishDate);
-                            },
+                                        color: Color.fromRGBO(74, 74, 73, 1),
+                                      ),
+                                    ),
+                                    SizedBox(width: 20),
+                                    Icon(
+                                      Icons.calendar_today_rounded,
+                                      color: Color.fromRGBO(255, 71, 117, 1),
+                                      size: 18,
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () async {
+                                  DateTime? newInitialDate =
+                                      await showDatePicker(
+                                    context: context,
+                                    initialDate: initialDate,
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(2100),
+                                  );
+                                  if (newInitialDate == null) return;
+                                  setState(() => initialDate = newInitialDate);
+                                },
+                              ),
+                              ElevatedButton(
+                                style: getHabitButtonDecorations(),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Fim",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color.fromRGBO(74, 74, 73, 1),
+                                      ),
+                                    ),
+                                    SizedBox(width: 20),
+                                    Icon(
+                                      Icons.calendar_today_rounded,
+                                      color: Color.fromRGBO(255, 71, 117, 1),
+                                      size: 18,
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () async {
+                                  DateTime? newFinishDate =
+                                      await showDatePicker(
+                                    context: context,
+                                    initialDate: finishDate,
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(2100),
+                                  );
+                                  if (newFinishDate == null) return;
+                                  setState(() => finishDate = newFinishDate);
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    //AQUI
+
                     const Padding(
                       padding: EdgeInsets.only(top: 30.0),
                       child: Row(
                         children: [
+                          // INPUT SELECIONE
                           Text(
                             'Selecione',
                             style: TextStyle(
@@ -361,13 +409,203 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Color.fromRGBO(74, 74, 73, 1),
                             ),
                           ),
-                          SizedBox(width: 1, height: 2),
+                          SizedBox(width: 2, height: 2),
                           Text(
                             '*',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w400,
                               color: Color.fromRGBO(255, 71, 117, 1),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                         Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 30),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(60, 20)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromRGBO(81, 185, 214, 1)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        6), 
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'matutino',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 24),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(162, 107, 216, 100),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 3, horizontal: 40),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text(
+                                'vespertino',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(81, 185, 214, 100),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 48),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text(
+                                'noturno',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(122, 206, 120, 100),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 3, horizontal: 56),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text(
+                                'diário',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 30),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(30, 15)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromRGBO(255, 71, 117, 1)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        6), 
+                                  ),
+                                ),
+                              ),
+
+                              // style: ElevatedButton.styleFrom(
+                              //   backgroundColor:
+                              //       const Color.fromRGBO(255, 71, 117, 1),
+                              //   padding: const EdgeInsets.symmetric(
+                              //       vertical: 3, horizontal: 30),
+                              //   shape: RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.circular(8),
+                              //   ),
+                              // ),
+                              child: const Text(
+                                'cancelar',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                           Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 30),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(30, 20)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromRGBO(81, 185, 214, 1)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        6), 
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'salvar',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ],
