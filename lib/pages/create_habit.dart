@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
-                padding: EdgeInsets.only(top: 30.0),
+                padding: EdgeInsets.only(top: 20.0),
                 child: Center(
                   child: Text(
                     'Novo Hábito',
@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(top: 30.0, left: 25.0, right: 25.0),
+                    const EdgeInsets.only(top: 20.0, left: 25.0, right: 25.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     // ESCOLHA O TEXTINHO
                     Container(
-                      height: 35,
+                      height: 40,
                       child: TextField(
                         decoration: getHabitInputDecorations(
                           sendText: 'Ex: Beber água',
@@ -129,59 +129,67 @@ class _MyHomePageState extends State<MyHomePage> {
                         Expanded(
                           child: Row(
                             children: [
-                              const SizedBox(width: 0),
-                              Expanded(
-                                  child: ValueListenableBuilder<String>(
-                                valueListenable: dropValue,
-                                builder:
-                                    (BuildContext context, String value, _) {
-                                  return DropdownButtonFormField<String>(
-                                    decoration: InputDecoration(
-                                      hintStyle: const TextStyle(
-                                          fontSize: 15, color: Colors.black38),
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                        vertical: 10,
-                                        horizontal: 10,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: const BorderSide(
-                                          color: Colors.black12,
-                                          width: 1,
+                              SizedBox(
+                                width: 130,
+                                height: 40, 
+                                child: ValueListenableBuilder<String>(
+                                  valueListenable: dropValue,
+                                  builder:
+                                      (BuildContext context, String value, _) {
+                                    return DropdownButtonFormField<String>(
+                                      decoration: InputDecoration(
+                                        hintStyle: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black38,
                                         ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          vertical: 10,
+                                          horizontal: 10,
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          borderSide: const BorderSide(
+                                            color: Color.fromARGB(
+                                                31, 136, 136, 136),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            255, 252, 250, 250),
                                       ),
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          255, 252, 250, 250),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color: Color.fromARGB(255, 79, 196, 248),
-                                      size: 25,
-                                    ),
-                                    // SELECT TIPO
-                                    hint: const Text('Tipo'),
-                                    value: (value.isEmpty) ? null : value,
-                                    onChanged: (choice) =>
-                                        dropValue.value = choice.toString(),
-                                    items: dropOptions
-                                        .map((op) => DropdownMenuItem(
-                                              value: op,
-                                              child: Text(
-                                                op,
-                                                style: const TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        88, 88, 88, 1)),
-                                              ),
-                                            ))
-                                        .toList(),
-                                  );
-                                },
-                              )),
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color:
+                                            Color.fromARGB(255, 79, 196, 248),
+                                        size: 25,
+                                      ),
+                                      hint: const Text('Tipo'),
+                                      value: (value.isEmpty) ? null : value,
+                                      onChanged: (choice) =>
+                                          dropValue.value = choice.toString(),
+                                      items: dropOptions.map((op) {
+                                        return DropdownMenuItem(
+                                          value: op,
+                                          child: Text(
+                                            op,
+                                            style: const TextStyle(
+                                              color:
+                                                  Color.fromRGBO(88, 88, 88, 1),
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    );
+                                  },
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -193,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Expanded(
                                 // INPUT 'EX: LITROS'
                                 child: Container(
-                                  height: 35,
+                                  height: 40,
                                   child: TextField(
                                     decoration: getHabitInputDecorations(
                                       sendText: 'Ex: Litros',
@@ -210,7 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -295,7 +303,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: Column(
                         children: [
                           const Row(
@@ -397,7 +405,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
 
                     const Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                      padding: EdgeInsets.only(top: 20.0),
                       child: Row(
                         children: [
                           // INPUT SELECIONE
@@ -421,66 +429,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                         Container(
-                            alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 30),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                minimumSize: MaterialStateProperty.all(
-                                    const Size(60, 20)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromRGBO(81, 185, 214, 1)),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        6), 
-                                  ),
-                                ),
-                              ),
-                              child: const Text(
-                                'matutino',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 24),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromRGBO(162, 107, 216, 100),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 3, horizontal: 40),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'vespertino',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                   
+                   
                     Padding(
                       padding: const EdgeInsets.only(top: 0),
                       child: Row(
@@ -488,88 +438,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 10),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromRGBO(81, 185, 214, 100),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 48),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'noturno',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 10),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromRGBO(122, 206, 120, 100),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 3, horizontal: 56),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'diário',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 30),
+                            margin: const EdgeInsets.only(top: 20),
                             child: ElevatedButton(
                               onPressed: () {},
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
                                     const Size(30, 15)),
+                                fixedSize: MaterialStateProperty.all(
+                                    const Size(110, 25)),
                                 backgroundColor: MaterialStateProperty.all(
                                     const Color.fromRGBO(255, 71, 117, 1)),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        6), 
+                                    borderRadius: BorderRadius.circular(6),
                                   ),
                                 ),
                               ),
-
-                              // style: ElevatedButton.styleFrom(
-                              //   backgroundColor:
-                              //       const Color.fromRGBO(255, 71, 117, 1),
-                              //   padding: const EdgeInsets.symmetric(
-                              //       vertical: 3, horizontal: 30),
-                              //   shape: RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.circular(8),
-                              //   ),
-                              // ),
                               child: const Text(
                                 'cancelar',
                                 style: TextStyle(
@@ -580,21 +465,22 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                           ),
-                           Container(
+                          Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 30),
+                            margin: const EdgeInsets.only(top: 20),
                             child: ElevatedButton(
                               onPressed: () {},
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
                                     const Size(30, 20)),
+                                fixedSize: MaterialStateProperty.all(
+                                    const Size(110, 25)),
                                 backgroundColor: MaterialStateProperty.all(
                                     const Color.fromRGBO(81, 185, 214, 1)),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        6), 
+                                    borderRadius: BorderRadius.circular(6),
                                   ),
                                 ),
                               ),

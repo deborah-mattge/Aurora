@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 ButtonStyle getHabitButtonDecorations() {
   return ButtonStyle(
     padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
-      vertical: 10, horizontal: 32
+      vertical: 10, horizontal: 1
     )),
+    fixedSize: const MaterialStatePropertyAll(
+      Size(110, 15)
+    ),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
