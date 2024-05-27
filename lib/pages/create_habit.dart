@@ -429,8 +429,139 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                   
-                   
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 20),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(60, 20)),
+                                fixedSize: MaterialStateProperty.all(
+                                    const Size(140, 25)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(246, 255, 123, 156)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'matutino',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 20),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(60, 20)),
+                                fixedSize: MaterialStateProperty.all(
+                                    const Size(140, 25)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(122, 206, 120, 235)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'vespertino',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(60, 20)),
+                                fixedSize: MaterialStateProperty.all(
+                                    const Size(140, 25)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(232, 129, 199, 235)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'noturno',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(60, 20)),
+                                fixedSize: MaterialStateProperty.all(
+                                    const Size(140, 25)),
+                                backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromARGB(161, 149, 243, 191),
+                                ),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'diário',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 0),
                       child: Row(
