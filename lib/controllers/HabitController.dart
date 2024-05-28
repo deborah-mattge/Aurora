@@ -63,14 +63,15 @@ class HabitController extends ChangeNotifier {
   }
 
   Future<void> updateHabit(int habitId, String habitName, String reference,
-      PeriodLabel period, TypeLabel typeLabel, Color color) async {
+      PeriodLabel period, TypeLabel typeLabel, Color color, String parse) async {
     Map<String, dynamic> habit = {
       "id": habitId,
       "name": habitName,
       "reference": reference,
       "habitCategory": period.toString().split('.').last,
       "goalKind": typeLabel.toString().split('.').last,
-      "color": '#${color.value.toRadixString(16).padLeft(8, '0')}'
+      "color": '#${color.value.toRadixString(16).padLeft(8, '0')}',
+      "finalDate": parse
     };
 
     String jsonHabit = jsonEncode(habit);
