@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:aurora/controllers/DailyGoalController.dart';
 import 'package:aurora/controllers/HabitController.dart';
+import 'package:aurora/modals/daily_goal_modal.dart';
 import 'package:aurora/modals/habits_modal.dart';
 import 'package:aurora/modals/update_user_modal.dart';
+import 'package:aurora/models/DailyGoal.dart';
 import 'package:aurora/models/Habit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -49,7 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: BotaoLista(userId: 1),
           ),
-          // Expanded(child: child)
+          Expanded(
+            child: DailyLista(habitId: 4)
+          )
         ],
       ),
     );
@@ -90,39 +94,40 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-//  class DailyGoal extends StatelessWidget {
-//   final int habitId;
+class DailyLista extends StatelessWidget {
+  final int habitId;
 
-//   const DailyGoal({required this.habitId});
+  DailyLista({required this.habitId});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder<List<DailyGoal>>(
-//       future: DailyGoalController().getAll(habitId),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return const Center(child: CircularProgressIndicator());
-//         } else if (snapshot.hasError) {
-//           return Center(child: Text('Error: ${snapshot.error}'));
-//         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-//           return const Center(child: Text('No daily goals found.'));
-//         } else {
-//           final dailies = snapshot.data!;
-//           return ListView.builder(
-//             itemCount: dailies.length,
-//             itemBuilder: (context, index) {
-//               final daily = dailies[index];
-//               return OutlinedButton(
-//                 onPressed: () => HabitsModal().firstdialogBuilder(context, daily.id),
-//                 child: Text('Open daily'),
-//               );
-//             },
-//           );
-//         }
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<DailyGoal>>(
+      future: DailyGoalController().getAll(habitId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No dailies found.'));
+        } else {
+          final dailies = snapshot.data!;
+          return ListView.builder(
+            itemCount: dailies.length,
+            itemBuilder: (context, index) {
+              final daily = dailies[index];
+              return OutlinedButton(
+                onPressed: () => DailyGoalModal().firstdialogBuilder(context, daily.id, habitId),
+                child: Text('Open Daily: ${daily.id}'),
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+}
+
 
 
 
