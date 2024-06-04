@@ -1,67 +1,117 @@
-import 'package:aurora/models/ENUM/goal_kind.dart';
-import 'package:aurora/models/ENUM/habit_category.dart';
-import 'package:aurora/models/UserModel.dart';
+
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Habit {
-  int? id;
-  String? name;
-  User? user;
-  String? color;
-  HabitCategory? habitCategory;
-  GoalKind? goalKind;
-  DateTime? finalDate;
-  String? reference;
+  final int id;
+  final String name;
+  final PeriodLabel habitCategory;
+  final TypeLabel goalKind;
+  final Color color;
+  final String reference;
+  final DateTime finalDate;
 
-  Habit({
-    this.id,
-    this.name,
-    this.user,
-    this.habitCategory,
-    this.color,
-    this.goalKind,
-    this.finalDate,
-    this.reference,
-  });
+  const Habit(
+      {required this.id,
+      required this.name,
+      required this.color,
+      required this.habitCategory,
+      required this.goalKind,
+      required this.reference,
+      required this.finalDate});
 
-  factory Habit.fromJson(Map<String, dynamic> json) {
+  factory Habit.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      throw FormatException('JSON data is null');
+    }
+
+    final id = json['id'] as int? ?? -1;
+    final name = json['name'] as String? ?? '';
+    final colorStr = json['color'] as String? ?? '';
+    final periodLabelStr = json['habitCategory'] as String?;
+    final typeLabelStr = json['goalKind'] as String?;
+    final reference = json['reference'] as String? ?? '';
+    final finalDateStr = json['finalDate'] as String;
+    debugPrint(periodLabelStr);
+    debugPrint(typeLabelStr);
+
+    if (periodLabelStr == null || typeLabelStr == null) {
+      throw FormatException('One or more required fields are missing');
+    }
+
+    final periodLabel = _parsePeriodLabel(periodLabelStr);
+    final typeLabel = _parseTypeLabel(typeLabelStr);
+    final color = _parseColor(colorStr);
+    final finalDate = _parseLocalDateTime(finalDateStr);
+
     return Habit(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      user: User.fromJson(json['user']), // Assuming User has a fromJson method
-      color: json['color'] as String,
-      habitCategory: _parseHabitCategory(json['habitCategory'] as String),
-      goalKind: _parseGoalKind(json['goalKind'] as String),
-      finalDate: DateTime.parse(json['finalDate']
-          as String), // Assuming finalDate is in ISO 8601 format
-      reference: json['reference'] as String?,
-    );
+        id: id,
+        name: name,
+        color: color,
+        habitCategory: periodLabel,
+        goalKind: typeLabel,
+        reference: reference,
+        finalDate: finalDate);
   }
 
-  static HabitCategory _parseHabitCategory(String category) {
-    switch (category.toLowerCase()) {
-      case 'morning':
-        return HabitCategory.MORNING;
-      case 'afternoon':
-        return HabitCategory.AFTERNOON;
-      case 'evening':
-        return HabitCategory.EVENING;
-      case 'everyday':
-        return HabitCategory.EVERYDAY;
+  static DateTime _parseLocalDateTime(String localDateTimeStr) {
+    final format = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    return format.parse(localDateTimeStr);
+  }
+
+  static Color _parseColor(String color) {
+    switch (color) {
+      case '#ff51b9d6':
+        return const Color.fromRGBO(81, 185, 214, 1.0);
+      case '#ffff4775':
+        return const Color.fromRGBO(255, 71, 117, 1.0);
+      case '#ffa26bd8':
+        return const Color.fromRGBO(162, 107, 216, 1.0);
+      case '#ff7ace78':
+        return const Color.fromRGBO(122, 206, 120, 1.0);
       default:
-        throw ArgumentError('Invalid habit category: $category');
+        throw FormatException('Invalid color: $color');
     }
   }
 
-  static GoalKind _parseGoalKind(String goalKind) {
-    switch (goalKind.toLowerCase()) {
-      case 'boolean':
-        return GoalKind.BOOLEAN;
-      case 'quantity':
-        return GoalKind.QUANTITY;
-      case 'time':
-        return GoalKind.TIME;
+  static PeriodLabel _parsePeriodLabel(String label) {
+    switch (label) {
+      case 'noturno':
+        return PeriodLabel.noturno;
+      case 'matutino':
+        return PeriodLabel.matutino;
+      case 'vespertino':
+        return PeriodLabel.vespertino;
+      case 'diario':
+        return PeriodLabel.diario;
       default:
-        throw ArgumentError('Invalid goal kind: $goalKind');
+        throw FormatException('Invalid period label: $label');
     }
   }
+
+  static TypeLabel _parseTypeLabel(String label) {
+    switch (label) {
+      case 'booleano':
+        return TypeLabel.booleano;
+      case 'quantidade':
+        return TypeLabel.quantidade;
+      case 'tempo':
+        return TypeLabel.tempo;
+      default:
+        throw FormatException('Invalid type label: $label');
+    }
+  }
+}
+
+enum PeriodLabel {
+  noturno,
+  matutino,
+  vespertino,
+  diario,
+}
+
+enum TypeLabel {
+  booleano,
+  quantidade,
+  tempo,
 }

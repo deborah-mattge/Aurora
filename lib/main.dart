@@ -1,4 +1,4 @@
-import 'package:aurora/pages/home_view.dart';
+import 'package:aurora/pages/register.dart';
 import 'package:flutter/material.dart';
 
 void main() {
