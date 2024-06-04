@@ -39,143 +39,7 @@ class DailyGoalModal extends ChangeNotifier {
       boolCurrent = daily.booleanS!.currentStatus.toString();
     }
 
-    // if (daily.quantity != null) {
-    //   return showDialog<void>(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         insetPadding: const EdgeInsets.symmetric(vertical: 100),
-    //         backgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
-    //         content: SizedBox(
-    //           width: MediaQuery.of(context).size.width * 0.8,
-    //           child: Column(
-    //             mainAxisSize: MainAxisSize.min,
-    //             children: [
-    //               Padding(
-    //                 padding: const EdgeInsets.symmetric(vertical: 8),
-    //                 child: Row(
-    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                   children: [
-    //                     SizedBox(
-    //                       width: 150,
-    //                       child: Text(
-    //                         habitName,
-    //                         style: const TextStyle(
-    //                           fontWeight: FontWeight.bold,
-    //                           fontSize: 18,
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //               Padding(
-    //                 padding: const EdgeInsets.symmetric(vertical: 8),
-    //                 child: Row(
-    //                   mainAxisAlignment: MainAxisAlignment.center,
-    //                   children: [
-    //                     Expanded(
-    //                       child: ElevatedButton(
-    //                         onPressed: () {
-    //                           counter = counter - 1;
-    //                         },
-    //                         style: ElevatedButton.styleFrom(
-    //                           shape: RoundedRectangleBorder(
-    //                             borderRadius: BorderRadius.circular(4),
-    //                           ),
-    //                           padding: const EdgeInsets.symmetric(vertical: 16),
-    //                         ),
-    //                         child: const Icon(Icons.remove),
-    //                       ),
-    //                     ),
-    //                     SizedBox(
-    //                       width: 80,
-    //                       child: Text(
-    //                         "$counter / ${daily.quantity!.goal}",
-    //                         style: const TextStyle(
-    //                           fontWeight: FontWeight.bold,
-    //                           fontSize: 18,
-    //                         ),
-    //                       ),
-    //                     ),
-    //                     Expanded(
-    //                       child: ElevatedButton(
-    //                         onPressed: () {
-    //                           counter = counter + 1;
-    //                         },
-    //                         style: ElevatedButton.styleFrom(
-    //                           shape: RoundedRectangleBorder(
-    //                             borderRadius: BorderRadius.circular(4),
-    //                           ),
-    //                           padding: const EdgeInsets.symmetric(vertical: 16),
-    //                         ),
-    //                         child: const Icon(Icons.add),
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //               Text(
-    //                 goalVsCurrent2,
-    //                 style: const TextStyle(fontSize: 16),
-    //               ),
-    //               const SizedBox(height: 16),
-    //               Container(
-    //                 decoration: BoxDecoration(
-    //                   border: Border(
-    //                     top: BorderSide(color: Colors.grey.shade300),
-    //                   ),
-    //                 ),
-    //                 child: Row(
-    //                   children: [
-    //                     Expanded(
-    //                       child: ElevatedButton(
-    //                         onPressed: () {
-    //                           Navigator.of(context).pop();
-    //                         },
-    //                         style: ElevatedButton.styleFrom(
-    //                           shape: const RoundedRectangleBorder(
-    //                             borderRadius: BorderRadius.only(
-    //                               bottomLeft: Radius.circular(6),
-    //                             ),
-    //                           ),
-    //                           backgroundColor:
-    //                               const Color.fromRGBO(255, 71, 117, 1),
-    //                         ),
-    //                         child: const Text('Cancelar',
-    //                             style: TextStyle(color: Colors.white)),
-    //                       ),
-    //                     ),
-    //                     Expanded(
-    //                       child: ElevatedButton(
-    //                         onPressed: () {
-    //                           DailyGoalController()
-    //                               .updateQuantity(dailyId, counter);
-    //                           Navigator.of(context).pop();
-    //                         },
-    //                         style: ElevatedButton.styleFrom(
-    //                           shape: const RoundedRectangleBorder(
-    //                             borderRadius: BorderRadius.only(
-    //                               bottomRight: Radius.circular(6),
-    //                             ),
-    //                           ),
-    //                           backgroundColor:
-    //                               const Color.fromRGBO(81, 185, 214, 1),
-    //                         ),
-    //                         child: const Text('Salvar',
-    //                             style: TextStyle(color: Colors.white)),
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //   );
-    // } else {
+    if (daily.quantity != null) {
       return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
@@ -221,13 +85,13 @@ class DailyGoalModal extends ChangeNotifier {
                               ),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
-                            child: const Icon(Icons.close),
+                            child: const Icon(Icons.remove),
                           ),
                         ),
                         SizedBox(
                           width: 80,
                           child: Text(
-                            boolCurrent,
+                            "$counter / ${daily.quantity!.goal}",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -245,7 +109,7 @@ class DailyGoalModal extends ChangeNotifier {
                               ),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
-                            child: const Icon(Icons.check),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ],
@@ -311,6 +175,143 @@ class DailyGoalModal extends ChangeNotifier {
           );
         },
       );
+    // } else {
+    //   return showDialog<void>(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         insetPadding: const EdgeInsets.symmetric(vertical: 100),
+    //         backgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
+    //         content: SizedBox(
+    //           width: MediaQuery.of(context).size.width * 0.8,
+    //           child: Column(
+    //             mainAxisSize: MainAxisSize.min,
+    //             children: [
+    //               Padding(
+    //                 padding: const EdgeInsets.symmetric(vertical: 8),
+    //                 child: Row(
+    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                   children: [
+    //                     SizedBox(
+    //                       width: 150,
+    //                       child: Text(
+    //                         habitName,
+    //                         style: const TextStyle(
+    //                           fontWeight: FontWeight.bold,
+    //                           fontSize: 18,
+    //                         ),
+    //                       ),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //               Padding(
+    //                 padding: const EdgeInsets.symmetric(vertical: 8),
+    //                 child: Row(
+    //                   mainAxisAlignment: MainAxisAlignment.center,
+    //                   children: [
+    //                     Expanded(
+    //                       child: ElevatedButton(
+    //                         onPressed: () {
+    //                           DailyGoalController().updateBoolean(dailyId, false);
+    //                         },
+    //                         style: ElevatedButton.styleFrom(
+    //                           shape: RoundedRectangleBorder(
+    //                             borderRadius: BorderRadius.circular(4),
+    //                           ),
+    //                           padding: const EdgeInsets.symmetric(vertical: 16),
+    //                         ),
+    //                         child: const Icon(Icons.close),
+    //                       ),
+    //                     ),
+    //                     SizedBox(
+    //                       width: 80,
+    //                       child: Text(
+    //                         boolCurrent,
+    //                         style: const TextStyle(
+    //                           fontWeight: FontWeight.bold,
+    //                           fontSize: 18,
+    //                         ),
+    //                       ),
+    //                     ),
+    //                     Expanded(
+    //                       child: ElevatedButton(
+    //                         onPressed: () {
+    //                           DailyGoalController().updateBoolean(dailyId, true);
+    //                         },
+    //                         style: ElevatedButton.styleFrom(
+    //                           shape: RoundedRectangleBorder(
+    //                             borderRadius: BorderRadius.circular(4),
+    //                           ),
+    //                           padding: const EdgeInsets.symmetric(vertical: 16),
+    //                         ),
+    //                         child: const Icon(Icons.check),
+    //                       ),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //               Text(
+    //                 goalVsCurrent2,
+    //                 style: const TextStyle(fontSize: 16),
+    //               ),
+    //               const SizedBox(height: 16),
+    //               Container(
+    //                 decoration: BoxDecoration(
+    //                   border: Border(
+    //                     top: BorderSide(color: Colors.grey.shade300),
+    //                   ),
+    //                 ),
+    //                 child: Row(
+    //                   children: [
+    //                     Expanded(
+    //                       child: ElevatedButton(
+    //                         onPressed: () {
+    //                           Navigator.of(context).pop();
+    //                         },
+    //                         style: ElevatedButton.styleFrom(
+    //                           shape: const RoundedRectangleBorder(
+    //                             borderRadius: BorderRadius.only(
+    //                               bottomLeft: Radius.circular(6),
+    //                             ),
+    //                           ),
+    //                           backgroundColor:
+    //                               const Color.fromRGBO(255, 71, 117, 1),
+    //                         ),
+    //                         child: const Text('Cancelar',
+    //                             style: TextStyle(color: Colors.white)),
+    //                       ),
+    //                     ),
+    //                     Expanded(
+    //                       child: ElevatedButton(
+    //                         onPressed: () {
+    //                           DailyGoalController()
+    //                               .updateQuantity(dailyId, counter);
+    //                           Navigator.of(context).pop();
+    //                         },
+    //                         style: ElevatedButton.styleFrom(
+    //                           shape: const RoundedRectangleBorder(
+    //                             borderRadius: BorderRadius.only(
+    //                               bottomRight: Radius.circular(6),
+    //                             ),
+    //                           ),
+    //                           backgroundColor:
+    //                               const Color.fromRGBO(81, 185, 214, 1),
+    //                         ),
+    //                         child: const Text('Salvar',
+    //                             style: TextStyle(color: Colors.white)),
+    //                       ),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       );
+    //     },
+    //   );
     }
   }
+}
 

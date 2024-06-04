@@ -100,4 +100,39 @@ Future<List<DailyGoal>> getAll(num id) async {
     }
     notifyListeners();
   }
+
+  Future<void> updateBoolean(num id, bool newValue) async {
+    Map<String, dynamic> dailyGoal = {
+      "id": id,
+      "newBoolean": newValue
+    };
+
+    String jsonDaily = jsonEncode(dailyGoal);
+
+    var url = 'http://localhost:8080/dailyGoal/boolean';
+    var headers = {'Content-Type': 'application/json'};
+    var response = await http.patch(Uri.parse(url), headers: headers, body: jsonDaily);
+
+    if(response.statusCode == 200) {
+      debugPrint('DailyGoal editado!');
+    } else {
+      debugPrint('Falha ao editar dailyGoal');
+    }
+    notifyListeners();
+  }
+
+  Future<DailyGoal> getByDay(num habitId) async {
+    var url = 'http://localhost:8080/dailyGoal/day/$habitId';
+    var headers = {'Content-Type': 'application/json'};
+    var response = await http.get(Uri.parse(url), headers: headers);
+    final responseJson = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      debugPrint('GET DE HÁBITO 2 FUNCIONANDO!');
+    } else {
+      debugPrint('FALHA AO DAR GET EM HÁBITO] ${response.statusCode}');
+    }
+    
+    return DailyGoal.fromJson(responseJson);
+  }
 }
