@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: BotaoLista(userId: 1),
           ),
           Expanded(
-            child: DailyLista(habitId: 4)
+            child: DailyLista(habitId: 1)
           )
         ],
       ),
@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
 class DailyLista extends StatelessWidget {
   final int habitId;
 
-  DailyLista({required this.habitId});
+  const DailyLista({required this.habitId, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,7 @@ class DailyLista extends StatelessWidget {
             itemBuilder: (context, index) {
               final daily = dailies[index];
               return OutlinedButton(
-                onPressed: () => DailyGoalModal().firstdialogBuilder(context, daily.id, habitId),
+                onPressed: () => showDailyGoalModal(context, daily.id, habitId),
                 child: Text('Open Daily: ${daily.id}'),
               );
             },
