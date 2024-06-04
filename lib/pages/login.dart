@@ -6,16 +6,25 @@ import 'package:aurora/pages/testing.dart';
 import 'package:http/http.dart';
 
 class Login extends StatelessWidget {
+  const Login({super.key});
+
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
+    return const MaterialApp(
+      title: 'Login',
+=======
     return MaterialApp(
       title: 'User Post Example',
+>>>>>>> ac763772eac9dc4b716c1e029ba1a34cf3bfd7de
       home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -29,6 +38,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+<<<<<<< HEAD
+        title: const Text('Login page'),
+      ),
+      backgroundColor: const Color.fromRGBO(245, 245, 245, 1.0)   
+=======
         title: const Text('User Post Example'),
       ),
       backgroundColor: const Color.fromRGBO(245, 245, 245, 1.0),
@@ -206,6 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+>>>>>>> ac763772eac9dc4b716c1e029ba1a34cf3bfd7de
     );
   }
 

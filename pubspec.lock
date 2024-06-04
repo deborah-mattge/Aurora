@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      sha256: "9c695cc963bf1d04a47bd6021f68befce8970bcd61d24938e1fb0918cf5d9c42"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.1"
   characters:
     dependency: transitive
     description:
@@ -49,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  date_picker_timeline:
+    dependency: "direct main"
+    description:
+      name: date_picker_timeline
+      sha256: c05e6540fa3055c9036e6f99e758972e14be0e1010d5a6e7a1261d4a6f3292df
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.6"
   fake_async:
     dependency: transitive
     description:
@@ -86,16 +102,35 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  flutter_slidable:
+    dependency: "direct main"
+    description:
+      name: flutter_slidable
+      sha256: "673403d2eeef1f9e8483bd6d8d92aae73b1d8bd71f382bc3930f699c731bc27c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
+  graphic:
+    dependency: "direct main"
+    description:
+      name: graphic
+      sha256: "1443f5b89e802c5ae6e6ffdbc0091f3808d74557b4794595b1aa8ffcf944cced"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
+=======
   flutter_web_plugins:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
+>>>>>>> ac763772eac9dc4b716c1e029ba1a34cf3bfd7de
   http:
     dependency: "direct main"
     description:
@@ -113,7 +148,11 @@ packages:
     source: hosted
     version: "4.0.2"
   intl:
+<<<<<<< HEAD
+    dependency: transitive
+=======
     dependency: "direct main"
+>>>>>>> ac763772eac9dc4b716c1e029ba1a34cf3bfd7de
     description:
       name: intl
       sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
@@ -184,6 +223,24 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+<<<<<<< HEAD
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      sha256: bbb1934c0cbb03091af082a6389ca2080345291ef07a5fa6d6e078ba8682f977
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      sha256: e3e67b1629e6f7e8100b367d3db6ba6af4b1f0bb80f64db18ef1fbabd2fa9ccf
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+=======
   path_provider_linux:
     dependency: transitive
     description:
@@ -288,6 +345,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+>>>>>>> ac763772eac9dc4b716c1e029ba1a34cf3bfd7de
   sky_engine:
     dependency: transitive
     description: flutter
@@ -391,4 +449,8 @@ packages:
     version: "1.0.4"
 sdks:
   dart: ">=3.3.2 <4.0.0"
+<<<<<<< HEAD
+  flutter: ">=3.7.0"
+=======
   flutter: ">=3.19.0"
+>>>>>>> ac763772eac9dc4b716c1e029ba1a34cf3bfd7de
