@@ -2,7 +2,7 @@ import 'package:aurora/main.dart';
 import 'package:aurora/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:aurora/controllers/UserController.dart';
-import 'package:aurora/pages/habit_view.dart';
+import 'package:aurora/pages/testing.dart';
 import 'package:http/http.dart';
 
 class Login extends StatelessWidget {
