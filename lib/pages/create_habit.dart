@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Color _colorTag = const Color.fromRGBO(162, 107, 216, 1);
   late int numberColor = 1;
 
-  void changeColorLeft() {
+  void changeColorRight() {
     setState(() {
       if (numberColor == 1) {
         _colorTag = const Color.fromRGBO(61, 170, 243, 0.522);
@@ -53,18 +53,18 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void changeColorRight() {
+  void changeColorLeft() {
     setState(() {
       if (numberColor == 2) {
         _colorTag = const Color.fromRGBO(162, 107, 216, 1);
         numberColor = 1;
       } else if (numberColor == 4) {
-        _colorTag =  const Color.fromRGBO(255, 71, 117, 1);
+        _colorTag = const Color.fromRGBO(255, 71, 117, 1);
         numberColor = 3;
       } else if (numberColor == 3) {
-        _colorTag = const Color.fromRGBO(61, 170, 243, 0.522);
+        _colorTag = const Color.fromRGBO(61, 170, 243, 1);
         numberColor = 2;
-      } 
+      }
     });
   }
 
