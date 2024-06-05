@@ -69,7 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
 
     List<Color> habitColors = habits.map((habit) {
-      String colorCode = habit.color ?? 'FFFFFF'; // Default to white if color is null
+      String colorCode =
+          habit.color ?? 'FFFFFF'; // Default to white if color is null
       if (colorCode.length == 6) {
         colorCode = '0xFF' + colorCode;
       }
@@ -80,8 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }).toList();
 
-    Color singleColor = habitColors.isNotEmpty ? habitColors.first : Colors.grey;
-    List<Color> colorValues = habitColors.length > 1 ? habitColors : [singleColor, singleColor];
+    Color singleColor =
+        habitColors.isNotEmpty ? habitColors.first : Colors.grey;
+    List<Color> colorValues =
+        habitColors.length > 1 ? habitColors : [singleColor, singleColor];
 
     return Scaffold(
       appBar: AppBar(
@@ -94,7 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.person, color: Color.fromRGBO(81, 185, 214, 1)),
+            icon: const Icon(Icons.person,
+                color: Color.fromRGBO(81, 185, 214, 1)),
           ),
         ],
       ),
@@ -123,7 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
               locale: "pt_BR",
               selectionColor: const Color.fromRGBO(81, 185, 214, 1),
               selectedTextColor: Colors.white,
-              dateTextStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              dateTextStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               dayTextStyle: const TextStyle(fontSize: 10),
               monthTextStyle: const TextStyle(fontSize: 10),
               onDateChange: (date) {
@@ -209,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               IntervalMark(
                                 position: Varset('percent') / Varset('name'),
                                 color: ColorEncode(
-                                  variable: 'color', values: colorValues),
+                                    variable: 'color', values: colorValues),
                                 modifiers: [StackModifier()],
                               ),
                             ],
@@ -231,16 +236,18 @@ class _MyHomePageState extends State<MyHomePage> {
             child: CarouselSlider(
               items: PeriodLabel.values.map((e) {
                 int index = PeriodLabel.values.indexOf(e);
-                Color color = Color(int.parse(
-                  "0xFF${itemColors[index % itemColors.length]}"));
+                Color color = Color(
+                    int.parse("0xFF${itemColors[index % itemColors.length]}"));
                 return Column(
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.symmetric(horizontal: 5),
-                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 2),
+                      padding:
+                          const EdgeInsets.only(left: 10, right: 10, bottom: 2),
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
                         color: color,
                       ),
                       child: Center(
@@ -258,7 +265,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       margin: const EdgeInsets.only(top: 20, right: 5, left: 5),
                       child: Slidable(
-                        startActionPane: ActionPane(motion: BehindMotion(), children: [
+                        startActionPane:
+                            ActionPane(motion: BehindMotion(), children: [
                           SlidableAction(
                             onPressed: ((context) {}),
                             backgroundColor: Colors.pink,
@@ -271,7 +279,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           SlidableAction(
                             onPressed: ((context) {}),
-                            backgroundColor: const Color.fromRGBO(81, 185, 214, 1),
+                            backgroundColor:
+                                const Color.fromRGBO(81, 185, 214, 1),
                             foregroundColor: Colors.white,
                             icon: Icons.check,
                           ),
@@ -281,7 +290,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 70,
                           margin: const EdgeInsets.only(right: 2, left: 2),
                           decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
                             color: Colors.white,
                             boxShadow: [
                               BoxShadow(
@@ -305,10 +315,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.only(left: 15, right: 10),
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 10),
                                 child: Text(
                                   e.toString().split('.').last.toLowerCase(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],
@@ -333,14 +345,14 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class HabitList extends StatelessWidget {
-   final List<Habit> habits;
+  final List<Habit> habits;
 
   HabitList({required this.habits});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      shrinkWrap: true,  
+      shrinkWrap: true,
       itemCount: habits.length,
       itemBuilder: (context, index) {
         return ListTile(
