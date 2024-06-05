@@ -11,7 +11,7 @@ class DailyGoalController extends ChangeNotifier {
     };
 
     String jsonHabit = jsonEncode(quantity);
-    var url = 'http://localhost:8080/dailyGoal';
+    var url = 'http://10.0.2.2:8090/dailyGoal';
     var headers = {'Content-Type': 'application/json'};
     var response =
         await http.post(Uri.parse(url), headers: headers, body: jsonHabit);
@@ -25,7 +25,7 @@ class DailyGoalController extends ChangeNotifier {
   }
 
 Future<List<DailyGoal>> getAll(num id) async {
-  var url = 'http://localhost:8080/dailyGoal/$id';
+  var url = 'http://10.0.2.2:8090/dailyGoal/$id';
   var headers = {'Content-Type': 'application/json'};
   var response = await http.get(Uri.parse(url), headers: headers);
 
@@ -54,7 +54,7 @@ Future<List<DailyGoal>> getAll(num id) async {
 
     String jsonDaily = jsonEncode(dailyGoal);
 
-    var url = 'http://localhost:8080/dailyGoal/update-goal';
+    var url = 'http://10.0.2.2:8090/dailyGoal/update-goal';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.patch(Uri.parse(url), headers: headers, body: jsonDaily);
 
@@ -67,7 +67,7 @@ Future<List<DailyGoal>> getAll(num id) async {
   }
 
     Future<DailyGoal> getOneDaily(num dailyId) async {
-    var url = 'http://localhost:8080/dailyGoal/daily/$dailyId';
+    var url = 'http://10.0.2.2:8090/dailyGoal/daily/$dailyId';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
     final responseJson = jsonDecode(response.body);
@@ -89,7 +89,7 @@ Future<List<DailyGoal>> getAll(num id) async {
 
     String jsonDaily = jsonEncode(dailyGoal);
 
-    var url = 'http://localhost:8080/dailyGoal/quantity';
+    var url = 'http://10.0.2.2:8090/dailyGoal/quantity';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.patch(Uri.parse(url), headers: headers, body: jsonDaily);
 
@@ -109,7 +109,7 @@ Future<List<DailyGoal>> getAll(num id) async {
 
     String jsonDaily = jsonEncode(dailyGoal);
 
-    var url = 'http://localhost:8080/dailyGoal/boolean';
+    var url = 'http://10.0.2.2:8090/dailyGoal/boolean';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.patch(Uri.parse(url), headers: headers, body: jsonDaily);
 
@@ -122,7 +122,7 @@ Future<List<DailyGoal>> getAll(num id) async {
   }
 
   Future<DailyGoal> getByDay(num habitId) async {
-    var url = 'http://localhost:8080/dailyGoal/day/$habitId';
+    var url = 'http://10.0.2.2:8090/dailyGoal/day/$habitId';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
     final responseJson = jsonDecode(response.body);

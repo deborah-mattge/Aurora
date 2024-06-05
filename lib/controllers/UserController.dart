@@ -22,7 +22,7 @@ class UserController extends ChangeNotifier {
 
     String jsonUser = jsonEncode(user);
 
-    var url = 'http://localhost:8080/user';
+    var url = 'http://10.0.2.2:8080/user';
 
     var headers = {'Content-Type': 'application/json'};
 
@@ -39,7 +39,7 @@ class UserController extends ChangeNotifier {
   }
 
   Future<User> _getUser() async {
-    var url = 'http://localhost:8080/user/1';
+    var url = 'http://10.0.2.2:8080/user/1';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
     final responseJson = jsonDecode(response.body) as Map<String, dynamic>;
@@ -60,7 +60,7 @@ class UserController extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jsonUser = jsonEncode(user);
 
-    var url = 'http://localhost:8080/user/login';
+    var url = 'http://10.0.2.2:8080/user/login';
 
     var headers = {'Content-Type': 'application/json'};
 
@@ -77,7 +77,7 @@ class UserController extends ChangeNotifier {
   }
 
   Future<User> getUserByEmail(String email) async {
-    var url = 'http://localhost:8080/user/teste/$email';
+    var url = 'http://10.0.2.2:8080/user/teste/$email';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
 
@@ -108,7 +108,7 @@ class UserController extends ChangeNotifier {
     
     String jsonUser = jsonEncode(user);
 
-    var url = 'http://localhost:8080/user';
+    var url = 'http://10.0.2.2:8080/user';
     var headers = {'Content-Type': 'application/json'};
     var response =
         await http.patch(Uri.parse(url), headers: headers, body: jsonUser);
