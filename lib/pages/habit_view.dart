@@ -8,13 +8,16 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:graphic/graphic.dart';
 
+void main() {
+  runApp(MyApp2());
+}
+
 class MyApp2 extends StatelessWidget {
-  MyApp2({super.key});
   final HabitController _habitController = new HabitController();
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'User Post Example',
       home: MyHomePage(),
     );
@@ -22,23 +25,28 @@ class MyApp2 extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   late List<Habit> habits = [];
+
   @override
   void initState() {
     super.initState();
     _fetchHabits();
+    debugPrint("rhije");
   }
 
   Future<void> _fetchHabits() async {
-    habits = await HabitController().getHabit();
+    debugPrint("123");
+
+    habits = await HabitController().getHabits(1);
+    debugPrint("1234");
+
     setState(() {});
+    debugPrint("12345");
   }
 
   DateTime _selectedValue = DateTime.now();
@@ -329,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         bottomLeft:
                                             Radius.elliptical(10.0, 10.0)),
                                   )),
-                                  Text("nome do habito")
+                              Text("nome do habito")
                             ],
                           ),
                         ),
