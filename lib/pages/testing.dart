@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text('Open User'),
               ),
               OutlinedButton(
-                onPressed: () => HabitController().getHabits(1),
+                onPressed: () => HabitController().getHabits(2),
                 child: const Text('Open Habits'),
               ),
             ],
@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: BotaoLista(userId: 1),
           ),
           Expanded(
-            child: DailyLista(habitId: 1)
+            child: DailyLista(habitId: 2)
           )
         ],
       ),
