@@ -11,7 +11,7 @@ class DailyGoalController extends ChangeNotifier {
     };
 
     String jsonHabit = jsonEncode(quantity);
-    var url = 'http://10.0.2.2:8090/dailyGoal';
+    var url = 'http://10.0.2.2:8080/dailyGoal';
     var headers = {'Content-Type': 'application/json'};
     var response =
         await http.post(Uri.parse(url), headers: headers, body: jsonHabit);

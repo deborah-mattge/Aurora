@@ -48,6 +48,7 @@ class HabitController extends ChangeNotifier {
   }
 
   Future<Habit> getOneHabit(num habitId, num userId) async {
+
     var url = 'http://10.0.2.2:8080/habit/$habitId/user/$userId';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
