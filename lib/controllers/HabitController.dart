@@ -54,12 +54,40 @@ class HabitController extends ChangeNotifier {
     final responseJson = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      debugPrint('GET DE HÁBITO FUNCIONANDO!');
+      debugPrint('GET DE HÁBITO 2 FUNCIONANDO!');
     } else {
       debugPrint('FALHA AO DAR GET EM HÁBITO] ${response.statusCode}');
     }
     
     return Habit.fromJson(responseJson);
   }
-}
 
+  Future<void> updateHabit(int habitId, String habitName, String reference,
+      PeriodLabel period, TypeLabel typeLabel, Color color, String parse) async {
+    Map<String, dynamic> habit = {
+      "id": habitId,
+      "name": habitName,
+      "reference": reference,
+      "habitCategory": period.toString().split('.').last,
+      "goalKind": typeLabel.toString().split('.').last,
+      "color": '#${color.value.toRadixString(16).padLeft(8, '0')}',
+      "finalDate": parse
+    };
+
+    String jsonHabit = jsonEncode(habit);
+
+    var url = 'http://localhost:8080/habit/update';
+
+    var headers = {'Content-Type': 'application/json'};
+
+    var response = await http.patch(Uri.parse(url), headers: headers, body: jsonHabit);
+
+    if (response.statusCode == 200) {
+      debugPrint('Hábito editado com sucesso!');
+    } else {
+      debugPrint('Falha ao editar hábito');
+    }
+    notifyListeners();
+  }
+
+}

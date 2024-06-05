@@ -280,6 +280,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  show_confirm_modal:
+    dependency: "direct main"
+    description:
+      name: show_confirm_modal
+      sha256: "98ddd63c46fc3d9ef9d6485bd783455cebc783db9c3585514d4ac31420fdf87c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   sky_engine:
     dependency: transitive
     description: flutter
