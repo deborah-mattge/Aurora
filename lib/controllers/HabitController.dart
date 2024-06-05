@@ -90,4 +90,9 @@ class HabitController extends ChangeNotifier {
     notifyListeners();
   }
 
+    Future<List<Habit>> getHabitsByCategory(int userId, PeriodLabel category) async {
+    List<Habit> allHabits = await getHabits(userId);
+    return allHabits.where((habit) => habit.habitCategory == category).toList();
+  }
+
 }

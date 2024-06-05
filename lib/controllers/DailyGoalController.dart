@@ -104,7 +104,7 @@ Future<List<DailyGoal>> getAll(num id) async {
   Future<void> updateBoolean(num id, bool newValue) async {
     Map<String, dynamic> dailyGoal = {
       "id": id,
-      "newBoolean": newValue
+      "newBool": newValue
     };
 
     String jsonDaily = jsonEncode(dailyGoal);
