@@ -229,7 +229,7 @@ class DailyGoalModalBoolean extends StatefulWidget {
 class _DailyGoalModalBooleanState extends State<DailyGoalModalBoolean> {
   String? habitName;
   String? goalVsCurrent2;
-  int? goal;
+  String? goal;
   String? value;
 
   @override
@@ -252,10 +252,10 @@ class _DailyGoalModalBooleanState extends State<DailyGoalModalBoolean> {
     DailyGoal daily = await DailyGoalController().getOneDaily(widget.dailyId);
     if (daily.booleanS != null) {
       debugPrint('aquiiiiiii');
-      if (daily.booleanS!.currentStatus == true) {
-        value = 'sim';
+      if (daily.booleanS!.goal == true) {
+        goal = 'sim';
       } else {
-        value = 'não';
+        goal = 'não';
       }
     }
 
