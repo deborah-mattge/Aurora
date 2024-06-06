@@ -1,11 +1,12 @@
 import 'package:aurora/controllers/HabitController.dart';
 import 'package:aurora/models/Habit.dart';
+import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:graphic/graphic.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(MyApp3());
@@ -69,8 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
 
     List<Color> habitColors = habits.map((habit) {
-      String colorCode =
-          habit.color ?? 'FFFFFF'; // Default to white if color is null
+      String colorCode = '000000' ?? 'FFFFFF'; // Default to white if color is null
       if (colorCode.length == 6) {
         colorCode = '0xFF' + colorCode;
       }
@@ -81,10 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }).toList();
 
-    Color singleColor =
-        habitColors.isNotEmpty ? habitColors.first : Colors.grey;
-    List<Color> colorValues =
-        habitColors.length > 1 ? habitColors : [singleColor, singleColor];
+    Color singleColor = habitColors.isNotEmpty ? habitColors.first : Colors.grey;
+    List<Color> colorValues = habitColors.length > 1 ? habitColors : [singleColor, singleColor];
 
     return Scaffold(
       appBar: AppBar(
@@ -97,8 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.person,
-                color: Color.fromRGBO(81, 185, 214, 1)),
+            icon: const Icon(Icons.person, color: Color.fromRGBO(81, 185, 214, 1)),
           ),
         ],
       ),
@@ -127,8 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
               locale: "pt_BR",
               selectionColor: const Color.fromRGBO(81, 185, 214, 1),
               selectedTextColor: Colors.white,
-              dateTextStyle:
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              dateTextStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               dayTextStyle: const TextStyle(fontSize: 10),
               monthTextStyle: const TextStyle(fontSize: 10),
               onDateChange: (date) {
@@ -213,8 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             marks: [
                               IntervalMark(
                                 position: Varset('percent') / Varset('name'),
-                                color: ColorEncode(
-                                    variable: 'color', values: colorValues),
+                                color: ColorEncode(variable: 'color', values: colorValues),
                                 modifiers: [StackModifier()],
                               ),
                             ],
@@ -232,22 +227,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Container(
+          Expanded(
             child: CarouselSlider(
               items: PeriodLabel.values.map((e) {
                 int index = PeriodLabel.values.indexOf(e);
-                Color color = Color(
-                    int.parse("0xFF${itemColors[index % itemColors.length]}"));
+                Color color = Color(int.parse("0xFF${itemColors[index % itemColors.length]}"));
+                List<Habit> periodHabits = habits.where((habit) => habit.habitCategory == e).toList();
                 return Column(
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.symmetric(horizontal: 5),
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 10, bottom: 2),
+                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 2),
                       decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
                         color: color,
                       ),
                       child: Center(
@@ -261,80 +254,53 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 0),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, right: 5, left: 5),
-                      child: Slidable(
-                        startActionPane:
-                            ActionPane(motion: BehindMotion(), children: [
-                          SlidableAction(
-                            onPressed: ((context) {}),
-                            backgroundColor: Colors.pink,
-                            icon: Icons.add,
-                            padding: const EdgeInsets.all(0),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.elliptical(10.0, 10.0),
-                              bottomLeft: Radius.elliptical(10.0, 10.0),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: periodHabits.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(15, 0),
+                                ),
+                              ],
                             ),
-                          ),
-                          SlidableAction(
-                            onPressed: ((context) {}),
-                            backgroundColor:
-                                const Color.fromRGBO(81, 185, 214, 1),
-                            foregroundColor: Colors.white,
-                            icon: Icons.check,
-                          ),
-                        ]),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 70,
-                          margin: const EdgeInsets.only(right: 2, left: 2),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: const Offset(15, 0),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 10,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  periodHabits[index].name,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  color: color,
                                 ),
-                              ),
-                              Container(
-                                padding:
-                                    const EdgeInsets.only(left: 15, right: 10),
-                                child: Text(
-                                  e.toString().split('.').last.toLowerCase(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
+                                Text(
+                                  periodHabits[index].name,
+                                  style: TextStyle(fontSize: 12),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
                 );
               }).toList(),
               options: CarouselOptions(
-                height: 150,
+                height: MediaQuery.of(context).size.height * 0.5,
                 enableInfiniteScroll: false,
-                viewportFraction: 0.8,
+                viewportFraction: 1.0,
               ),
             ),
           ),
@@ -344,40 +310,28 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+
 class HabitList extends StatelessWidget {
   final List<Habit> habits;
 
-  HabitList({required this.habits});
+  const HabitList({super.key, required this.habits});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: habits.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(habits[index].name),
-        );
-      },
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: habits.map((habit) {
+          return Text(
+            habit.name,
+            style: const TextStyle(fontSize: 12, color: Colors.black87),
+          );
+        }).toList(),
+      ),
     );
   }
 }
 
-class Habit {
-  String name;
-  String color;
 
-  Habit({required this.name, required this.color});
-}
 
-class HabitController {
-  Future<List<Habit>> getHabits(int userId) async {
-    // Simulating a network call with dummy data
-    await Future.delayed(Duration(seconds: 2));
-    return [
-      Habit(name: 'Exercise', color: '51B9D6'),
-      Habit(name: 'Read', color: 'FF4775'),
-      Habit(name: 'Meditate', color: '7ACE78'),
-    ];
-  }
-}
