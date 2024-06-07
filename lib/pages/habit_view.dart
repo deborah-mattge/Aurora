@@ -1,8 +1,14 @@
+import 'package:aurora/controllers/DailyGoalController.dart';
 import 'package:aurora/controllers/HabitController.dart';
+import 'package:aurora/modals/daily_goal_modal.dart';
+import 'package:aurora/modals/habits_modal.dart';
+import 'package:aurora/models/DailyGoal.dart';
 import 'package:aurora/models/Habit.dart';
+import 'package:aurora/pages/create_habit.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:graphic/graphic.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -70,7 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
 
     List<Color> habitColors = habits.map((habit) {
-      String colorCode = '000000' ?? 'FFFFFF'; // Default to white if color is null
+      String colorCode =
+          '000000' ?? 'FFFFFF'; // Default to white if color is null
       if (colorCode.length == 6) {
         colorCode = '0xFF' + colorCode;
       }
@@ -81,8 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }).toList();
 
-    Color singleColor = habitColors.isNotEmpty ? habitColors.first : Colors.grey;
-    List<Color> colorValues = habitColors.length > 1 ? habitColors : [singleColor, singleColor];
+    Color singleColor =
+        habitColors.isNotEmpty ? habitColors.first : Colors.grey;
+    List<Color> colorValues =
+        habitColors.length > 1 ? habitColors : [singleColor, singleColor];
 
     return Scaffold(
       appBar: AppBar(
@@ -95,7 +104,8 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.person, color: Color.fromRGBO(81, 185, 214, 1)),
+            icon: const Icon(Icons.person,
+                color: Color.fromRGBO(81, 185, 214, 1)),
           ),
         ],
       ),
@@ -124,7 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
               locale: "pt_BR",
               selectionColor: const Color.fromRGBO(81, 185, 214, 1),
               selectedTextColor: Colors.white,
-              dateTextStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              dateTextStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               dayTextStyle: const TextStyle(fontSize: 10),
               monthTextStyle: const TextStyle(fontSize: 10),
               onDateChange: (date) {
@@ -209,7 +220,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             marks: [
                               IntervalMark(
                                 position: Varset('percent') / Varset('name'),
-                                color: ColorEncode(variable: 'color', values: colorValues),
+                                color: ColorEncode(
+                                    variable: 'color', values: colorValues),
                                 modifiers: [StackModifier()],
                               ),
                             ],
@@ -231,16 +243,20 @@ class _MyHomePageState extends State<MyHomePage> {
             child: CarouselSlider(
               items: PeriodLabel.values.map((e) {
                 int index = PeriodLabel.values.indexOf(e);
-                Color color = Color(int.parse("0xFF${itemColors[index % itemColors.length]}"));
-                List<Habit> periodHabits = habits.where((habit) => habit.habitCategory == e).toList();
+                Color color = Color(
+                    int.parse("0xFF${itemColors[index % itemColors.length]}"));
+                List<Habit> periodHabits =
+                    habits.where((habit) => habit.habitCategory == e).toList();
                 return Column(
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.symmetric(horizontal: 5),
-                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 2),
+                      padding:
+                          const EdgeInsets.only(left: 10, right: 10, bottom: 2),
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
                         color: color,
                       ),
                       child: Center(
@@ -259,41 +275,104 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: ListView.builder(
                         itemCount: periodHabits.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(15, 0),
+                          return Slidable(
+                            startActionPane:
+                                ActionPane(motion: BehindMotion(), children: [
+                              SlidableAction(
+                                onPressed: ((context) {
+                                  showDailyGoalModal(context, 1, 1);
+                                }),
+                                backgroundColor: Colors.pink,
+                                icon: Icons.add,
+                                padding: const EdgeInsets.all(0),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.elliptical(10.0, 10.0),
+                                  bottomLeft: Radius.elliptical(10.0, 10.0),
                                 ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  periodHabits[index].name,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              SlidableAction(
+                                onPressed: ((context) {}),
+                                backgroundColor:
+                                    const Color.fromRGBO(81, 185, 214, 1),
+                                foregroundColor: Colors.white,
+                                icon: Icons.check,
+                              ),
+                            ]),
+                            child: GestureDetector(
+                              onTap: () => HabitsModal().firstdialogBuilder(
+                                  context, periodHabits[index].id),
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 16.0, horizontal: 20.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  periodHabits[index].name,
-                                  style: TextStyle(fontSize: 12),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 5,
+                                          height: 40,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.purple,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          periodHabits[index].name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          '10/20', // Substitua pelo valor dinâmico se necessário
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'páginas', // Substitua pelo valor dinâmico se necessário
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           );
                         },
                       ),
-                    ),
+                    )
                   ],
                 );
               }).toList(),
@@ -306,10 +385,22 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Create(),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Color.fromRGBO(255, 71, 117, 1),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
-
 
 class HabitList extends StatelessWidget {
   final List<Habit> habits;
@@ -332,6 +423,3 @@ class HabitList extends StatelessWidget {
     );
   }
 }
-
-
-
