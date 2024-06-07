@@ -142,4 +142,18 @@ class DailyGoalController extends ChangeNotifier {
 
     return DailyGoal.fromJson(responseJson);
   }
+
+    Future<void> setDone(num id) async {
+    var url = 'http://localhost:8080/dailyGoal/done/$id';
+    var headers = {'Content-Type': 'application/json'};
+    var response =
+        await http.patch(Uri.parse(url), headers: headers);
+
+    if (response.statusCode == 200) {
+      debugPrint('DailyGoal editado!');
+    } else {
+      debugPrint('Falha ao editar dailyGoal');
+    }
+    notifyListeners();
+  }
 }

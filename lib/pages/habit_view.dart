@@ -2,8 +2,10 @@ import 'package:aurora/controllers/DailyGoalController.dart';
 import 'package:aurora/controllers/HabitController.dart';
 import 'package:aurora/modals/daily_goal_modal.dart';
 import 'package:aurora/modals/habits_modal.dart';
+import 'package:aurora/modals/update_user_modal.dart';
 import 'package:aurora/models/DailyGoal.dart';
 import 'package:aurora/models/Habit.dart';
+import 'package:aurora/models/Quantity.dart';
 import 'package:aurora/pages/create_habit.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -37,6 +39,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late List<Habit> habits = [];
+  late DailyGoal dailyGoal;
 
   @override
   void initState() {
@@ -46,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _fetchHabits() async {
     habits = await HabitController().getHabits(1);
+    dailyGoal = await DailyGoalController().getByDay2(7, 6, 1);
     setState(() {});
   }
 
@@ -75,21 +79,20 @@ class _MyHomePageState extends State<MyHomePage> {
       return {'name': habit.name, 'color': habit.color, 'value': 10};
     }).toList();
 
-    List<Color> habitColors = habits.map((habit) {
-      String colorCode =
-          '000000' ?? 'FFFFFF'; // Default to white if color is null
-      if (colorCode.length == 6) {
-        colorCode = '0xFF' + colorCode;
-      }
-      try {
-        return Color(int.parse(colorCode));
-      } catch (e) {
-        return Colors.grey; // Default to grey if parsing fails
-      }
-    }).toList();
+    int dailyId = 1;
 
-    Color singleColor =
-        habitColors.isNotEmpty ? habitColors.first : Colors.grey;
+    Future<void> daily(num habitId) async {
+      DateTime dateTime = DateTime.now();
+      dailyGoal = await DailyGoalController()
+          .getByDay2(dateTime.day, dateTime.month, habitId);
+      dailyId = dailyGoal.id;
+    }
+
+    List<Color> habitColors = habits.map((habit) => habit.color).toList();
+
+    String habitsLenght = habits.length.toString();
+
+    Color singleColor = habitColors.first;
     List<Color> colorValues =
         habitColors.length > 1 ? habitColors : [singleColor, singleColor];
 
@@ -103,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => UpdateUserModal().firstdialogBuilder(context),
             icon: const Icon(Icons.person,
                 color: Color.fromRGBO(81, 185, 214, 1)),
           ),
@@ -275,12 +278,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: ListView.builder(
                         itemCount: periodHabits.length,
                         itemBuilder: (context, index) {
+                          // Defina goalVsCurrent aqui dentro para que seja específico para cada item do ListView
+                          String goalVsCurrent = '';
+                          if (dailyGoal.quantity != null) {
+                            goalVsCurrent =
+                                '${dailyGoal.quantity!.currentStatus} / ${dailyGoal.quantity!.goal}';
+                          } else {
+                            goalVsCurrent =
+                                '${dailyGoal.booleanS!.currentStatus} / ${dailyGoal.booleanS!.goal}';
+                          }
                           return Slidable(
                             startActionPane:
                                 ActionPane(motion: BehindMotion(), children: [
                               SlidableAction(
                                 onPressed: ((context) {
-                                  showDailyGoalModal(context, 1, 1);
+                                  daily(periodHabits[index].id);
+                                  showDailyGoalModal(
+                                      context, dailyId, periodHabits[index].id);
                                 }),
                                 backgroundColor: Colors.pink,
                                 icon: Icons.add,
@@ -291,7 +305,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               SlidableAction(
-                                onPressed: ((context) {}),
+                                onPressed: ((context) {
+                                  DailyGoalController().setDone(dailyId);
+                                  setState(() {
+                                    daily(periodHabits[index].id).then((_) {
+                                      setState(() {});
+                                    });
+                                  });
+                                }),
                                 backgroundColor:
                                     const Color.fromRGBO(81, 185, 214, 1),
                                 foregroundColor: Colors.white,
@@ -327,9 +348,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Container(
                                           width: 5,
                                           height: 40,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.purple,
-                                            borderRadius: BorderRadius.only(
+                                          decoration: BoxDecoration(
+                                            color: periodHabits[index].color,
+                                            borderRadius:
+                                                const BorderRadius.only(
                                               topLeft: Radius.circular(10),
                                               bottomLeft: Radius.circular(10),
                                             ),
@@ -345,19 +367,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ),
                                       ],
                                     ),
-                                    const Column(
+                                    Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
                                         Text(
-                                          '10/20', // Substitua pelo valor dinâmico se necessário
+                                          dailyGoal.quantity != null
+                                              ? '${dailyGoal.quantity!.currentStatus}/${dailyGoal.quantity!.goal}'
+                                              : '${dailyGoal.booleanS!.currentStatus}/${dailyGoal.booleanS!.goal}',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
-                                          'páginas', // Substitua pelo valor dinâmico se necessário
+                                          periodHabits[index].reference,
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey,
