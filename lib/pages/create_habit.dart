@@ -8,19 +8,19 @@ class Create extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'User Post Example',
-      home: MyHomePage(),
+      home: MyHomePage2(),
     );
   }
 }
 
 // ignore: use_key_in_widget_constructors
-class MyHomePage extends StatefulWidget {
+class MyHomePage2 extends StatefulWidget {
   @override
   // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage2> {
   DateTime initialDate = DateTime(2024, 05, 03);
   DateTime finishDate = DateTime(2024, 06, 30);
 

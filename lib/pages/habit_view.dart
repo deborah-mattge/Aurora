@@ -1,11 +1,18 @@
+import 'package:aurora/controllers/DailyGoalController.dart';
 import 'package:aurora/controllers/HabitController.dart';
+import 'package:aurora/modals/daily_goal_modal.dart';
+import 'package:aurora/modals/habits_modal.dart';
+import 'package:aurora/models/DailyGoal.dart';
 import 'package:aurora/models/Habit.dart';
+import 'package:aurora/pages/create_habit.dart';
+import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:graphic/graphic.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(MyApp3());
@@ -70,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     List<Color> habitColors = habits.map((habit) {
       String colorCode =
-          habit.color ?? 'FFFFFF'; // Default to white if color is null
+          '000000' ?? 'FFFFFF'; // Default to white if color is null
       if (colorCode.length == 6) {
         colorCode = '0xFF' + colorCode;
       }
@@ -232,12 +239,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Container(
+          Expanded(
             child: CarouselSlider(
               items: PeriodLabel.values.map((e) {
                 int index = PeriodLabel.values.indexOf(e);
                 Color color = Color(
                     int.parse("0xFF${itemColors[index % itemColors.length]}"));
+                List<Habit> periodHabits =
+                    habits.where((habit) => habit.habitCategory == e).toList();
                 return Column(
                   children: [
                     Container(
@@ -261,85 +270,134 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 0),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, right: 5, left: 5),
-                      child: Slidable(
-                        startActionPane:
-                            ActionPane(motion: BehindMotion(), children: [
-                          SlidableAction(
-                            onPressed: ((context) {}),
-                            backgroundColor: Colors.pink,
-                            icon: Icons.add,
-                            padding: const EdgeInsets.all(0),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.elliptical(10.0, 10.0),
-                              bottomLeft: Radius.elliptical(10.0, 10.0),
-                            ),
-                          ),
-                          SlidableAction(
-                            onPressed: ((context) {}),
-                            backgroundColor:
-                                const Color.fromRGBO(81, 185, 214, 1),
-                            foregroundColor: Colors.white,
-                            icon: Icons.check,
-                          ),
-                        ]),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 70,
-                          margin: const EdgeInsets.only(right: 2, left: 2),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: const Offset(15, 0),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: periodHabits.length,
+                        itemBuilder: (context, index) {
+                          return Slidable(
+                            startActionPane:
+                                ActionPane(motion: BehindMotion(), children: [
+                              SlidableAction(
+                                onPressed: ((context) {
+                                  showDailyGoalModal(context, 1, 1);
+                                }),
+                                backgroundColor: Colors.pink,
+                                icon: Icons.add,
+                                padding: const EdgeInsets.all(0),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.elliptical(10.0, 10.0),
+                                  bottomLeft: Radius.elliptical(10.0, 10.0),
+                                ),
                               ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 10,
+                              SlidableAction(
+                                onPressed: ((context) {}),
+                                backgroundColor:
+                                    const Color.fromRGBO(81, 185, 214, 1),
+                                foregroundColor: Colors.white,
+                                icon: Icons.check,
+                              ),
+                            ]),
+                            child: GestureDetector(
+                              onTap: () => HabitsModal().firstdialogBuilder(
+                                  context, periodHabits[index].id),
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 16.0, horizontal: 20.0),
                                 decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10),
-                                  ),
-                                  color: color,
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 5,
+                                          height: 40,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.purple,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          periodHabits[index].name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          '10/20', // Substitua pelo valor dinâmico se necessário
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'páginas', // Substitua pelo valor dinâmico se necessário
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Container(
-                                padding:
-                                    const EdgeInsets.only(left: 15, right: 10),
-                                child: Text(
-                                  e.toString().split('.').last.toLowerCase(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ),
+                    )
                   ],
                 );
               }).toList(),
               options: CarouselOptions(
-                height: 150,
+                height: MediaQuery.of(context).size.height * 0.5,
                 enableInfiniteScroll: false,
-                viewportFraction: 0.8,
+                viewportFraction: 1.0,
               ),
             ),
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Create(),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Color.fromRGBO(255, 71, 117, 1),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -347,37 +405,21 @@ class _MyHomePageState extends State<MyHomePage> {
 class HabitList extends StatelessWidget {
   final List<Habit> habits;
 
-  HabitList({required this.habits});
+  const HabitList({super.key, required this.habits});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: habits.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(habits[index].name),
-        );
-      },
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: habits.map((habit) {
+          return Text(
+            habit.name,
+            style: const TextStyle(fontSize: 12, color: Colors.black87),
+          );
+        }).toList(),
+      ),
     );
-  }
-}
-
-class Habit {
-  String name;
-  String color;
-
-  Habit({required this.name, required this.color});
-}
-
-class HabitController {
-  Future<List<Habit>> getHabits(int userId) async {
-    // Simulating a network call with dummy data
-    await Future.delayed(Duration(seconds: 2));
-    return [
-      Habit(name: 'Exercise', color: '51B9D6'),
-      Habit(name: 'Read', color: 'FF4775'),
-      Habit(name: 'Meditate', color: '7ACE78'),
-    ];
   }
 }
