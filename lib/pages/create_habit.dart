@@ -21,8 +21,17 @@ class MyHomePage2 extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage2> {
-  DateTime initialDate = DateTime(2024, 05, 03);
+  String habitName = '';
+  String goalKind = '';
+  String reference = '';
+  String habitColor = '#A26BD8';
+  DateTime initialDate = DateTime(2024, 06, 07);
   DateTime finishDate = DateTime(2024, 06, 30);
+
+  bool isMatutinoSelected = false;
+  bool isVespertinoSelected = false;
+  bool isNoturnoSelected = false;
+  bool isDiarioSelected = false;
 
   final controller = TextEditingController();
 
@@ -42,12 +51,15 @@ class _MyHomePageState extends State<MyHomePage2> {
     setState(() {
       if (numberColor == 1) {
         _colorTag = const Color.fromRGBO(61, 170, 243, 0.522);
+        habitColor = "#51B9D6";
         numberColor = 2;
       } else if (numberColor == 2) {
         _colorTag = const Color.fromRGBO(255, 71, 117, 1);
+        habitColor = "#FF4775";
         numberColor = 3;
       } else if (numberColor == 3) {
         _colorTag = const Color.fromRGBO(163, 221, 197, 1);
+        habitColor = "#7ACE78";
         numberColor = 4;
       }
     });
@@ -57,12 +69,15 @@ class _MyHomePageState extends State<MyHomePage2> {
     setState(() {
       if (numberColor == 2) {
         _colorTag = const Color.fromRGBO(162, 107, 216, 1);
+        habitColor = "#A26BD8";
         numberColor = 1;
       } else if (numberColor == 4) {
         _colorTag = const Color.fromRGBO(255, 71, 117, 1);
+        habitColor = "#FF4775";
         numberColor = 3;
       } else if (numberColor == 3) {
-        _colorTag = const Color.fromRGBO(61, 170, 243, 1);
+        _colorTag = const Color.fromRGBO(61, 170, 243, 0.522);
+        habitColor = "#51B9D6";
         numberColor = 2;
       }
     });
@@ -128,6 +143,11 @@ class _MyHomePageState extends State<MyHomePage2> {
                     Container(
                       height: 40,
                       child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            habitName = value;
+                          });
+                        },
                         decoration: getHabitInputDecorations(
                           sendText: 'Ex: Beber água',
                           vertical: 8,
@@ -207,8 +227,10 @@ class _MyHomePageState extends State<MyHomePage2> {
                                       ),
                                       hint: const Text('Tipo'),
                                       value: (value.isEmpty) ? null : value,
-                                      onChanged: (choice) =>
-                                          dropValue.value = choice.toString(),
+                                      onChanged: (choice) => setState(() {
+                                        goalKind = choice!;
+                                        dropValue.value = choice.toString();
+                                      }),
                                       items: dropOptions.map((op) {
                                         return DropdownMenuItem(
                                           value: op,
@@ -238,6 +260,11 @@ class _MyHomePageState extends State<MyHomePage2> {
                                 child: Container(
                                   height: 40,
                                   child: TextField(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        reference = value;
+                                      });
+                                    },
                                     decoration: getHabitInputDecorations(
                                       sendText: 'Ex: Litros',
                                       vertical: 10,
@@ -406,25 +433,6 @@ class _MyHomePageState extends State<MyHomePage2> {
                             children: [
                               ElevatedButton(
                                 style: getHabitButtonDecorations(),
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Início",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color.fromRGBO(74, 74, 73, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 20),
-                                    Icon(
-                                      Icons.calendar_today_rounded,
-                                      color: Color.fromRGBO(255, 71, 117, 1),
-                                      size: 18,
-                                    ),
-                                  ],
-                                ),
                                 onPressed: () async {
                                   DateTime? newInitialDate =
                                       await showDatePicker(
@@ -436,28 +444,28 @@ class _MyHomePageState extends State<MyHomePage2> {
                                   if (newInitialDate == null) return;
                                   setState(() => initialDate = newInitialDate);
                                 },
-                              ),
-                              ElevatedButton(
-                                style: getHabitButtonDecorations(),
-                                child: const Row(
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Fim",
-                                      style: TextStyle(
+                                      "Início: ${initialDate.day}/${initialDate.month}/${initialDate.year}",
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
                                         color: Color.fromRGBO(74, 74, 73, 1),
                                       ),
                                     ),
-                                    SizedBox(width: 20),
-                                    Icon(
+                                    const SizedBox(width: 30),
+                                    const Icon(
                                       Icons.calendar_today_rounded,
                                       color: Color.fromRGBO(255, 71, 117, 1),
                                       size: 18,
                                     ),
                                   ],
                                 ),
+                              ),
+                              ElevatedButton(
+                                style: getHabitButtonDecorations(),
                                 onPressed: () async {
                                   DateTime? newFinishDate =
                                       await showDatePicker(
@@ -469,6 +477,25 @@ class _MyHomePageState extends State<MyHomePage2> {
                                   if (newFinishDate == null) return;
                                   setState(() => finishDate = newFinishDate);
                                 },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Fim: ${finishDate.day}/${finishDate.month}/${finishDate.year}",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color.fromRGBO(74, 74, 73, 1),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 25),
+                                    const Icon(
+                                      Icons.calendar_today_rounded,
+                                      color: Color.fromRGBO(255, 71, 117, 1),
+                                      size: 18,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -510,14 +537,30 @@ class _MyHomePageState extends State<MyHomePage2> {
                             alignment: Alignment.bottomLeft,
                             margin: const EdgeInsets.only(top: 20),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                isMatutinoSelected = true;
+                              },
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
                                     const Size(60, 20)),
                                 fixedSize: MaterialStateProperty.all(
                                     const Size(140, 28)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(246, 255, 123, 156)),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                        (states) {
+                                  final bool isPressed =
+                                      states.contains(MaterialState.pressed);
+                                  final bool isSelected = isMatutinoSelected;
+
+                                  const Color defaultColor =
+                                      Color.fromARGB(246, 255, 123, 156);
+                                  const Color selectedColor =
+                                      Color.fromRGBO(255, 71, 117, 1);
+
+                                  return isPressed && isSelected
+                                      ? selectedColor
+                                      : defaultColor;
+                                }),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
