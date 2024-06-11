@@ -129,7 +129,7 @@ class DailyGoalController extends ChangeNotifier {
   }
 
   Future<DailyGoal> getByDay2(num dayId, num monthId, num habitId) async {
-    var url = 'http://localhost:8080/dailyGoal/7/6/habit/$habitId';
+    var url = 'http://localhost:8080/dailyGoal/11/6/habit/$habitId';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
     final responseJson = jsonDecode(response.body);
@@ -141,6 +141,26 @@ class DailyGoalController extends ChangeNotifier {
     }
 
     return DailyGoal.fromJson(responseJson);
+  }
+
+  Future<List<DailyGoal>> getAllByDay(num dayId, num monthId) async {
+    var url = 'http://localhost:8080/dailyGoal/day/$dayId/month/$monthId';
+    var headers = {'Content-Type': 'application/json'};
+    var response = await http.get(Uri.parse(url), headers: headers);
+    final responseJson = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      debugPrint('GET DE HÁBITO 2 FUNCIONANDO!');
+    } else {
+      debugPrint('FALHA AO DAR GET EM HÁBITO] ${response.statusCode}');
+    }
+
+    List<DailyGoal> dailiesList = [];
+
+    for (var daily in responseJson) {
+      dailiesList.add(DailyGoal.fromJson(daily));
+    }
+    return dailiesList;
   }
 
     Future<void> setDone(num id) async {

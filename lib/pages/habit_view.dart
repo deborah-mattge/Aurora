@@ -3,9 +3,9 @@ import 'package:aurora/controllers/HabitController.dart';
 import 'package:aurora/modals/daily_goal_modal.dart';
 import 'package:aurora/modals/habits_modal.dart';
 import 'package:aurora/modals/update_user_modal.dart';
+import 'package:aurora/modals/success_alert.dart' as alert;
 import 'package:aurora/models/DailyGoal.dart';
 import 'package:aurora/models/Habit.dart';
-import 'package:aurora/models/Quantity.dart';
 import 'package:aurora/pages/create_habit.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -21,8 +21,6 @@ void main() {
 }
 
 class MyApp3 extends StatelessWidget {
-  final HabitController _habitController = HabitController();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,6 +38,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late List<Habit> habits = [];
   late DailyGoal dailyGoal;
+  late List<DailyGoal> dailies;
+  late num dailiesLenght = 2;
+  DateTime _selectedValue = DateTime.now();
 
   @override
   void initState() {
@@ -49,52 +50,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _fetchHabits() async {
     habits = await HabitController().getHabits(1);
-    dailyGoal = await DailyGoalController().getByDay2(7, 6, 1);
+    dailyGoal = await DailyGoalController()
+        .getByDay2(_selectedValue.day, _selectedValue.month, 1);
     setState(() {});
-  }
-
-  DateTime _selectedValue = DateTime.now();
-
-  List<MarkElement> centralPieLabel(
-    Size size,
-    Offset anchor,
-    Map<int, Tuple> selectedTuples,
-  ) {
-    final tuple = selectedTuples.values.last;
-    final titleElement = LabelElement(
-      text: 'olaaa',
-      anchor: const Offset(175, 150),
-      style: LabelStyle(
-        textStyle: const TextStyle(fontSize: 14, color: Colors.black87),
-        align: Alignment.topCenter,
-      ),
-    );
-    return [titleElement];
+    DateTime dateTime = _selectedValue;
+    dailies =
+        await DailyGoalController().getAllByDay(dateTime.day, dateTime.month);
+    dailiesLenght = dailies.length;
   }
 
   @override
   Widget build(BuildContext context) {
     final List<String> itemColors = ["51B9D6", "FF4775", "7ACE78", "A26BD8"];
     var data = habits.map((habit) {
-      return {'name': habit.name, 'color': habit.color, 'value': 10};
+      return {'name': habit.name, 'color': habit.color.value, 'value': 10};
     }).toList();
 
     int dailyId = 1;
 
     Future<void> daily(num habitId) async {
-      DateTime dateTime = DateTime.now();
+      DateTime dateTime = _selectedValue;
       dailyGoal = await DailyGoalController()
           .getByDay2(dateTime.day, dateTime.month, habitId);
       dailyId = dailyGoal.id;
     }
 
     List<Color> habitColors = habits.map((habit) => habit.color).toList();
-
-    String habitsLenght = habits.length.toString();
-
-    Color singleColor = habitColors.first;
-    List<Color> colorValues =
-        habitColors.length > 1 ? habitColors : [singleColor, singleColor];
+    if (dailiesLenght == 0) {
+      habitColors = habits.map((habit) => Colors.grey).toList();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -144,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onDateChange: (date) {
                 setState(() {
                   _selectedValue = date;
+                  _fetchHabits(); // Atualiza os hábitos e os daily goals para a nova data selecionada
                 });
               },
             ),
@@ -182,61 +167,61 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 100,
                       child: HabitList(habits: habits),
                     ),
-                    Stack(
-                      children: [
-                        const Positioned.fill(
-                          child: Center(
-                            child: Text(
-                              '1/3',
-                              style: TextStyle(
-                                fontSize: 40,
-                                color: Colors.pink,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          width: 152,
-                          height: 130,
-                          child: Chart(
-                            data: data,
-                            variables: {
-                              'name': Variable(
-                                accessor: (Map map) => map['name'] as String,
-                              ),
-                              'value': Variable(
-                                accessor: (Map map) => map['value'] as num,
-                              ),
-                              'color': Variable(
-                                accessor: (Map map) => map['color'] as String,
-                              ),
-                            },
-                            transforms: [
-                              Proportion(
-                                variable: 'value',
-                                as: 'percent',
-                              )
-                            ],
-                            marks: [
-                              IntervalMark(
-                                position: Varset('percent') / Varset('name'),
-                                color: ColorEncode(
-                                    variable: 'color', values: colorValues),
-                                modifiers: [StackModifier()],
-                              ),
-                            ],
-                            coord: PolarCoord(
-                              transposed: true,
-                              dimCount: 1,
-                              startRadius: 0.8,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Stack(
+                    //   children: [
+                    //     Positioned.fill(
+                    //       child: Center(
+                    //         child: Text(
+                    //           '2/2',
+                    //           style: const TextStyle(
+                    //             fontSize: 40,
+                    //             color: Colors.pink,
+                    //             letterSpacing: 0,
+                    //             fontWeight: FontWeight.w600,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Container(
+                    //       margin: const EdgeInsets.only(top: 10),
+                    //       width: 152,
+                    //       height: 130,
+                    //       child: Chart(
+                    //         data: data,
+                    //         variables: {
+                    //           'name': Variable(
+                    //             accessor: (Map map) => map['name'] as String,
+                    //           ),
+                    //           'value': Variable(
+                    //             accessor: (Map map) => map['value'] as num,
+                    //           ),
+                    //           'color': Variable(
+                    //             accessor: (Map map) => map['color'] as int,
+                    //           ),
+                    //         },
+                    //         transforms: [
+                    //           Proportion(
+                    //             variable: 'value',
+                    //             as: 'percent',
+                    //           )
+                    //         ],
+                    //         marks: [
+                    //           IntervalMark(
+                    //             position: Varset('percent') / Varset('name'),
+                    //             color: ColorEncode(
+                    //                 variable: 'color', values: habitColors),
+                    //             modifiers: [StackModifier()],
+                    //           ),
+                    //         ],
+                    //         coord: PolarCoord(
+                    //           transposed: true,
+                    //           dimCount: 1,
+                    //           startRadius: 0.8,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ],
@@ -275,128 +260,127 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     const SizedBox(height: 10),
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: periodHabits.length,
-                        itemBuilder: (context, index) {
-                          // Defina goalVsCurrent aqui dentro para que seja específico para cada item do ListView
-                          String goalVsCurrent = '';
-                          if (dailyGoal.quantity != null) {
-                            goalVsCurrent =
-                                '${dailyGoal.quantity!.currentStatus} / ${dailyGoal.quantity!.goal}';
-                          } else {
-                            goalVsCurrent =
-                                '${dailyGoal.booleanS!.currentStatus} / ${dailyGoal.booleanS!.goal}';
-                          }
-                          return Slidable(
-                            startActionPane:
-                                ActionPane(motion: BehindMotion(), children: [
-                              SlidableAction(
-                                onPressed: ((context) {
-                                  daily(periodHabits[index].id);
-                                  showDailyGoalModal(
-                                      context, dailyId, periodHabits[index].id);
-                                }),
-                                backgroundColor: Colors.pink,
-                                icon: Icons.add,
-                                padding: const EdgeInsets.all(0),
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.elliptical(10.0, 10.0),
-                                  bottomLeft: Radius.elliptical(10.0, 10.0),
-                                ),
-                              ),
-                              SlidableAction(
-                                onPressed: ((context) {
-                                  DailyGoalController().setDone(dailyId);
-                                  setState(() {
-                                    daily(periodHabits[index].id).then((_) {
-                                      setState(() {});
-                                    });
-                                  });
-                                }),
-                                backgroundColor:
-                                    const Color.fromRGBO(81, 185, 214, 1),
-                                foregroundColor: Colors.white,
-                                icon: Icons.check,
-                              ),
-                            ]),
-                            child: GestureDetector(
-                              onTap: () => HabitsModal().firstdialogBuilder(
-                                  context, periodHabits[index].id),
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 16.0, horizontal: 20.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: 5,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            color: periodHabits[index].color,
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          periodHabits[index].name,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          dailyGoal.quantity != null
-                                              ? '${dailyGoal.quantity!.currentStatus}/${dailyGoal.quantity!.goal}'
-                                              : '${dailyGoal.booleanS!.currentStatus}/${dailyGoal.booleanS!.goal}',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          periodHabits[index].reference,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                        child: ListView.builder(
+                      itemCount: periodHabits.length,
+                      itemBuilder: (context, index) {
+                        // Obter a meta diária específica para este hábito
+                        DailyGoal habitDailyGoal = dailies.firstWhere((daily) =>
+                            daily.habit?.id == periodHabits[index].id);
+                        String goalVsCurrent = '';
+                        if (habitDailyGoal.quantity != null) {
+                          goalVsCurrent =
+                              '${habitDailyGoal.quantity!.currentStatus} / ${habitDailyGoal.quantity!.goal}';
+                        } else {
+                          goalVsCurrent =
+                              '${habitDailyGoal.booleanS!.currentStatus} / ${habitDailyGoal.booleanS!.goal}';
+                        }
+
+                        return Slidable(
+                          startActionPane:
+                              ActionPane(motion: BehindMotion(), children: [
+                            SlidableAction(
+                              onPressed: ((context) {
+                                daily(periodHabits[index].id);
+                                showDailyGoalModal(context, dailyGoal.id,
+                                    periodHabits[index].id);
+                              }),
+                              backgroundColor: Colors.pink,
+                              icon: Icons.add,
+                              padding: const EdgeInsets.all(0),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.elliptical(10.0, 10.0),
+                                bottomLeft: Radius.elliptical(10.0, 10.0),
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    )
+                            SlidableAction(
+                              onPressed: ((context) {
+                                DailyGoalController()
+                                    .setDone(habitDailyGoal.id);
+                                    alert.showConfirmationSnackBar(context, 'Hábito marcado como feito!');
+                                setState(() {
+                                    habitDailyGoal.quantity?.currentStatus += habitDailyGoal.quantity!.goal;
+                                });
+                              }),
+                              backgroundColor:
+                                  const Color.fromRGBO(81, 185, 214, 1),
+                              foregroundColor: Colors.white,
+                              icon: Icons.check,
+                            ),
+                          ]),
+                          child: GestureDetector(
+                            onTap: () => HabitsModal().firstdialogBuilder(
+                                context, periodHabits[index].id),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 4.0),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16.0, horizontal: 20.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 5,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: periodHabits[index].color,
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        periodHabits[index].name,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        habitDailyGoal.quantity != null
+                                            ? '${habitDailyGoal.quantity!.currentStatus}/${habitDailyGoal.quantity!.goal}'
+                                            : '${habitDailyGoal.booleanS!.currentStatus}/${habitDailyGoal.booleanS!.goal}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        periodHabits[index].reference,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ))
                   ],
                 );
               }).toList(),
@@ -418,7 +402,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Color.fromRGBO(255, 71, 117, 1),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
