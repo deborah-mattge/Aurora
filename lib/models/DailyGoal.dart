@@ -8,9 +8,15 @@ class DailyGoal {
   final Quantity? quantity;
   final BooleanType? booleanS;
   final Habit? habit;
+  final bool? done;
 
   const DailyGoal(
-      {required this.id, required this.day, required this.habit, this.quantity, this.booleanS});
+      {required this.id,
+      required this.day,
+      required this.habit,
+      this.quantity,
+      this.booleanS,
+      this.done});
 
   factory DailyGoal.fromJson(Map<String, dynamic> json) {
     final id = json['id'] as int? ?? -1;
@@ -20,10 +26,15 @@ class DailyGoal {
     final booleanS = json['booleanType'] != null
         ? BooleanType.fromJson(json['booleanS'])
         : null;
-    final habit = json['habit'] != null
-        ? Habit.fromJson(json['habit'])
-        : null;
+    final habit = json['habit'] != null ? Habit.fromJson(json['habit']) : null;
+    final done = json['done'] as bool? ?? false;
 
-    return DailyGoal(id: id, day: day, habit: habit, quantity: quantity, booleanS: booleanS);
+    return DailyGoal(
+        id: id,
+        day: day,
+        habit: habit,
+        quantity: quantity,
+        booleanS: booleanS,
+        done: done);
   }
 }

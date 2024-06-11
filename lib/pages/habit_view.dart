@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late DailyGoal dailyGoal;
   late List<DailyGoal> dailies;
   late num dailiesLenght = 2;
+  late num dailiesDone = 0;
   DateTime _selectedValue = DateTime.now();
 
   @override
@@ -59,11 +60,26 @@ class _MyHomePageState extends State<MyHomePage> {
     dailiesLenght = dailies.length;
   }
 
+  void getDone() {
+    dailiesDone = 0;
+    for (var daily in dailies) {
+      if (daily.done == true) {
+        dailiesDone = dailiesDone + 1;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<String> itemColors = ["51B9D6", "FF4775", "7ACE78", "A26BD8"];
+    double completionPercentage = dailiesDone / habits.length;
+    double value = completionPercentage * 100; //
     var data = habits.map((habit) {
-      return {'name': habit.name, 'color': habit.color.value, 'value': 10};
+      return {
+        'name': habit.name,
+        'color': habit.color.value.toRadixString(16).padLeft(6, '0'),
+        'value': value
+      };
     }).toList();
 
     int dailyId = 1;
@@ -76,8 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     List<Color> habitColors = habits.map((habit) => habit.color).toList();
-    if (dailiesLenght == 0) {
-      habitColors = habits.map((habit) => Colors.grey).toList();
+    if (habitColors.length < 2) {
+      habitColors = [Colors.grey, Colors.grey];
     }
 
     return Scaffold(
@@ -128,7 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onDateChange: (date) {
                 setState(() {
                   _selectedValue = date;
-                  _fetchHabits(); // Atualiza os hábitos e os daily goals para a nova data selecionada
+                  _fetchHabits();
+                  getDone();
                 });
               },
             ),
@@ -167,61 +184,63 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 100,
                       child: HabitList(habits: habits),
                     ),
-                    // Stack(
-                    //   children: [
-                    //     Positioned.fill(
-                    //       child: Center(
-                    //         child: Text(
-                    //           '2/2',
-                    //           style: const TextStyle(
-                    //             fontSize: 40,
-                    //             color: Colors.pink,
-                    //             letterSpacing: 0,
-                    //             fontWeight: FontWeight.w600,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       margin: const EdgeInsets.only(top: 10),
-                    //       width: 152,
-                    //       height: 130,
-                    //       child: Chart(
-                    //         data: data,
-                    //         variables: {
-                    //           'name': Variable(
-                    //             accessor: (Map map) => map['name'] as String,
-                    //           ),
-                    //           'value': Variable(
-                    //             accessor: (Map map) => map['value'] as num,
-                    //           ),
-                    //           'color': Variable(
-                    //             accessor: (Map map) => map['color'] as int,
-                    //           ),
-                    //         },
-                    //         transforms: [
-                    //           Proportion(
-                    //             variable: 'value',
-                    //             as: 'percent',
-                    //           )
-                    //         ],
-                    //         marks: [
-                    //           IntervalMark(
-                    //             position: Varset('percent') / Varset('name'),
-                    //             color: ColorEncode(
-                    //                 variable: 'color', values: habitColors),
-                    //             modifiers: [StackModifier()],
-                    //           ),
-                    //         ],
-                    //         coord: PolarCoord(
-                    //           transposed: true,
-                    //           dimCount: 1,
-                    //           startRadius: 0.8,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                    Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Center(
+                            child: Text(
+                              dailiesDone.toString() +
+                                  '/' +
+                                  habits.length.toString(),
+                              style: const TextStyle(
+                                fontSize: 40,
+                                color: Colors.pink,
+                                letterSpacing: 0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          width: 152,
+                          height: 130,
+                          child: Chart(
+                            data: data,
+                            variables: {
+                              'name': Variable(
+                                accessor: (Map map) => map['name'] as String,
+                              ),
+                              'value': Variable(
+                                accessor: (Map map) => map['value'] as num,
+                              ),
+                              'color': Variable(
+                                accessor: (Map map) => map['color'] as String,
+                              ),
+                            },
+                            transforms: [
+                              Proportion(
+                                variable: 'value',
+                                as: 'percent',
+                              )
+                            ],
+                            marks: [
+                              IntervalMark(
+                                position: Varset('percent') / Varset('name'),
+                                color: ColorEncode(
+                                    variable: 'color', values: habitColors),
+                                modifiers: [StackModifier()],
+                              ),
+                            ],
+                            coord: PolarCoord(
+                              transposed: true,
+                              dimCount: 1,
+                              startRadius: 0.8,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ],
@@ -296,15 +315,35 @@ class _MyHomePageState extends State<MyHomePage> {
                               onPressed: ((context) {
                                 DailyGoalController()
                                     .setDone(habitDailyGoal.id);
-                                    alert.showConfirmationSnackBar(context, 'Hábito marcado como feito!');
+                                alert.showConfirmationSnackBar(
+                                    context, 'Hábito marcado como feito!');
                                 setState(() {
-                                    habitDailyGoal.quantity?.currentStatus += habitDailyGoal.quantity!.goal;
+                                  habitDailyGoal.quantity?.currentStatus +=
+                                      habitDailyGoal.quantity!.goal;
                                 });
                               }),
                               backgroundColor:
                                   const Color.fromRGBO(81, 185, 214, 1),
                               foregroundColor: Colors.white,
                               icon: Icons.check,
+                            ),
+                          ]),
+                          endActionPane:
+                              ActionPane(motion: BehindMotion(), children: [
+                            SlidableAction(
+                              onPressed: ((context) {
+                                HabitController()
+                                    .deleteHabit(periodHabits[index].id);
+                                setState(() {});
+                              }),
+                              backgroundColor: Colors.pink,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              padding: const EdgeInsets.all(0),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.elliptical(10.0, 10.0),
+                                bottomRight: Radius.elliptical(10.0, 10.0),
+                              ),
                             ),
                           ]),
                           child: GestureDetector(
