@@ -105,7 +105,7 @@ class HabitController extends ChangeNotifier {
   }
 
   Future<void> deleteHabit(int id) async {
-    var url = 'http://localhost:8080/habit/{id}';
+    var url = 'http://localhost:8080/habit/$id';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.delete(Uri.parse(url), headers: headers);
 

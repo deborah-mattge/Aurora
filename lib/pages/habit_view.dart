@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final List<String> itemColors = ["51B9D6", "FF4775", "7ACE78", "A26BD8"];
     double completionPercentage = dailiesDone / habits.length;
-    double value = completionPercentage * 100; //
+    double value = 2;
     var data = habits.map((habit) {
       return {
         'name': habit.name,
@@ -334,7 +334,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               onPressed: ((context) {
                                 HabitController()
                                     .deleteHabit(periodHabits[index].id);
-                                setState(() {});
+                                setState(() {
+                                    habits.removeWhere((habit) => habit.id == periodHabits[index].id);
+                                });
                               }),
                               backgroundColor: Colors.pink,
                               foregroundColor: Colors.white,
