@@ -103,22 +103,33 @@ class _MyHomePageState extends State<MyHomePage2> {
 
   void saveHabit() {
     debugPrint("entrei para criar");
+
     PeriodLabel periodLabel;
     TypeLabel typeLabel;
+
     if (isMatutinoSelected) {
       periodLabel = PeriodLabel.matutino;
+      isMatutinoSelected = false;
     } else if (isNoturnoSelected) {
       periodLabel = PeriodLabel.noturno;
+      isNoturnoSelected = false;
     } else if (isVespertinoSelected) {
       periodLabel = PeriodLabel.vespertino;
+      isVespertinoSelected = false;
+    } else if (isDiarioSelected) {
+      periodLabel = PeriodLabel.diario;
+      isDiarioSelected = false;
     } else {
       periodLabel = PeriodLabel.diario;
     }
+
     if (categoria == "Quantidade") {
       typeLabel = TypeLabel.quantidade;
     } else {
       typeLabel = TypeLabel.booleano;
     }
+
+    print(periodLabel);
     String data = finishDate.toString();
     HabitController().postHabits(
         habitName, habitColor, typeLabel, periodLabel, reference, date, meta);
@@ -138,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage2> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
-                padding: EdgeInsets.only(top: 20.0),
+                padding: EdgeInsets.only(top: 40.0),
                 child: Center(
                   child: Text(
                     'Novo Hábito',
@@ -152,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage2> {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(top: 20.0, left: 25.0, right: 25.0),
+                    const EdgeInsets.only(top: 60.0, left: 25.0, right: 25.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -226,7 +237,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                           child: Row(
                             children: [
                               SizedBox(
-                                width: 130,
+                                width: 140,
                                 height: 40,
                                 child: ValueListenableBuilder<String>(
                                   valueListenable: dropValue,
@@ -423,8 +434,8 @@ class _MyHomePageState extends State<MyHomePage2> {
                                       ),
                                     ),
                                     Positioned(
-                                      right: 60,
-                                      top: 10,
+                                      right: 55,
+                                      top: 5,
                                       child: Container(
                                         width: 25,
                                         height: 25,
@@ -445,77 +456,69 @@ class _MyHomePageState extends State<MyHomePage2> {
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                '*',
+                                'Meta diária',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  color: Color.fromRGBO(255, 71, 117, 1),
+                                  color: Color.fromRGBO(74, 74, 73, 1),
                                 ),
                               ),
-                              SizedBox(width: 163),
-                              Text(
-                                '*',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color.fromRGBO(255, 71, 117, 1),
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    ' *',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color.fromRGBO(255, 71, 117, 1),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width:
+                                          70), // Espaçamento entre os asteriscos
+                                  Text(
+                                    '*',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color.fromRGBO(255, 71, 117, 1),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-
-                          // Botões de calendário
+                          const SizedBox(height: 10),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const SizedBox(width: 30),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    const SizedBox(width: 0),
-                                    Expanded(
-                                      // INPUT 'EX: LITROS'
-                                      child: Container(
-                                        height: 40,
-                                        child: TextField(
-                                          onChanged: (value) {
-                                            setState(() {
-                                              meta = value;
-                                            });
-                                          },
-                                          decoration: getHabitInputDecorations(
-                                            sendText:
-                                                'Insira a quantidade da meta',
-                                            vertical: 10,
-                                            horizontal: 10,
-                                            width: 5,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                              Container(
+                                // AQUII AGORA
+                                width: 130,
+                                height: 40,
+                                child: TextField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      meta = value;
+                                    });
+                                  },
+                                  decoration: getHabitInputDecorations(
+                                    sendText: 'Ex: 4',
+                                    vertical: 10,
+                                    horizontal: 10,
+                                    width: 5,
+                                  ),
                                 ),
                               ),
-                              // AQUIIII
-
+                              const SizedBox(width: 50),
                               ElevatedButton(
                                 style: getHabitButtonDecorations(),
                                 onPressed: () => selectDate(context),
-                                // onPressed: () async {
-                                //   DateTime? newFinishDate =
-                                //       await showDatePicker(
-                                //     context: context,
-                                //     initialDate: finishDate,
-                                //     firstDate: DateTime(1900),
-                                //     lastDate: DateTime(2100),
-                                //   );
-                                //   if (newFinishDate == null) return;
-                                //   setState(() => finishDate = newFinishDate);
-                                // },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -527,7 +530,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                                         color: Color.fromRGBO(74, 74, 73, 1),
                                       ),
                                     ),
-                                    const SizedBox(width: 25),
+                                    const SizedBox(width: 5),
                                     const Icon(
                                       Icons.calendar_today_rounded,
                                       color: Color.fromRGBO(255, 71, 117, 1),
@@ -574,10 +577,17 @@ class _MyHomePageState extends State<MyHomePage2> {
                         children: [
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 30),
                             child: ElevatedButton(
                               onPressed: () {
-                                isMatutinoSelected = true;
+                                setState(() {
+                                  isMatutinoSelected = !isMatutinoSelected;
+                                  if (isMatutinoSelected) {
+                                    isVespertinoSelected = false;
+                                    isNoturnoSelected = false;
+                                    isDiarioSelected = false;
+                                  }
+                                });
                               },
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
@@ -596,7 +606,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                                   const Color selectedColor =
                                       Color.fromRGBO(255, 71, 117, 1);
 
-                                  return isPressed && isSelected
+                                  return isSelected
                                       ? selectedColor
                                       : defaultColor;
                                 }),
@@ -619,16 +629,37 @@ class _MyHomePageState extends State<MyHomePage2> {
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 30),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  isVespertinoSelected = !isVespertinoSelected;
+                                  if (isVespertinoSelected) {
+                                    isMatutinoSelected = false;
+                                    isNoturnoSelected = false;
+                                    isDiarioSelected = false;
+                                  }
+                                });
+                              },
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
                                     const Size(60, 20)),
                                 fixedSize: MaterialStateProperty.all(
                                     const Size(140, 28)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(122, 206, 120, 235)),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                        (states) {
+                                  final bool isSelected = isVespertinoSelected;
+
+                                  const Color defaultColor =
+                                      Color.fromARGB(122, 206, 120, 235);
+                                  const Color selectedColor =
+                                      Color.fromRGBO(162, 107, 216, 1);
+
+                                  return isSelected
+                                      ? selectedColor
+                                      : defaultColor;
+                                }),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -650,7 +681,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 0),
+                      padding: const EdgeInsets.only(top: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -658,14 +689,35 @@ class _MyHomePageState extends State<MyHomePage2> {
                             alignment: Alignment.bottomLeft,
                             margin: const EdgeInsets.only(top: 10),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  isNoturnoSelected = !isNoturnoSelected;
+                                  if (isNoturnoSelected) {
+                                    isMatutinoSelected = false;
+                                    isVespertinoSelected = false;
+                                    isDiarioSelected = false;
+                                  }
+                                });
+                              },
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
                                     const Size(60, 20)),
                                 fixedSize: MaterialStateProperty.all(
                                     const Size(140, 28)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(232, 129, 199, 235)),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                        (states) {
+                                  final bool isSelected = isNoturnoSelected;
+
+                                  const Color defaultColor =
+                                      Color.fromARGB(232, 129, 199, 235);
+                                  const Color selectedColor =
+                                      Color.fromRGBO(32, 166, 255, 0.522);
+
+                                  return isSelected
+                                      ? selectedColor
+                                      : defaultColor;
+                                }),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -687,15 +739,35 @@ class _MyHomePageState extends State<MyHomePage2> {
                             alignment: Alignment.bottomLeft,
                             margin: const EdgeInsets.only(top: 10),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  isDiarioSelected = !isDiarioSelected;
+                                  if (isDiarioSelected) {
+                                    isMatutinoSelected = false;
+                                    isVespertinoSelected = false;
+                                    isNoturnoSelected = false;
+                                  }
+                                });
+                              },
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
                                     const Size(60, 20)),
                                 fixedSize: MaterialStateProperty.all(
                                     const Size(140, 28)),
-                                backgroundColor: MaterialStateProperty.all(
-                                  const Color.fromARGB(161, 149, 243, 191),
-                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                        (states) {
+                                  final bool isSelected = isDiarioSelected;
+
+                                  const Color defaultColor =
+                                      Color.fromRGBO(163, 221, 197, 1);
+                                  const Color selectedColor =
+                                      Color.fromARGB(160, 100, 255, 170);
+
+                                  return isSelected
+                                      ? selectedColor
+                                      : defaultColor;
+                                }),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -723,7 +795,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                         children: [
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 60),
                             child: ElevatedButton(
                               onPressed: () {},
                               style: ButtonStyle(
@@ -752,7 +824,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 60),
                             child: ElevatedButton(
                               onPressed: saveHabit,
                               style: ButtonStyle(
