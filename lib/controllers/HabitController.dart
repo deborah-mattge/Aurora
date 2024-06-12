@@ -4,9 +4,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HabitController extends ChangeNotifier {
-  Future<void> _postHabits(String habitName) async {
+
+  Future<void> postHabits(String name, String colorTag, TypeLabel typeLabel,  periodLabel, String reference, String finishDate, String meta) async {
     Map<String, dynamic> habit = {
-      "name": habitName,
+      "name": name,
+      "reference": reference,
+      "habitCategory": periodLabel.toString().split('.').last,
+      "goalKind": typeLabel.toString().split('.').last,
+      "color": colorTag,
+      "finalDate": finishDate,
+      "goal" : meta,
       "user": {"id": 1}
     };
 

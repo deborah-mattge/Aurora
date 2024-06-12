@@ -1,6 +1,9 @@
 import 'package:aurora/components/decoration_button.dart';
 import 'package:aurora/components/decoration_input.dart';
+import 'package:aurora/controllers/HabitController.dart';
+import 'package:aurora/models/Habit.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Create extends StatelessWidget {
   const Create({super.key});
@@ -22,9 +25,10 @@ class MyHomePage2 extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage2> {
   String habitName = '';
-  String goalKind = '';
+  String categoria = '';
   String reference = '';
   String habitColor = '#A26BD8';
+  String meta = '';
   DateTime initialDate = DateTime(2024, 06, 07);
   DateTime finishDate = DateTime(2024, 06, 30);
 
@@ -81,6 +85,43 @@ class _MyHomePageState extends State<MyHomePage2> {
         numberColor = 2;
       }
     });
+  }
+
+  late String date;
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      date = DateFormat('yyyy-MM-dd').format(pickedDate);
+    }
+  }
+
+  void saveHabit() {
+    debugPrint("entrei para criar");
+    PeriodLabel periodLabel;
+    TypeLabel typeLabel;
+    if (isMatutinoSelected) {
+      periodLabel = PeriodLabel.matutino;
+    } else if (isNoturnoSelected) {
+      periodLabel = PeriodLabel.noturno;
+    } else if (isVespertinoSelected) {
+      periodLabel = PeriodLabel.vespertino;
+    } else {
+      periodLabel = PeriodLabel.diario;
+    }
+    if (categoria == "Quantidade") {
+      typeLabel = TypeLabel.quantidade;
+    } else {
+      typeLabel = TypeLabel.booleano;
+    }
+    String data = finishDate.toString();
+    HabitController().postHabits(
+        habitName, habitColor, typeLabel, periodLabel, reference, date, meta);
   }
 
   @override
@@ -228,7 +269,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                                       hint: const Text('Tipo'),
                                       value: (value.isEmpty) ? null : value,
                                       onChanged: (choice) => setState(() {
-                                        goalKind = choice!;
+                                        categoria = choice!;
                                         dropValue.value = choice.toString();
                                       }),
                                       items: dropOptions.map((op) {
@@ -431,52 +472,50 @@ class _MyHomePageState extends State<MyHomePage2> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ElevatedButton(
-                                style: getHabitButtonDecorations(),
-                                onPressed: () async {
-                                  DateTime? newInitialDate =
-                                      await showDatePicker(
-                                    context: context,
-                                    initialDate: initialDate,
-                                    firstDate: DateTime(1900),
-                                    lastDate: DateTime(2100),
-                                  );
-                                  if (newInitialDate == null) return;
-                                  setState(() => initialDate = newInitialDate);
-                                },
+                              const SizedBox(width: 30),
+                              Expanded(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "Início: ${initialDate.day}/${initialDate.month}/${initialDate.year}",
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color.fromRGBO(74, 74, 73, 1),
+                                    const SizedBox(width: 0),
+                                    Expanded(
+                                      // INPUT 'EX: LITROS'
+                                      child: Container(
+                                        height: 40,
+                                        child: TextField(
+                                          onChanged: (value) {
+                                            setState(() {
+                                              meta = value;
+                                            });
+                                          },
+                                          decoration: getHabitInputDecorations(
+                                            sendText:
+                                                'Insira a quantidade da meta',
+                                            vertical: 10,
+                                            horizontal: 10,
+                                            width: 5,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 30),
-                                    const Icon(
-                                      Icons.calendar_today_rounded,
-                                      color: Color.fromRGBO(255, 71, 117, 1),
-                                      size: 18,
                                     ),
                                   ],
                                 ),
                               ),
+                              // AQUIIII
+
                               ElevatedButton(
                                 style: getHabitButtonDecorations(),
-                                onPressed: () async {
-                                  DateTime? newFinishDate =
-                                      await showDatePicker(
-                                    context: context,
-                                    initialDate: finishDate,
-                                    firstDate: DateTime(1900),
-                                    lastDate: DateTime(2100),
-                                  );
-                                  if (newFinishDate == null) return;
-                                  setState(() => finishDate = newFinishDate);
-                                },
+                                onPressed: () => selectDate(context),
+                                // onPressed: () async {
+                                //   DateTime? newFinishDate =
+                                //       await showDatePicker(
+                                //     context: context,
+                                //     initialDate: finishDate,
+                                //     firstDate: DateTime(1900),
+                                //     lastDate: DateTime(2100),
+                                //   );
+                                //   if (newFinishDate == null) return;
+                                //   setState(() => finishDate = newFinishDate);
+                                // },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -715,7 +754,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                             alignment: Alignment.bottomLeft,
                             margin: const EdgeInsets.only(top: 20),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: saveHabit,
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
                                     const Size(30, 20)),
