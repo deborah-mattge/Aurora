@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   spreadRadius: 5,
                   blurRadius: 7,
                   offset: const Offset(15, 0),
-                ),
+              ),
               ],
             ),
             child: DatePicker(
