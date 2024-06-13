@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage2> {
   String habitName = '';
   String categoria = 'Tipo';
   String reference = '';
-  String habitColor = '#A26BD8';
+  String habitColor = '#ffa26bd8';
   String meta = '';
   DateTime initialDate = DateTime(2024, 06, 07);
   late DateTime finishDate;
@@ -67,19 +67,19 @@ class _MyHomePageState extends State<MyHomePage2> {
   Color _colorTag = const Color.fromRGBO(162, 107, 216, 1);
   late int numberColor = 1;
 
-  void changeColorRight() {
+ void changeColorRight() {
     setState(() {
       if (numberColor == 1) {
         _colorTag = const Color.fromRGBO(61, 170, 243, 0.522);
-        habitColor = "#51B9D6";
+        habitColor = "#ff51b9d6";
         numberColor = 2;
       } else if (numberColor == 2) {
         _colorTag = const Color.fromRGBO(255, 71, 117, 1);
-        habitColor = "#FF4775";
+        habitColor = "#ffff4775";
         numberColor = 3;
       } else if (numberColor == 3) {
         _colorTag = const Color.fromRGBO(163, 221, 197, 1);
-        habitColor = "#7ACE78";
+        habitColor = "#ff7ace78";
         numberColor = 4;
       }
     });
@@ -89,15 +89,15 @@ class _MyHomePageState extends State<MyHomePage2> {
     setState(() {
       if (numberColor == 2) {
         _colorTag = const Color.fromRGBO(162, 107, 216, 1);
-        habitColor = "#A26BD8";
+        habitColor = "#ffa26bd8";
         numberColor = 1;
       } else if (numberColor == 4) {
         _colorTag = const Color.fromRGBO(255, 71, 117, 1);
-        habitColor = "#FF4775";
+        habitColor = "#ffff4775";
         numberColor = 3;
       } else if (numberColor == 3) {
         _colorTag = const Color.fromRGBO(61, 170, 243, 0.522);
-        habitColor = "#51B9D6";
+        habitColor = "#ff51b9d6";
         numberColor = 2;
       }
     });

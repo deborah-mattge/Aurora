@@ -129,7 +129,7 @@ class DailyGoalController extends ChangeNotifier {
   }
 
   Future<DailyGoal> getByDay2(num dayId, num monthId, num habitId) async {
-    var url = 'http://localhost:8080/dailyGoal/11/6/habit/$habitId';
+    var url = 'http://localhost:8080/dailyGoal/$dayId/$monthId/habit/$habitId';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
     final responseJson = jsonDecode(response.body);

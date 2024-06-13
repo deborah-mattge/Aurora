@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   spreadRadius: 5,
                   blurRadius: 7,
                   offset: const Offset(15, 0),
-              ),
+                ),
               ],
             ),
             child: DatePicker(
@@ -329,6 +329,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   habits.removeWhere((habit) =>
                                       habit.id == periodHabits[index].id);
                                 });
+                                alert.showErrorSnackBar(
+                                    context, "Hábito deletado");
                               }),
                               backgroundColor: Colors.pink,
                               foregroundColor: Colors.white,
