@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:aurora/controllers/UserController.dart';
 import 'package:aurora/models/UserModel.dart';
+import 'package:aurora/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aurora/main.dart' as main;
 
 class UpdateUserModal {
   Future<void> firstdialogBuilder(BuildContext context) async {
@@ -66,11 +68,20 @@ class UpdateUserModal {
                 style: TextButton.styleFrom(
                   textStyle: Theme.of(context).textTheme.labelLarge,
                 ),
+                child: const Icon(Icons.logout,
+                    color: Color.fromRGBO(255, 71, 117, 1)),
+                onPressed: () => logout(context)
+                // Navigator.of(context).pop();
+                ),
+            TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
                 child: const Icon(Icons.edit_square,
                     color: Color.fromRGBO(255, 71, 117, 1)),
                 onPressed: () => seconddialogBuilder(context)
                 // Navigator.of(context).pop();
-              ),
+                ),
           ],
         );
       },
@@ -100,8 +111,9 @@ class UpdateUserModal {
         return AlertDialog(
           title: const Text(
             'Perfil',
-            style: TextStyle(color: Color.fromRGBO(255, 71, 117, 1), 
-            fontFamily: 'Montserrat'),
+            style: TextStyle(
+                color: Color.fromRGBO(255, 71, 117, 1),
+                fontFamily: 'Montserrat'),
           ),
           insetPadding: const EdgeInsets.symmetric(vertical: 260),
           shape: RoundedRectangleBorder(
@@ -209,3 +221,15 @@ class UpdateUserModal {
     );
   }
 }
+
+Future<void> logout(BuildContext context) async {
+  await clearUserSession();
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(builder: (context) => Login()),
+  );
+}
+
+  Future<void> clearUserSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('email');
+  }

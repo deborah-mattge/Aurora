@@ -1,6 +1,8 @@
-import 'package:aurora/main.dart';
+
+import 'package:aurora/modals/success_alert.dart';
 import 'package:aurora/pages/habit_view.dart';
 import 'package:aurora/pages/login.dart';
+import 'package:aurora/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'package:aurora/controllers/UserController.dart';
 import 'package:aurora/pages/testing.dart';
@@ -159,6 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   _emailController.text,
                   _passwordController.text,
                 );
+                debugPrint('$response');
 
                 if (response.statusCode == 200) {
                   Navigator.push(
@@ -167,6 +170,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       builder: (context) => MyApp2(),
                     ),
                   );
+                } else {
+                  showErrorSnackBar(
+                    context, 'Credenciais inválidas');
                 }
               },
               style: ElevatedButton.styleFrom(

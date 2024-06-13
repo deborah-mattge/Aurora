@@ -116,10 +116,10 @@ class DailyLista extends StatelessWidget {
             itemCount: dailies.length,
             itemBuilder: (context, index) {
               final daily = dailies[index];
-              return OutlinedButton(
-                onPressed: () => showDailyGoalModal(context, daily.id, habitId),
-                child: Text('Open Daily: ${daily.id}'),
-              );
+              // return OutlinedButton(
+              //   // onPressed: () => showDailyGoalModal(context, daily.id, habitId),
+              //   // child: Text('Open Daily: ${daily.id}'),
+              // );
             },
           );
         }

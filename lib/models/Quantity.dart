@@ -1,6 +1,6 @@
 class Quantity {
   final int id;
-  final int currentStatus;
+  late final int currentStatus;
   final int goal;
 
   Quantity({required this.id, required this.currentStatus, required this.goal});
