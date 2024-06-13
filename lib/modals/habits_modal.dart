@@ -64,10 +64,10 @@ class HabitsModal extends ChangeNotifier {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          insetPadding: const EdgeInsets.symmetric(vertical: 170),
+          insetPadding: const EdgeInsets.symmetric(vertical: 100),
           backgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
           content: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
+            width: MediaQuery.of(context).size.width * 1.5,
             child: Stack(
               children: [
                 Column(
@@ -339,6 +339,7 @@ class _PeriodDropdownState extends State<PeriodDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding:  EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
         color: dropdownBackgroundColor,
         borderRadius: BorderRadius.circular(10),
@@ -404,7 +405,9 @@ class _TypeDropdownState extends State<TypeDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
+      
         color: dropdownBackgroundColor,
         borderRadius: BorderRadius.circular(10),
       ),

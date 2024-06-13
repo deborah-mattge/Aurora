@@ -37,9 +37,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late List<Habit> habits = [];
-  late DailyGoal dailyGoal;
-  late List<DailyGoal> dailies;
-  late num dailiesLength = 2;
+  DailyGoal? dailyGoal;
+  late List<DailyGoal> dailies = [];
+  late num dailiesLenght = 2;
+
   late num dailiesDone = 0;
   DateTime _selectedValue = DateTime.now();
 
@@ -56,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     DateTime dateTime = _selectedValue;
     dailies =
         await DailyGoalController().getAllByDay(dateTime.day, dateTime.month);
+
     dailiesLength = dailies.length;
     getDone();
   }
@@ -67,6 +69,14 @@ class _MyHomePageState extends State<MyHomePage> {
         dailiesDone = dailiesDone + 1;
       }
     }
+  }
+
+  Future<void> daily(num habitId) async {
+    debugPrint('$habitId');
+    DateTime dateTime = _selectedValue;
+    dailyGoal = await DailyGoalController()
+        .getByDay2(dateTime.day, dateTime.month, habitId);
+    setState(() {}); // Atualiza o estado para refletir a mudança em dailyGoal
   }
 
   @override
@@ -82,13 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
 
     int dailyId = 1;
-
-    Future<void> daily(num habitId) async {
-      DateTime dateTime = _selectedValue;
-      dailyGoal = await DailyGoalController()
-          .getByDay2(dateTime.day, dateTime.month, habitId);
-      dailyId = dailyGoal.id;
-    }
 
     List<Color> habitColors = habits.map((habit) => habit.color).toList();
 
@@ -184,6 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Positioned.fill(
                           child: Center(
                             child: Text(
+
                               '$dailiesDone/$dailiesLength',
                               style: const TextStyle(
                                 fontSize: 40,
@@ -286,6 +290,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
 
                         return Slidable(
+
                           startActionPane:
                               ActionPane(motion: BehindMotion(), children: [
                             SlidableAction(
@@ -438,7 +443,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
         child: const Icon(Icons.add),
-        backgroundColor: Color.fromRGBO(255, 71, 117, 1),
+        backgroundColor: const Color.fromRGBO(255, 71, 117, 1),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

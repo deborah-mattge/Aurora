@@ -39,8 +39,11 @@ class _DailyGoalModalState extends State<DailyGoalModal> {
     }
     Habit habit = await HabitController().getOneHabit(widget.habitId, user!.id);
     habitName = habit.name;
+    debugPrint("aaaaaa${widget.dailyId}");
     DailyGoal daily = await DailyGoalController().getOneDaily(widget.dailyId);
+
     if (daily.quantity != null) {
+      debugPrint("piii");
       counter = daily.quantity!.currentStatus;
       goal = daily.quantity!.goal;
       goalVsCurrent2 =
@@ -50,6 +53,7 @@ class _DailyGoalModalState extends State<DailyGoalModal> {
   }
 
   void _incrementCounter() {
+    debugPrint(counter.toString());
     setState(() {
       if (counter != null) {
         counter = counter! + 1;
@@ -437,7 +441,7 @@ void showDailyGoalModal(BuildContext context, int dailyId, int habitId) async {
 
   if (user != null) {
     Habit habit = await HabitController().getOneHabit(habitId, user.id);
-    debugPrint(habit.goalKind.toString());
+    debugPrint(habit.goalKind.toString() + "fsd");
 
     if (habit.goalKind == TypeLabel.quantidade) {
       showDialog(
