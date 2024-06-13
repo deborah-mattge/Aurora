@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   DailyGoal? dailyGoal;
   late List<DailyGoal> dailies = [];
   late num dailiesLenght = 2;
+
   late num dailiesDone = 0;
   DateTime _selectedValue = DateTime.now();
 
@@ -56,8 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
     DateTime dateTime = _selectedValue;
     dailies =
         await DailyGoalController().getAllByDay(dateTime.day, dateTime.month);
-    debugPrint("${dailies[0]}");
-    dailiesLenght = dailies.length;
+
+    dailiesLength = dailies.length;
     getDone();
   }
 
@@ -81,22 +82,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final List<String> itemColors = ["51B9D6", "FF4775", "7ACE78", "A26BD8"];
-    double completionPercentage = dailiesDone / habits.length;
-    double value = 2;
-    var data = habits.map((habit) {
-      return {
-        'name': habit.name,
-        'color': habit.color.value.toRadixString(16).padLeft(6, '0'),
-        'value': value
-      };
-    }).toList();
+    var data = [
+      {
+        'name': 'Habits',
+        'color': '51B9D6',
+        'value': dailiesDone * 2,
+        'goal': dailiesLength,
+      }
+    ];
 
     int dailyId = 1;
 
     List<Color> habitColors = habits.map((habit) => habit.color).toList();
-    if (habitColors.length < 2) {
-      habitColors = [Colors.grey, Colors.grey];
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -190,7 +187,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         Positioned.fill(
                           child: Center(
                             child: Text(
-                              '$dailiesDone/${habits.length}',
+
+                              '$dailiesDone/$dailiesLength',
                               style: const TextStyle(
                                 fontSize: 40,
                                 color: Colors.pink,
@@ -210,19 +208,17 @@ class _MyHomePageState extends State<MyHomePage> {
                               'name': Variable(
                                 accessor: (Map map) => map['name'] as String,
                               ),
-                              'value': Variable(
-                                accessor: (Map map) => map['value'] as num,
+                              'percent': Variable(
+                                accessor: (Map map) {
+                                  num value = map['value'] as num;
+                                  num goal = map['goal'] as num;
+                                  return value / goal;
+                                },
                               ),
                               'color': Variable(
                                 accessor: (Map map) => map['color'] as String,
                               ),
                             },
-                            transforms: [
-                              Proportion(
-                                variable: 'value',
-                                as: 'percent',
-                              )
-                            ],
                             marks: [
                               IntervalMark(
                                 position: Varset('percent') / Varset('name'),
@@ -294,65 +290,63 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
 
                         return Slidable(
-                          startActionPane: ActionPane(
-                              motion: const BehindMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: ((context) {
-                                    daily(periodHabits[index].id);
-                                    if (dailyGoal != null) {
-                                      debugPrint("ti aqui ie");
-                                      showDailyGoalModal(context, dailyGoal!.id,
-                                          periodHabits[index].id);
-                                    }
-                                  }),
-                                  backgroundColor: Colors.pink,
-                                  icon: Icons.add,
-                                  padding: const EdgeInsets.all(0),
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.elliptical(10.0, 10.0),
-                                    bottomLeft: Radius.elliptical(10.0, 10.0),
-                                  ),
-                                ),
-                                SlidableAction(
-                                  onPressed: ((context) {
-                                    DailyGoalController()
-                                        .setDone(habitDailyGoal.id);
-                                    alert.showConfirmationSnackBar(
-                                        context, 'Hábito marcado como feito!');
-                                    setState(() {
-                                      habitDailyGoal.quantity?.currentStatus +=
-                                          habitDailyGoal.quantity!.goal;
-                                    });
-                                  }),
-                                  backgroundColor:
-                                      const Color.fromRGBO(81, 185, 214, 1),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.check,
-                                ),
-                              ]),
-                          endActionPane: ActionPane(
-                              motion: const BehindMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: ((context) {
-                                    HabitController()
-                                        .deleteHabit(periodHabits[index].id);
-                                    setState(() {
-                                      habits.removeWhere((habit) =>
-                                          habit.id == periodHabits[index].id);
-                                    });
-                                  }),
-                                  backgroundColor: Colors.pink,
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                  padding: const EdgeInsets.all(0),
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.elliptical(10.0, 10.0),
-                                    bottomRight: Radius.elliptical(10.0, 10.0),
-                                  ),
-                                ),
-                              ]),
+
+                          startActionPane:
+                              ActionPane(motion: BehindMotion(), children: [
+                            SlidableAction(
+                              onPressed: ((context) {
+                                daily(periodHabits[index].id);
+                                showDailyGoalModal(context, dailyGoal.id,
+                                    periodHabits[index].id);
+                              }),
+                              backgroundColor: Colors.pink,
+                              icon: Icons.add,
+                              padding: const EdgeInsets.all(0),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.elliptical(10.0, 10.0),
+                                bottomLeft: Radius.elliptical(10.0, 10.0),
+                              ),
+                            ),
+                            SlidableAction(
+                              onPressed: ((context) {
+                                DailyGoalController()
+                                    .setDone(habitDailyGoal.id);
+                                alert.showConfirmationSnackBar(
+                                    context, 'Hábito marcado como feito!');
+                                setState(() {
+                                  habitDailyGoal.quantity?.currentStatus +=
+                                      habitDailyGoal.quantity!.goal;
+                                });
+                              }),
+                              backgroundColor:
+                                  const Color.fromRGBO(81, 185, 214, 1),
+                              foregroundColor: Colors.white,
+                              icon: Icons.check,
+                            ),
+                          ]),
+                          endActionPane:
+                              ActionPane(motion: BehindMotion(), children: [
+                            SlidableAction(
+                              onPressed: ((context) {
+                                HabitController()
+                                    .deleteHabit(periodHabits[index].id);
+                                setState(() {
+                                  habits.removeWhere((habit) =>
+                                      habit.id == periodHabits[index].id);
+                                });
+                                alert.showErrorSnackBar(
+                                    context, "Hábito deletado");
+                              }),
+                              backgroundColor: Colors.pink,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              padding: const EdgeInsets.all(0),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.elliptical(10.0, 10.0),
+                                bottomRight: Radius.elliptical(10.0, 10.0),
+                              ),
+                            ),
+                          ]),
                           child: GestureDetector(
                             onTap: () => HabitsModal().firstdialogBuilder(
                                 context, periodHabits[index].id),

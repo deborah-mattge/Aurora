@@ -1,4 +1,5 @@
 
+import 'package:aurora/modals/success_alert.dart';
 import 'package:aurora/pages/habit_view.dart';
 import 'package:aurora/pages/login.dart';
 import 'package:aurora/pages/register.dart';
@@ -163,13 +164,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 debugPrint('$response');
 
                 if (response.statusCode == 200) {
-                  debugPrint("dfgfdgfdg");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => MyApp3(),
                     ),
                   );
+                } else {
+                  showErrorSnackBar(
+                    context, 'Credenciais inválidas');
                 }
               },
               style: ElevatedButton.styleFrom(

@@ -1,3 +1,4 @@
+import 'package:aurora/modals/success_alert.dart';
 import 'package:aurora/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:aurora/controllers/UserController.dart';
@@ -256,6 +257,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     builder: (context) => MyApp2(),
                                   ),
                                 );
+                              } else {
+                                showErrorSnackBar(
+                                    context, 'Insira um email válido');
                               }
                             },
                             style: ElevatedButton.styleFrom(

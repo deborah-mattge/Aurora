@@ -6,7 +6,7 @@ ButtonStyle getHabitButtonDecorations() {
       vertical: 10, horizontal: 1
     )),
     fixedSize: const MaterialStatePropertyAll(
-      Size(110, 15)
+      Size(140, 40)
     ),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
