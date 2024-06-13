@@ -2,6 +2,8 @@ import 'package:aurora/controllers/DailyGoalController.dart';
 import 'package:aurora/controllers/HabitController.dart';
 import 'package:aurora/modals/daily_goal_modal.dart';
 import 'package:aurora/modals/habits_modal.dart';
+import 'package:aurora/modals/update_user_modal.dart';
+import 'package:aurora/modals/success_alert.dart' as alert;
 import 'package:aurora/models/DailyGoal.dart';
 import 'package:aurora/models/Habit.dart';
 import 'package:aurora/pages/create_habit.dart';
@@ -19,8 +21,6 @@ void main() {
 }
 
 class MyApp3 extends StatelessWidget {
-  final HabitController _habitController = HabitController();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,6 +37,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late List<Habit> habits = [];
+  late DailyGoal dailyGoal;
+  late List<DailyGoal> dailies;
+  late num dailiesLength = 2;
+  late num dailiesDone = 0;
+  DateTime _selectedValue = DateTime.now();
 
   @override
   void initState() {
@@ -46,52 +51,46 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _fetchHabits() async {
     habits = await HabitController().getHabits(1);
+
     setState(() {});
+    DateTime dateTime = _selectedValue;
+    dailies =
+        await DailyGoalController().getAllByDay(dateTime.day, dateTime.month);
+    dailiesLength = dailies.length;
+    getDone();
   }
 
-  DateTime _selectedValue = DateTime.now();
-
-  List<MarkElement> centralPieLabel(
-    Size size,
-    Offset anchor,
-    Map<int, Tuple> selectedTuples,
-  ) {
-    final tuple = selectedTuples.values.last;
-    final titleElement = LabelElement(
-      text: 'olaaa',
-      anchor: const Offset(175, 150),
-      style: LabelStyle(
-        textStyle: const TextStyle(fontSize: 14, color: Colors.black87),
-        align: Alignment.topCenter,
-      ),
-    );
-    return [titleElement];
+  void getDone() {
+    dailiesDone = 0;
+    for (var daily in dailies) {
+      if (daily.done == true) {
+        dailiesDone = dailiesDone + 1;
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final List<String> itemColors = ["51B9D6", "FF4775", "7ACE78", "A26BD8"];
-    var data = habits.map((habit) {
-      return {'name': habit.name, 'color': habit.color, 'value': 10};
-    }).toList();
-
-    List<Color> habitColors = habits.map((habit) {
-      String colorCode =
-          '000000' ?? 'FFFFFF'; // Default to white if color is null
-      if (colorCode.length == 6) {
-        colorCode = '0xFF' + colorCode;
+    var data = [
+      {
+        'name': 'Habits',
+        'color': '51B9D6',
+        'value': dailiesDone * 2,
+        'goal': dailiesLength,
       }
-      try {
-        return Color(int.parse(colorCode));
-      } catch (e) {
-        return Colors.grey; // Default to grey if parsing fails
-      }
-    }).toList();
+    ];
 
-    Color singleColor =
-        habitColors.isNotEmpty ? habitColors.first : Colors.grey;
-    List<Color> colorValues =
-        habitColors.length > 1 ? habitColors : [singleColor, singleColor];
+    int dailyId = 1;
+
+    Future<void> daily(num habitId) async {
+      DateTime dateTime = _selectedValue;
+      dailyGoal = await DailyGoalController()
+          .getByDay2(dateTime.day, dateTime.month, habitId);
+      dailyId = dailyGoal.id;
+    }
+
+    List<Color> habitColors = habits.map((habit) => habit.color).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -103,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => UpdateUserModal().firstdialogBuilder(context),
             icon: const Icon(Icons.person,
                 color: Color.fromRGBO(81, 185, 214, 1)),
           ),
@@ -123,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   spreadRadius: 5,
                   blurRadius: 7,
                   offset: const Offset(15, 0),
-                ),
+              ),
               ],
             ),
             child: DatePicker(
@@ -141,6 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onDateChange: (date) {
                 setState(() {
                   _selectedValue = date;
+                  _fetchHabits();
                 });
               },
             ),
@@ -181,11 +181,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Stack(
                       children: [
-                        const Positioned.fill(
+                        Positioned.fill(
                           child: Center(
                             child: Text(
-                              '1/3',
-                              style: TextStyle(
+                              '$dailiesDone/$dailiesLength',
+                              style: const TextStyle(
                                 fontSize: 40,
                                 color: Colors.pink,
                                 letterSpacing: 0,
@@ -204,24 +204,22 @@ class _MyHomePageState extends State<MyHomePage> {
                               'name': Variable(
                                 accessor: (Map map) => map['name'] as String,
                               ),
-                              'value': Variable(
-                                accessor: (Map map) => map['value'] as num,
+                              'percent': Variable(
+                                accessor: (Map map) {
+                                  num value = map['value'] as num;
+                                  num goal = map['goal'] as num;
+                                  return value / goal;
+                                },
                               ),
                               'color': Variable(
                                 accessor: (Map map) => map['color'] as String,
                               ),
                             },
-                            transforms: [
-                              Proportion(
-                                variable: 'value',
-                                as: 'percent',
-                              )
-                            ],
                             marks: [
                               IntervalMark(
                                 position: Varset('percent') / Varset('name'),
                                 color: ColorEncode(
-                                    variable: 'color', values: colorValues),
+                                    variable: 'color', values: habitColors),
                                 modifiers: [StackModifier()],
                               ),
                             ],
@@ -272,107 +270,150 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     const SizedBox(height: 10),
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: periodHabits.length,
-                        itemBuilder: (context, index) {
-                          return Slidable(
-                            startActionPane:
-                                ActionPane(motion: BehindMotion(), children: [
-                              SlidableAction(
-                                onPressed: ((context) {
-                                  showDailyGoalModal(context, 1, 1);
-                                }),
-                                backgroundColor: Colors.pink,
-                                icon: Icons.add,
-                                padding: const EdgeInsets.all(0),
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.elliptical(10.0, 10.0),
-                                  bottomLeft: Radius.elliptical(10.0, 10.0),
-                                ),
-                              ),
-                              SlidableAction(
-                                onPressed: ((context) {}),
-                                backgroundColor:
-                                    const Color.fromRGBO(81, 185, 214, 1),
-                                foregroundColor: Colors.white,
-                                icon: Icons.check,
-                              ),
-                            ]),
-                            child: GestureDetector(
-                              onTap: () => HabitsModal().firstdialogBuilder(
-                                  context, periodHabits[index].id),
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 16.0, horizontal: 20.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: 5,
-                                          height: 40,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.purple,
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          periodHabits[index].name,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          '10/20', // Substitua pelo valor dinâmico se necessário
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          'páginas', // Substitua pelo valor dinâmico se necessário
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                        child: ListView.builder(
+                      itemCount: periodHabits.length,
+                      itemBuilder: (context, index) {
+                        // Obter a meta diária específica para este hábito
+                        DailyGoal habitDailyGoal = dailies.firstWhere((daily) =>
+                            daily.habit?.id == periodHabits[index].id);
+                        String goalVsCurrent = '';
+                        if (habitDailyGoal.quantity != null) {
+                          goalVsCurrent =
+                              '${habitDailyGoal.quantity!.currentStatus} / ${habitDailyGoal.quantity!.goal}';
+                        } else {
+                          goalVsCurrent =
+                              '${habitDailyGoal.booleanS!.currentStatus} / ${habitDailyGoal.booleanS!.goal}';
+                        }
+
+                        return Slidable(
+                          startActionPane:
+                              ActionPane(motion: BehindMotion(), children: [
+                            SlidableAction(
+                              onPressed: ((context) {
+                                daily(periodHabits[index].id);
+                                showDailyGoalModal(context, dailyGoal.id,
+                                    periodHabits[index].id);
+                              }),
+                              backgroundColor: Colors.pink,
+                              icon: Icons.add,
+                              padding: const EdgeInsets.all(0),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.elliptical(10.0, 10.0),
+                                bottomLeft: Radius.elliptical(10.0, 10.0),
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    )
+                            SlidableAction(
+                              onPressed: ((context) {
+                                DailyGoalController()
+                                    .setDone(habitDailyGoal.id);
+                                alert.showConfirmationSnackBar(
+                                    context, 'Hábito marcado como feito!');
+                                setState(() {
+                                  habitDailyGoal.quantity?.currentStatus +=
+                                      habitDailyGoal.quantity!.goal;
+                                });
+                              }),
+                              backgroundColor:
+                                  const Color.fromRGBO(81, 185, 214, 1),
+                              foregroundColor: Colors.white,
+                              icon: Icons.check,
+                            ),
+                          ]),
+                          endActionPane:
+                              ActionPane(motion: BehindMotion(), children: [
+                            SlidableAction(
+                              onPressed: ((context) {
+                                HabitController()
+                                    .deleteHabit(periodHabits[index].id);
+                                setState(() {
+                                  habits.removeWhere((habit) =>
+                                      habit.id == periodHabits[index].id);
+                                });
+                              }),
+                              backgroundColor: Colors.pink,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              padding: const EdgeInsets.all(0),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.elliptical(10.0, 10.0),
+                                bottomRight: Radius.elliptical(10.0, 10.0),
+                              ),
+                            ),
+                          ]),
+                          child: GestureDetector(
+                            onTap: () => HabitsModal().firstdialogBuilder(
+                                context, periodHabits[index].id),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 4.0),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16.0, horizontal: 20.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 5,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: periodHabits[index].color,
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        periodHabits[index].name,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        habitDailyGoal.quantity != null
+                                            ? '${habitDailyGoal.quantity!.currentStatus}/${habitDailyGoal.quantity!.goal}'
+                                            : '${habitDailyGoal.booleanS!.currentStatus}/${habitDailyGoal.booleanS!.goal}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        periodHabits[index].reference,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ))
                   ],
                 );
               }).toList(),
@@ -394,7 +435,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Color.fromRGBO(255, 71, 117, 1),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

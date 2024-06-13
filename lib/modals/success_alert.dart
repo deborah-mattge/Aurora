@@ -1,56 +1,25 @@
 import 'package:flutter/material.dart';
 
-final Color darkBlue = Color.fromARGB(255, 246, 247, 248);
-
-void main() {
-  runApp(HomeScreen());
+void showConfirmationSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 5), 
+      backgroundColor: const Color.fromRGBO(81, 185, 214, 1), 
+      behavior: SnackBarBehavior.floating, 
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24), 
+    ),
+  );
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    super.key,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: darkBlue),
-      debugShowCheckedModeBanner: false,
-      home: const Scaffold(
-        body: Center(
-          child: YellowBird(),
-        ),
-      ),
-    );
-  }
-}
-
-class YellowBird extends StatefulWidget {
-  const YellowBird({ Key? key }) : super(key: key);
-
-  @override
-  _YellowBirdState createState() => _YellowBirdState();
-}
-
-class _YellowBirdState extends State<YellowBird> {
-  
-  @override
-  initState() {
-    super.initState();
-    Future.delayed(Duration(milliseconds: 100)).then((_) {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            title: Text("My Super title"),
-            content: Text("Hello World"),
-          );
-        }
-      );
-    });
-  }
-                 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
+void showErrorSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 5), 
+      backgroundColor: Colors.pink, 
+      behavior: SnackBarBehavior.floating, 
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24), 
+    ),
+  );
 }

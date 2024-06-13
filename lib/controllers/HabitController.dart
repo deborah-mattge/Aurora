@@ -110,4 +110,17 @@ class HabitController extends ChangeNotifier {
     List<Habit> allHabits = await getHabits(userId);
     return allHabits.where((habit) => habit.habitCategory == category).toList();
   }
+
+  Future<void> deleteHabit(int id) async {
+    var url = 'http://localhost:8080/habit/$id';
+    var headers = {'Content-Type': 'application/json'};
+    var response = await http.delete(Uri.parse(url), headers: headers);
+
+    if (response.statusCode == 200) {
+      debugPrint('Hábito deletado com sucesso!');
+    } else {
+      debugPrint('Falha ao deletar hábito');
+    }
+    notifyListeners();
+  }
 }
