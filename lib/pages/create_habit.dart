@@ -1,5 +1,6 @@
 import 'package:aurora/components/decoration_button.dart';
 import 'package:aurora/components/decoration_input.dart';
+import 'package:aurora/components/headerAurora.dart';
 import 'package:aurora/controllers/HabitController.dart';
 import 'package:aurora/models/Habit.dart';
 import 'package:aurora/pages/habit_view.dart';
@@ -158,10 +159,7 @@ class _MyHomePageState extends State<MyHomePage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AURORA'),
-        backgroundColor: const Color.fromRGBO(61, 170, 243, 0.522),
-      ),
+      appBar: headerAurora(context),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -257,7 +255,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                           child: Row(
                             children: [
                               SizedBox(
-                                width: 140,
+                                width: 130,
                                 height: 40,
                                 child: ValueListenableBuilder<String>(
                                   valueListenable: dropValue,
@@ -454,8 +452,8 @@ class _MyHomePageState extends State<MyHomePage2> {
                                       ),
                                     ),
                                     Positioned(
-                                      right: 55,
-                                      top: 5,
+                                      right: 59,
+                                      top: 11,
                                       child: Container(
                                         width: 25,
                                         height: 25,
@@ -479,7 +477,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (categoria ==
-                              'Quantidade') // Condição para mostrar apenas se for 'Quantidade'
+                              'Quantidade') 
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -507,7 +505,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                                         ),
                                         SizedBox(width: 70),
                                         Text(
-                                          'Data final',
+                                          'Data final ',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400,
@@ -532,7 +530,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                                 Row(
                                   children: [
                                     Container(
-                                      width: 130,
+                                      width: 120,
                                       height: 40,
                                       child: TextField(
                                         onChanged: (value) {
@@ -548,7 +546,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 50),
+                                    SizedBox(width: 42),
                                     ElevatedButton(
                                       style: getHabitButtonDecorations(),
                                       onPressed: () => selectDate(context),
@@ -686,7 +684,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                         children: [
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 30),
+                            margin: const EdgeInsets.only(top: 20),
                             child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -738,7 +736,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 30),
+                            margin: const EdgeInsets.only(top: 20),
                             child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -790,13 +788,13 @@ class _MyHomePageState extends State<MyHomePage2> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(top: 0),
                             child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -846,7 +844,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(top: 0),
                             child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -904,7 +902,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                         children: [
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 60),
+                            margin: const EdgeInsets.only(top: 20),
                             child: ElevatedButton(
                               onPressed: () {
                                 // Navegar para a tela habit_view.dart
@@ -940,7 +938,7 @@ class _MyHomePageState extends State<MyHomePage2> {
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(top: 60),
+                            margin: const EdgeInsets.only(top: 20),
                             child: ElevatedButton(
                               onPressed: saveHabit,
                               style: ButtonStyle(

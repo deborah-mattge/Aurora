@@ -1,3 +1,4 @@
+import 'package:aurora/components/headerAurora.dart';
 import 'package:aurora/controllers/DailyGoalController.dart';
 import 'package:aurora/controllers/HabitController.dart';
 import 'package:aurora/modals/daily_goal_modal.dart';
@@ -58,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     dailies =
         await DailyGoalController().getAllByDay(dateTime.day, dateTime.month);
 
-    dailiesLength = dailies.length;
+    dailiesLenght = dailies.length;
     getDone();
   }
 
@@ -87,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
         'name': 'Habits',
         'color': '51B9D6',
         'value': dailiesDone * 2,
-        'goal': dailiesLength,
+        'goal': dailiesLenght,
       }
     ];
 
@@ -96,21 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Color> habitColors = habits.map((habit) => habit.color).toList();
 
     return Scaffold(
-      appBar: AppBar(
-        leading: Container(
-          padding: const EdgeInsets.only(left: 25.0),
-          child: SizedBox(
-            child: Image.asset('assets/images/AURORA.png'),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => UpdateUserModal().firstdialogBuilder(context),
-            icon: const Icon(Icons.person,
-                color: Color.fromRGBO(81, 185, 214, 1)),
-          ),
-        ],
-      ),
+      appBar: headerAurora(context),
       backgroundColor: Colors.white,
       body: Column(
         children: [
@@ -188,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Center(
                             child: Text(
 
-                              '$dailiesDone/$dailiesLength',
+                              '$dailiesDone/$dailiesLenght',
                               style: const TextStyle(
                                 fontSize: 40,
                                 color: Colors.pink,
@@ -296,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             SlidableAction(
                               onPressed: ((context) {
                                 daily(periodHabits[index].id);
-                                showDailyGoalModal(context, dailyGoal.id,
+                                showDailyGoalModal(context, dailyGoal!.id,
                                     periodHabits[index].id);
                               }),
                               backgroundColor: Colors.pink,
