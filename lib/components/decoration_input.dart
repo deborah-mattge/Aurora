@@ -18,7 +18,7 @@ InputDecoration getHabitInputDecorations(
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
       borderSide: const BorderSide(
-        color: Colors.black12,
+        color: Color.fromARGB(31, 136, 136, 136),
         width: 1,
       ),
     ),

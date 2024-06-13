@@ -1,0 +1,35 @@
+diff.astextplain.textconv=astextplain
+filter.lfs.clean=git-lfs clean -- %f
+filter.lfs.smudge=git-lfs smudge -- %f
+filter.lfs.process=git-lfs filter-process
+filter.lfs.required=true
+http.sslbackend=openssl
+http.sslcainfo=C:/Program Files/Git/mingw64/etc/ssl/certs/ca-bundle.crt
+core.autocrlf=true
+core.fscache=true
+core.symlinks=false
+core.editor="C:\\Program Files\\Microsoft VS Code\\bin\\code" --wait
+pull.rebase=false
+credential.helper=manager
+credential.https://dev.azure.com.usehttppath=true
+init.defaultbranch=main
+user.name==
+user.mail==
+core.repositoryformatversion=0
+core.filemode=false
+core.bare=false
+core.logallrefupdates=true
+core.symlinks=false
+core.ignorecase=true
+remote.origin.url=https://github.com/deborah-mattge/Aurora.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.main.remote=origin
+branch.main.merge=refs/heads/main
+branch.dev.remote=origin
+branch.dev.merge=refs/heads/dev
+branch.feat/createHabbits.remote=origin
+branch.feat/createHabbits.merge=refs/heads/feat/createHabbits
+branch.feat/createHAbits.remote=origin
+branch.feat/createHAbits.merge=refs/heads/feat/createHAbits
+branch.feat/createHabits.remote=origin
+branch.feat/createHabits.merge=refs/heads/feat/createHabits
