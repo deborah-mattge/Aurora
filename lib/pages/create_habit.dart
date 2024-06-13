@@ -26,7 +26,7 @@ class MyHomePage2 extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage2> {
   String habitName = '';
-  String categoria = '';
+  String categoria = 'Tipo';
   String reference = '';
   String habitColor = '#A26BD8';
   String meta = '';
@@ -478,89 +478,178 @@ class _MyHomePageState extends State<MyHomePage2> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Meta diária',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color.fromRGBO(74, 74, 73, 1),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    ' *',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 71, 117, 1),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                      width:
-                                          70), // Espaçamento entre os asteriscos
-                                  Text(
-                                    '*',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(255, 71, 117, 1),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Container(
-                                // AQUII AGORA
-                                width: 130,
-                                height: 40,
-                                child: TextField(
-                                  onChanged: (value) {
-                                    setState(() {
-                                      meta = value;
-                                    });
-                                  },
-                                  decoration: getHabitInputDecorations(
-                                    sendText: 'Ex: 4',
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    width: 5,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 50),
-                              ElevatedButton(
-                                style: getHabitButtonDecorations(),
-                                onPressed: () => selectDate(context),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                          if (categoria ==
+                              'Quantidade') // Condição para mostrar apenas se for 'Quantidade'
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Fim: ${finishDate.day}/${finishDate.month}/${finishDate.year}",
-                                      style: const TextStyle(
+                                      'Meta diária',
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
                                         color: Color.fromRGBO(74, 74, 73, 1),
                                       ),
                                     ),
-                                    const SizedBox(width: 5),
-                                    const Icon(
-                                      Icons.calendar_today_rounded,
-                                      color: Color.fromRGBO(255, 71, 117, 1),
-                                      size: 18,
+                                    Row(
+                                      children: [
+                                        Text(
+                                          ' *',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w400,
+                                            color:
+                                                Color.fromRGBO(255, 71, 117, 1),
+                                          ),
+                                        ),
+                                        SizedBox(width: 70),
+                                        Text(
+                                          'Data final',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color:
+                                                Color.fromRGBO(74, 74, 73, 1),
+                                          ),
+                                        ),
+                                        Text(
+                                          '*',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w400,
+                                            color:
+                                                Color.fromRGBO(255, 71, 117, 1),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 130,
+                                      height: 40,
+                                      child: TextField(
+                                        onChanged: (value) {
+                                          setState(() {
+                                            meta = value;
+                                          });
+                                        },
+                                        decoration: getHabitInputDecorations(
+                                          sendText: 'Ex: 4',
+                                          vertical: 10,
+                                          horizontal: 10,
+                                          width: 5,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 50),
+                                    ElevatedButton(
+                                      style: getHabitButtonDecorations(),
+                                      onPressed: () => selectDate(context),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "${finishDate.day}/${finishDate.month}/${finishDate.year}",
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color:
+                                                  Color.fromRGBO(74, 74, 73, 1),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 5),
+                                          const Icon(
+                                            Icons.calendar_today_rounded,
+                                            color:
+                                                Color.fromRGBO(255, 71, 117, 1),
+                                            size: 18,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (categoria == 'Tipo' || categoria == "Sim/Não")
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Data final',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color.fromRGBO(74, 74, 73, 1),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          ' *',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w400,
+                                            color:
+                                                Color.fromRGBO(255, 71, 117, 1),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    ElevatedButton(
+                                      style: getHabitButtonDecorations(),
+                                      onPressed: () => selectDate(context),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "${finishDate.day}/${finishDate.month}/${finishDate.year}",
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color:
+                                                  Color.fromRGBO(74, 74, 73, 1),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 5),
+                                          const Icon(
+                                            Icons.calendar_today_rounded,
+                                            color:
+                                                Color.fromRGBO(255, 71, 117, 1),
+                                            size: 18,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
