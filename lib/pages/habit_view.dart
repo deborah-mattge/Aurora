@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late List<Habit> habits = [];
   late DailyGoal dailyGoal;
   late List<DailyGoal> dailies;
-  late num dailiesLenght = 2;
+  late num dailiesLength = 2;
   late num dailiesDone = 0;
   DateTime _selectedValue = DateTime.now();
 
@@ -51,13 +51,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _fetchHabits() async {
     habits = await HabitController().getHabits(1);
-    dailyGoal = await DailyGoalController()
-        .getByDay2(_selectedValue.day, _selectedValue.month, 1);
+
     setState(() {});
     DateTime dateTime = _selectedValue;
     dailies =
         await DailyGoalController().getAllByDay(dateTime.day, dateTime.month);
-    dailiesLenght = dailies.length;
+    dailiesLength = dailies.length;
+    getDone();
   }
 
   void getDone() {
@@ -72,15 +72,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final List<String> itemColors = ["51B9D6", "FF4775", "7ACE78", "A26BD8"];
-    double completionPercentage = dailiesDone / habits.length;
-    double value = 2;
-    var data = habits.map((habit) {
-      return {
-        'name': habit.name,
-        'color': habit.color.value.toRadixString(16).padLeft(6, '0'),
-        'value': value
-      };
-    }).toList();
+    var data = [
+      {
+        'name': 'Habits',
+        'color': '51B9D6',
+        'value': dailiesDone * 2,
+        'goal': dailiesLength,
+      }
+    ];
 
     int dailyId = 1;
 
@@ -92,9 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     List<Color> habitColors = habits.map((habit) => habit.color).toList();
-    if (habitColors.length < 2) {
-      habitColors = [Colors.grey, Colors.grey];
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -145,7 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   _selectedValue = date;
                   _fetchHabits();
-                  getDone();
                 });
               },
             ),
@@ -189,9 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Positioned.fill(
                           child: Center(
                             child: Text(
-                              dailiesDone.toString() +
-                                  '/' +
-                                  habits.length.toString(),
+                              '$dailiesDone/$dailiesLength',
                               style: const TextStyle(
                                 fontSize: 40,
                                 color: Colors.pink,
@@ -211,19 +204,17 @@ class _MyHomePageState extends State<MyHomePage> {
                               'name': Variable(
                                 accessor: (Map map) => map['name'] as String,
                               ),
-                              'value': Variable(
-                                accessor: (Map map) => map['value'] as num,
+                              'percent': Variable(
+                                accessor: (Map map) {
+                                  num value = map['value'] as num;
+                                  num goal = map['goal'] as num;
+                                  return value / goal;
+                                },
                               ),
                               'color': Variable(
                                 accessor: (Map map) => map['color'] as String,
                               ),
                             },
-                            transforms: [
-                              Proportion(
-                                variable: 'value',
-                                as: 'percent',
-                              )
-                            ],
                             marks: [
                               IntervalMark(
                                 position: Varset('percent') / Varset('name'),
@@ -335,7 +326,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 HabitController()
                                     .deleteHabit(periodHabits[index].id);
                                 setState(() {
-                                    habits.removeWhere((habit) => habit.id == periodHabits[index].id);
+                                  habits.removeWhere((habit) =>
+                                      habit.id == periodHabits[index].id);
                                 });
                               }),
                               backgroundColor: Colors.pink,
