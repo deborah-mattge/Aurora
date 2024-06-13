@@ -12,8 +12,7 @@ class HabitController extends ChangeNotifier {
 
     String jsonHabit = jsonEncode(habit);
 
-    var url = 'http://localhost:8080/habit';
-
+    var url = 'http://10.0.2.2:8092/habit';
     var headers = {'Content-Type': 'application/json'};
 
     var response =
@@ -22,45 +21,47 @@ class HabitController extends ChangeNotifier {
     if (response.statusCode == 200) {
       debugPrint('Hábito postado com sucesso!');
     } else {
-      debugPrint('Falha ao postar hábito');
+      debugPrint('Falha ao postar hábito: ${response.body}');
     }
     notifyListeners();
   }
 
   Future<List<Habit>> getHabits(num id) async {
-    var url = 'http://localhost:8080/habit/user/$id';
+    var url = 'http://10.0.2.2:8092/habit/user/$id';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
-    final responseJson = jsonDecode(response.body);
-
+  var decodedData = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       debugPrint('GET DE HÁBITO FUNCIONANDO!');
+      final responseJson = jsonDecode(decodedData);
+      List<Habit> habitsList = [];
+      for (var habitFor in responseJson) {
+        habitsList.add(Habit.fromJson(habitFor));
+      }
+      return habitsList;
     } else {
-      debugPrint('FALHA AO DAR GET EM HÁBITO] ${response.statusCode}');
+      debugPrint('FALHA AO DAR GET EM HÁBITOS: ${response.statusCode} ');
+      return [];
     }
-
-    List<Habit> habitsList = [];
-
-    for (var habitFor in responseJson) {
-      habitsList.add(Habit.fromJson(habitFor));
-    }
-    return habitsList;
   }
 
   Future<Habit> getOneHabit(num habitId, num userId) async {
+        debugPrint("$habitId");
 
-    var url = 'http://localhost:8080/habit/$habitId/user/$userId';
+    var url = 'http://10.0.2.2:8092/habit/$habitId/user/$userId';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
-    final responseJson = jsonDecode(response.body);
+          var decodedData = utf8.decode(response.bodyBytes);
 
     if (response.statusCode == 200) {
-      debugPrint('GET DE HÁBITO 2 FUNCIONANDO!');
+      debugPrint('GET DE HÁBITO FUNCIONANDO!');
+      final responseJson = jsonDecode(decodedData);
+      return Habit.fromJson(responseJson);
     } else {
-      debugPrint('FALHA AO DAR GET EM HÁBITO] ${response.statusCode}');
+      debugPrint(
+          'FALHA AO DAR GET EM HÁBITO: ${response.statusCode}  ');
+      throw Exception('Failed to load habit');
     }
-
-    return Habit.fromJson(responseJson);
   }
 
   Future<void> updateHabit(
@@ -83,8 +84,7 @@ class HabitController extends ChangeNotifier {
 
     String jsonHabit = jsonEncode(habit);
 
-    var url = 'http://localhost:8080/habit/update';
-
+    var url = 'http://10.0.2.2:8092/habit/update';
     var headers = {'Content-Type': 'application/json'};
 
     var response =
@@ -93,7 +93,7 @@ class HabitController extends ChangeNotifier {
     if (response.statusCode == 200) {
       debugPrint('Hábito editado com sucesso!');
     } else {
-      debugPrint('Falha ao editar hábito');
+      debugPrint('Falha ao editar hábito: ${response.body}');
     }
     notifyListeners();
   }
@@ -105,14 +105,14 @@ class HabitController extends ChangeNotifier {
   }
 
   Future<void> deleteHabit(int id) async {
-    var url = 'http://localhost:8080/habit/$id';
+    var url = 'http://10.0.2.2:8092/habit/$id';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.delete(Uri.parse(url), headers: headers);
 
     if (response.statusCode == 200) {
       debugPrint('Hábito deletado com sucesso!');
     } else {
-      debugPrint('Falha ao deletar hábito');
+      debugPrint('Falha ao deletar hábito: ${response.body}');
     }
     notifyListeners();
   }
