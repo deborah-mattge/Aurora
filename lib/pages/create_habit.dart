@@ -2,6 +2,7 @@ import 'package:aurora/components/decoration_button.dart';
 import 'package:aurora/components/decoration_input.dart';
 import 'package:aurora/controllers/HabitController.dart';
 import 'package:aurora/models/Habit.dart';
+import 'package:aurora/pages/habit_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -30,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage2> {
   String habitColor = '#A26BD8';
   String meta = '';
   DateTime initialDate = DateTime(2024, 06, 07);
-  DateTime finishDate = DateTime(2024, 06, 30);
+  late DateTime finishDate;
 
   bool isMatutinoSelected = false;
   bool isVespertinoSelected = false;
@@ -46,6 +47,21 @@ class _MyHomePageState extends State<MyHomePage2> {
   void initState() {
     super.initState();
     controller.addListener(() {});
+    finishDate = DateTime.now();
+  }
+
+  Future<void> selectDate1(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: finishDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != finishDate) {
+      setState(() {
+        finishDate = picked;
+      });
+    }
   }
 
   Color _colorTag = const Color.fromRGBO(162, 107, 216, 1);
@@ -133,6 +149,10 @@ class _MyHomePageState extends State<MyHomePage2> {
     String data = finishDate.toString();
     HabitController().postHabits(
         habitName, habitColor, typeLabel, periodLabel, reference, date, meta);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyApp3()),
+    );
   }
 
   @override
@@ -797,7 +817,14 @@ class _MyHomePageState extends State<MyHomePage2> {
                             alignment: Alignment.bottomLeft,
                             margin: const EdgeInsets.only(top: 60),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                // Navegar para a tela habit_view.dart
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyApp3()),
+                                );
+                              },
                               style: ButtonStyle(
                                 minimumSize: MaterialStateProperty.all(
                                     const Size(30, 15)),
