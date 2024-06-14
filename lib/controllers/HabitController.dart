@@ -38,7 +38,9 @@ class HabitController extends ChangeNotifier {
     var url = 'http://localhost:8080/habit/user/$id';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
-    final responseJson = jsonDecode(response.body);
+      var decodedData = utf8.decode(response.bodyBytes);
+
+    final responseJson = jsonDecode(decodedData);
 
     if (response.statusCode == 200) {
       debugPrint('GET DE HÁBITO FUNCIONANDO!');
@@ -59,8 +61,10 @@ class HabitController extends ChangeNotifier {
     var url = 'http://localhost:8080/habit/$habitId/user/$userId';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(Uri.parse(url), headers: headers);
-    final responseJson = jsonDecode(response.body);
 
+      var decodedData = utf8.decode(response.bodyBytes);
+
+    final responseJson = jsonDecode(decodedData);
     if (response.statusCode == 200) {
       debugPrint('GET DE HÁBITO 2 FUNCIONANDO!');
     } else {
